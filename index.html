@@ -1813,11 +1813,37 @@
         let editorActiveSubject = 'logica';
         let editorActiveModule = 'algoritmos_fundamentos';
 
-        // Carregar dados salvos no LocalStorage
+        // Carregar dados salvos no LocalStorage com sincronização automática de versões
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('codelogic_courses_v1');
-                if (saved) window.coursesDatabase = JSON.parse(saved);
+                // Contar total de aulas na base oficial
+                let totalOfficial = 0;
+                Object.values(initialCoursesDatabase).forEach(c => {
+                    (c.categories || []).forEach(cat => totalOfficial += (cat.chapters || []).length);
+                });
+
+                const saved = localStorage.getItem('codelogic_courses_v2');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    let totalSaved = 0;
+                    Object.values(parsed).forEach(c => {
+                        (c.categories || []).forEach(cat => totalSaved += (cat.chapters || []).length);
+                    });
+
+                    if (totalSaved >= totalOfficial) {
+                        window.coursesDatabase = parsed;
+                    } else {
+                        window.coursesDatabase = JSON.parse(JSON.stringify(initialCoursesDatabase));
+                        localStorage.setItem('codelogic_courses_v2', JSON.stringify(window.coursesDatabase));
+                    }
+                } else {
+                    window.coursesDatabase = JSON.parse(JSON.stringify(initialCoursesDatabase));
+                    localStorage.setItem('codelogic_courses_v2', JSON.stringify(window.coursesDatabase));
+                }
+
+                // Limpar cache legado v1 para não conflitar
+                localStorage.removeItem('codelogic_courses_v1');
+
                 const prog = localStorage.getItem('codelogic_progress_v1');
                 if (prog) studentsProgress = JSON.parse(prog);
                 const teach = localStorage.getItem('codelogic_teachers_v1');
@@ -1834,12 +1860,14 @@
                         createdAt: new Date().toISOString()
                     };
                 }
-            } catch (_) {}
+            } catch (_) {
+                window.coursesDatabase = JSON.parse(JSON.stringify(initialCoursesDatabase));
+            }
         }
 
         function saveLocalData() {
             try {
-                localStorage.setItem('codelogic_courses_v1', JSON.stringify(window.coursesDatabase));
+                localStorage.setItem('codelogic_courses_v2', JSON.stringify(window.coursesDatabase));
                 localStorage.setItem('codelogic_progress_v1', JSON.stringify(studentsProgress));
                 localStorage.setItem('codelogic_teachers_v1', JSON.stringify(teachersDatabase));
             } catch (_) {}
