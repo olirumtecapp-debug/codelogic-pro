@@ -25,13 +25,23 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-[#0b0f19] text-slate-100">
-    <!-- Header Global Tech -->
+        <!-- Header Global Tech -->
     <header class="bg-slate-900/95 border-b border-slate-800/80 backdrop-blur-md sticky top-0 z-40 shadow-xl">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Logo e Título -->
             <div class="flex items-center gap-3 cursor-pointer select-none" onclick="window.soundClick(); window.changeState('PORTAL_HUB')">
                 <span class="text-2xl p-2 bg-sky-500/10 text-sky-400 rounded-2xl border border-sky-500/20 font-code font-bold glow-border">&lt;/&gt;</span>
                 <div>
                     <div class="flex items-center gap-2">
+                        <h1 class="font-black text-lg md:text-xl tracking-wider font-code text-white">Code<span class="text-sky-400">Logic</span><span class="text-xs text-amber-400 ml-1 font-sans font-black bg-amber-400/10 border border-amber-400/30 px-1.5 py-0.5 rounded-full">PRO</span></h1>
+                        <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[9px] font-black uppercase px-2.5 py-0.5 rounded-full font-code inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>PLATAFORMA INTERATIVA</span>
+                    </div>
+                    <p class="text-[10px] text-slate-400">Super Plataforma Aberta • Lógica, Web, Python, POO & SQL</p>
+                </div>
+            </div>
+
+            <!-- Botões de Ação do Header -->
+            <div class="flex items-center gap-2">
                 <div id="user-info-display" class="hidden items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-2xl border border-slate-700">
                     <span id="current-user-avatar" class="text-lg">🧑‍💻</span>
                     <div class="text-left leading-tight hidden sm:block">
@@ -43,19 +53,15 @@
                     </button>
                 </div>
 
-                <button onclick="window.forceRestoreOfficialCourses()" title="Sincronizar e Restaurar Todas as 62 Aulas Oficiais" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1 cursor-pointer">
-                    <span>🔄</span> <span class="hidden sm:inline">Sincronizar</span>
-                </button>
-                
-                <button onclick="window.soundClick(); window.changeState('PORTAL_HUB')" title="Menu de Trilhas" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                <button onclick="window.scrollToTracks()" title="Explorar as 7 Trilhas de Cursos" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
                     💻 <span class="hidden sm:inline">Trilhas</span>
                 </button>
 
-                <button onclick="window.scrollToFooterInfo()" title="Ver links úteis, autor, validador e proposta pedagógica" class="bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 px-2.5 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                <button onclick="window.scrollToFooterInfo()" title="Ver links úteis, validador de certificados e proposta pedagógica" class="bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 px-3.5 py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
                     <span>ℹ️</span> <span>Sobre & Links</span>
                 </button>
                 
-                <button id="admin-badge-btn" onclick="window.soundClick(); window.changeState('ADMIN_LOGIN')" class="text-xs bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 px-3 py-1.5 rounded-xl border border-indigo-500/30 font-bold transition flex items-center gap-1 cursor-pointer">
+                <button id="admin-badge-btn" onclick="window.soundClick(); window.changeState('ADMIN_LOGIN')" class="text-xs bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 px-3.5 py-2 rounded-xl border border-indigo-500/30 font-bold transition flex items-center gap-1.5 cursor-pointer">
                     👨‍🏫 <span class="hidden sm:inline">Instrutor</span>
                 </button>
             </div>
@@ -2299,9 +2305,29 @@
 
         window.scrollToTracks = function() {
             window.soundClick();
-            const target = document.getElementById('trilhas-grid-section');
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
+            if (currentState !== 'PORTAL_HUB') {
+                window.changeState('PORTAL_HUB');
+                setTimeout(() => {
+                    const target = document.getElementById('trilhas-grid-section');
+                    if (target) target.scrollIntoView({ behavior: 'smooth' });
+                }, 150);
+            } else {
+                const target = document.getElementById('trilhas-grid-section');
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            }
+        };
+
+        window.scrollToFooterInfo = function() {
+            window.soundClick();
+            if (currentState !== 'PORTAL_HUB') {
+                window.changeState('PORTAL_HUB');
+                setTimeout(() => {
+                    const footer = document.getElementById('global-footer');
+                    if (footer) footer.scrollIntoView({ behavior: 'smooth' });
+                }, 150);
+            } else {
+                const footer = document.getElementById('global-footer');
+                if (footer) footer.scrollIntoView({ behavior: 'smooth' });
             }
         };
 
