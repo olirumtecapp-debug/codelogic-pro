@@ -2291,14 +2291,45 @@
         window.setHeroSnippet = function(type) {
             window.soundClick();
             const input = document.getElementById('hero-code-input');
-            if (!input) return;
+            const instructionsText = document.getElementById('hero-instructions-text');
+            const btnHello = document.getElementById('hero-btn-hello');
+            const btnCalc = document.getElementById('hero-btn-calc');
+            const btnArray = document.getElementById('hero-btn-array');
+
+            // Resetar estilos dos botões
+            const resetBtn = (btn) => {
+                if (btn) {
+                    btn.className = "text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-400 px-3 py-1 rounded-lg font-code transition whitespace-nowrap border border-slate-700";
+                }
+            };
+            resetBtn(btnHello);
+            resetBtn(btnCalc);
+            resetBtn(btnArray);
 
             if (type === 'hello') {
-                input.value = `// 1. Teste de Boas-vindas (Altere o seu nome abaixo):\nconst meuNome = "Estudante Dev";\nconsole.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PRO 🚀");`;
+                if (btnHello) btnHello.className = "text-[11px] bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 px-3 py-1 rounded-lg font-code transition whitespace-nowrap border border-sky-500/40 font-bold";
+                if (instructionsText) {
+                    instructionsText.innerHTML = 'Altere o nome <code class="text-sky-300 bg-slate-900 px-1 py-0.5 rounded border border-slate-700">"Estudante Dev"</code> no código abaixo e clique em <b class="text-emerald-400">▶ Executar</b>!';
+                }
+                if (input) {
+                    input.value = `// 1. Teste de Boas-vindas (Altere o seu nome abaixo):\nconst meuNome = "Estudante Dev";\nconsole.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PRO 🚀");`;
+                }
             } else if (type === 'calc') {
-                input.value = `// 2. Cálculo Prático de Horas de Estudo:\nlet horasPorDia = 2;\nlet dias = 15;\nlet totalHoras = horasPorDia * dias;\nconsole.log("Em " + dias + " dias você acumula " + totalHoras + " horas de prática de programação! ⚡");`;
+                if (btnCalc) btnCalc.className = "text-[11px] bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 px-3 py-1 rounded-lg font-code transition whitespace-nowrap border border-emerald-500/40 font-bold";
+                if (instructionsText) {
+                    instructionsText.innerHTML = 'Modifique as variáveis <code class="text-emerald-300 bg-slate-900 px-1 py-0.5 rounded border border-slate-700">horasPorDia</code> ou <code class="text-emerald-300 bg-slate-900 px-1 py-0.5 rounded border border-slate-700">dias</code> e clique em <b class="text-emerald-400">▶ Executar</b> para calcular!';
+                }
+                if (input) {
+                    input.value = `// 2. Cálculo Prático de Horas de Estudo:\nlet horasPorDia = 2;\nlet dias = 15;\nlet totalHoras = horasPorDia * dias;\nconsole.log("Em " + dias + " dias você acumula " + totalHoras + " horas de prática de programação! ⚡");`;
+                }
             } else if (type === 'array') {
-                input.value = `// 3. Lista de Tecnologias Práticas:\nconst trilhas = ["Lógica", "Web", "JavaScript", "Python", "SQL"];\ntrilhas.forEach((item, index) => {\n    console.log("[" + (index + 1) + "] Trilha: " + item + " 💻");\n});`;
+                if (btnArray) btnArray.className = "text-[11px] bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-3 py-1 rounded-lg font-code transition whitespace-nowrap border border-amber-500/40 font-bold";
+                if (instructionsText) {
+                    instructionsText.innerHTML = 'Veja como percorrer a lista de trilhas da plataforma. Clique em <b class="text-emerald-400">▶ Executar</b> para rodar o laço!';
+                }
+                if (input) {
+                    input.value = `// 3. Lista de Tecnologias Práticas:\nconst trilhas = ["Lógica", "Web", "JavaScript", "Python", "SQL"];\ntrilhas.forEach((item, index) => {\n    console.log("[" + (index + 1) + "] Trilha: " + item + " 💻");\n});`;
+                }
             }
             window.runHeroTeaser();
         };
@@ -2573,20 +2604,29 @@
                                             <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
                                             <span class="text-xs font-code text-slate-300 ml-2 font-bold">terminal_demo.js</span>
                                         </div>
-                                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded font-code font-bold">TESTE RÁPIDO</span>
+                                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded font-code font-bold">⚡ SIMULADOR PRÁTICO</span>
                                     </div>
 
-                                    <!-- Guia Didático Rápido do Terminal -->
-                                    <div class="bg-sky-950/40 px-3.5 py-2 border-b border-slate-800 text-[11px] text-sky-300 flex items-center gap-2">
-                                        <span>💡</span>
-                                        <span><strong>Como testar:</strong> Escolha um exemplo abaixo ou edite o código e clique em <strong>Executar</strong>!</span>
+                                    <!-- Faixa 1: Para que serve -->
+                                    <div class="bg-slate-900/90 px-3.5 py-1.5 border-b border-slate-800 text-[11px] text-slate-300 flex items-center gap-2">
+                                        <span class="text-sky-400 text-xs">💡</span>
+                                        <span><strong>Para que serve:</strong> Experimente o ambiente interativo de código antes de iniciar os cursos.</span>
                                     </div>
 
-                                    <!-- Seletor de Snippets Rápidos -->
-                                    <div class="bg-slate-900/60 px-3 py-1.5 border-b border-slate-800 flex gap-2 overflow-x-auto custom-scrollbar">
-                                        <button onclick="window.setHeroSnippet('hello')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-sky-300 px-2.5 py-1 rounded-lg font-code transition whitespace-nowrap border border-slate-700">1. Boas-vindas</button>
-                                        <button onclick="window.setHeroSnippet('calc')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-emerald-300 px-2.5 py-1 rounded-lg font-code transition whitespace-nowrap border border-slate-700">2. Cálculos</button>
-                                        <button onclick="window.setHeroSnippet('array')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-amber-300 px-2.5 py-1 rounded-lg font-code transition whitespace-nowrap border border-slate-700">3. Trilhas</button>
+                                    <!-- Faixa 2: O que fazer aqui (Didático e Dinâmico) -->
+                                    <div class="bg-sky-950/60 px-3.5 py-2 border-b border-slate-800 text-xs text-sky-200 flex items-start gap-2">
+                                        <span class="text-sky-400 text-sm leading-none mt-0.5">🎯</span>
+                                        <div class="flex-1">
+                                            <strong class="text-sky-300 font-code text-[11px] uppercase tracking-wide">O que fazer aqui:</strong>
+                                            <span id="hero-instructions-text" class="text-slate-300 block text-xs mt-0.5 leading-relaxed">Altere o nome <code class="text-sky-300 bg-slate-900 px-1 py-0.5 rounded border border-slate-700">"Estudante Dev"</code> no código abaixo e clique em <b class="text-emerald-400">▶ Executar</b>!</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Seletor de Snippets Rápidos com Botões Explicativos -->
+                                    <div class="bg-slate-900/80 px-3 py-1.5 border-b border-slate-800 flex gap-2 overflow-x-auto custom-scrollbar">
+                                        <button id="hero-btn-hello" onclick="window.setHeroSnippet('hello')" class="text-[11px] bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 px-3 py-1 rounded-lg font-code transition whitespace-nowrap border border-sky-500/40 font-bold">1. Boas-vindas</button>
+                                        <button id="hero-btn-calc" onclick="window.setHeroSnippet('calc')" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-emerald-300 px-3 py-1 rounded-lg font-code transition whitespace-nowrap border border-slate-700">2. Cálculos</button>
+                                        <button id="hero-btn-array" onclick="window.setHeroSnippet('array')" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-amber-300 px-3 py-1 rounded-lg font-code transition whitespace-nowrap border border-slate-700">3. Trilhas</button>
                                     </div>
 
                                     <!-- Área de Código Editável -->
