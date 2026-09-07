@@ -53,6 +53,7 @@
 
                 <button onclick="window.forceRestoreOfficialCourses()" title="Sincronizar e Restaurar Todas as 62 Aulas Oficiais" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1 cursor-pointer"><span>🔄</span> <span class="hidden sm:inline">Sincronizar (62 Aulas)</span></button>
                 <button onclick="window.showDeveloperModal()" title="Conheça o Desenvolvedor do Projeto" class="bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2.5 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1 cursor-pointer"><span>👨‍💻</span> <span class="hidden md:inline">Autor</span></button>
+                <button onclick="window.showPedagogyModal()" title="O que você vai aprender e nossa proposta pedagógica sincera" class="bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 px-2.5 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1 cursor-pointer"><span>🎯</span> <span class="hidden md:inline">Proposta Pedagógica</span></button>
                 <button onclick="window.showSourcesModal()" title="Origem dos Padrões e Referências Oficiais (W3C, Python, IEEE)" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1"><span>ℹ️</span> <span class="hidden md:inline">Fontes</span></button>
                 <button onclick="window.soundClick(); window.changeState('PORTAL_HUB')" title="Menu de Trilhas" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1">
                     💻 Trilhas
@@ -2281,6 +2282,53 @@
         };
 
         // --- TELA 1: HUB PRINCIPAL DE TRILHAS (P0 EVOLUTION) ---
+        
+        // --- MODAL: PROPOSTA PEDAGÓGICA & EXPECTATIVAS REAIS ---
+        window.showPedagogyModal = function() {
+            window.soundClick();
+            window.showModal(`
+                <div class="text-left space-y-4 font-sans">
+                    <div class="flex items-center gap-3 pb-3 border-b border-slate-800">
+                        <span class="text-3xl p-2 bg-sky-500/10 text-sky-400 rounded-2xl border border-sky-500/20 font-code font-bold">&lt;🎯&gt;</span>
+                        <div>
+                            <h3 class="text-lg font-black text-white font-code">Proposta Pedagógica & Expectativas</h3>
+                            <p class="text-xs text-sky-400 font-code">Transparência, didática e aprendizado real</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 text-xs leading-relaxed text-slate-300">
+                        <div class="bg-emerald-950/30 border border-emerald-500/40 p-3.5 rounded-2xl space-y-1.5">
+                            <h4 class="font-black text-emerald-300 flex items-center gap-1.5 text-xs font-code">
+                                <span>🟢</span> O que você VAI conquistar no CodeLogic PRO:
+                            </h4>
+                            <ul class="list-disc pl-4 space-y-1 text-[11px] text-emerald-100/90">
+                                <li><strong>Domínio do Pensamento Computacional:</strong> Entenda como variáveis, laços de repetição, condições e funções operam na prática.</li>
+                                <li><strong>Zero Frustração Técnica:</strong> Pratique JavaScript, Python, Web e SQL sem perder dias instalando programas ou travando em erros de terminal.</li>
+                                <li><strong>Base Sólida para Faculdade ou Bootcamps:</strong> Chegue em qualquer curso superior ou técnico meses à frente de quem nunca viu código.</li>
+                                <li><strong>Compreensão do Vocabulário Tech:</strong> Perca de vez o medo da "tela preta" e ganhe autonomia no vocabulário de tecnologia.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-indigo-950/30 border border-indigo-500/40 p-3.5 rounded-2xl space-y-1.5">
+                            <h4 class="font-black text-indigo-300 flex items-center gap-1.5 text-xs font-code">
+                                <span>🧭</span> Como enxergar esta plataforma (O Próximo Nível):
+                            </h4>
+                            <ul class="list-disc pl-4 space-y-1 text-[11px] text-indigo-100/90">
+                                <li><strong>A Porta de Entrada Perfeita:</strong> O CodeLogic foi desenhado para ser o seu primeiro e mais acolhedor passo. Ele não substitui anos de prática em projetos corporativos complexos, mas constrói as pontes necessárias para que você chegue lá com segurança.</li>
+                                <li><strong>Foco em Fundamentos Eternos:</strong> Ensinamos os alicerces da computação que nunca ficam obsoletos, dando a você asas para aprender qualquer linguagem no futuro.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-800 flex justify-end">
+                        <button onclick="window.hideModal()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black px-5 py-2 rounded-xl text-xs font-code transition cursor-pointer">
+                            Entendido! Continuar Estudando 🚀
+                        </button>
+                    </div>
+                </div>
+            `, 'max-w-xl');
+        };
+
         window.renderPortalHub = function() {
             // Calcular métricas gerais do aluno
             let totalAulasGlobal = 0;
@@ -2597,6 +2645,70 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                                     <h4 class="font-bold text-white text-xs font-code mb-1">Conquistas & Estudos</h4>
                                     <p class="text-[11px] text-slate-400">Acompanhe suas horas de dedicação e gere seus certificados de conclusão livre.</p>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <!-- SEÇÃO: PROPOSTA PEDAGÓGICA HONESTA & O QUE VOCÊ VAI APRENDER -->
+                    <div class="bg-gradient-to-br from-slate-900 via-slate-900/90 to-slate-950 border-2 border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl">
+                        <div class="text-center max-w-2xl mx-auto mb-6">
+                            <span class="text-sky-400 text-xs font-black font-code uppercase tracking-wider">COMPROMISSO COM SEU APRENDIZADO</span>
+                            <h2 class="text-2xl font-black text-white font-code mt-1">O Que Você Vai Aprender no CodeLogic PRO</h2>
+                            <p class="text-xs text-slate-400 mt-1">Transparência total: saiba exatamente como a plataforma acelera a sua jornada na tecnologia.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Coluna 1: O que você conquista -->
+                            <div class="bg-slate-950/60 p-5 rounded-2xl border border-emerald-500/30 space-y-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">🟢</span>
+                                    <h3 class="font-black text-emerald-400 text-sm font-code">O que você VAI dominar aqui:</h3>
+                                </div>
+                                <ul class="space-y-2 text-xs text-slate-300">
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-emerald-400 font-bold shrink-0">✓</span>
+                                        <span><strong>Lógica Computacional de Verdade:</strong> Entenda como computadores pensam, tomam decisões e processam dados através de algoritmos.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-emerald-400 font-bold shrink-0">✓</span>
+                                        <span><strong>Sem Medo da "Tela Preta":</strong> Escreva e execute códigos em JavaScript, Python, Web e SQL sem perder horas instalando ferramentas pesadas.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-emerald-400 font-bold shrink-0">✓</span>
+                                        <span><strong>Vantagem em Faculdades e Bootcamps:</strong> Chegue nos primeiros semestres de faculdade ou cursos técnicos meses à frente de quem nunca viu código.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-emerald-400 font-bold shrink-0">✓</span>
+                                        <span><strong>Aprendizado Ativo:</strong> Nada de aulas passivas de 3 horas. Aqui você lê 2 minutos, experimenta o código e fixa com desafios imediatos.</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Coluna 2: Para quem é e como avançar -->
+                            <div class="bg-slate-950/60 p-5 rounded-2xl border border-sky-500/30 space-y-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">🧭</span>
+                                    <h3 class="font-black text-sky-400 text-sm font-code">Nossa Proposta & O Próximo Nível:</h3>
+                                </div>
+                                <ul class="space-y-2 text-xs text-slate-300">
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-sky-400 font-bold shrink-0">→</span>
+                                        <span><strong>A Porta de Entrada Perfeita:</strong> O CodeLogic foi criado para ser o seu primeiro e mais amigável passo na programação, descomplicando barreiras iniciais.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-sky-400 font-bold shrink-0">→</span>
+                                        <span><strong>Fundamentos Eternos:</strong> Não ensinamos modismos passageiros; focamos nos alicerces que vão te acompanhar por toda a carreira em TI.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-sky-400 font-bold shrink-0">→</span>
+                                        <span><strong>Preparação para Projetos Locais:</strong> Ao concluir as 7 Trilhas, você terá a confiança mental necessária para abrir o VSCode no seu PC e criar seus próprios sistemas.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-sky-400 font-bold shrink-0">→</span>
+                                        <span><strong>Cursos Livres e Portfólio:</strong> Comprove suas horas de estudo prático com certificados autenticados para enriquecer seu currículo.</span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
