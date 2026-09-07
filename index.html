@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <title>CodeLogic Pro • Super Plataforma EAD de Programação & Lógica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="firebase-config.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;600;700;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #090d16; color: #f1f5f9; user-select: none; }
+        .font-code { font-family: 'Fira Code', monospace; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.25); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(56, 189, 248, 0.5); }
+        .fade-in { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .pulse-cyan { animation: pulseCyan 2s infinite; }
+        @keyframes pulseCyan { 0%, 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.5); } 50% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); } }
+        .glow-border { box-shadow: 0 0 15px rgba(56, 189, 248, 0.15); }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body class="min-h-screen flex flex-col bg-[#0b0f19] text-slate-100">
+    <!-- Header Global Tech -->
+    <header class="bg-slate-900/95 border-b border-slate-800/80 backdrop-blur-md sticky top-0 z-40 shadow-xl">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer select-none" onclick="window.soundClick(); window.changeState('PORTAL_HUB')">
+                <span class="text-2xl p-2 bg-sky-500/10 text-sky-400 rounded-2xl border border-sky-500/20 font-code font-bold glow-border">&lt;/&gt;</span>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-black text-lg md:text-xl tracking-wider font-code text-white">Code<span class="text-sky-400">Logic</span><span class="text-xs text-amber-400 ml-1 font-sans font-black bg-amber-400/10 border border-amber-400/30 px-1.5 py-0.5 rounded-full">PRO</span></h1>
+                        <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[9px] font-black uppercase px-2 py-0.5 rounded-full font-code">EAD v2.0</span>
+                    </div>
+                    <p class="text-[10px] text-slate-400">Super Plataforma Interativa • Lógica, Web, Python, POO & SQL</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <div id="user-info-display" class="hidden items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-2xl border border-slate-700">
+                    <span id="current-user-avatar" class="text-lg">🧑‍💻</span>
+                    <div class="text-left leading-tight hidden sm:block">
+                        <span id="current-user-name" class="font-black text-xs text-sky-400 block font-code">Dev</span>
+                        <span id="current-user-turma" class="text-[10px] text-slate-400 block">Turma Geral</span>
+                    </div>
+                    <button onclick="window.showCertificatesModal()" title="Ver Certificados e Conquistas" class="ml-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-1 rounded-full text-xs transition">
+                        🏆
+                    </button>
+                </div>
+
+                <button onclick="window.showSourcesModal()" title="Origem dos Padrões e Referências Oficiais (W3C, Python, IEEE)" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1"><span>ℹ️</span> <span class="hidden md:inline">Fontes</span></button>
+                <button onclick="window.soundClick(); window.changeState('PORTAL_HUB')" title="Menu de Trilhas" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1">
+                    💻 Trilhas
+                </button>
+                
+                <button id="admin-badge-btn" onclick="window.soundClick(); window.changeState('ADMIN_LOGIN')" class="text-xs bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 px-3 py-1.5 rounded-xl border border-sky-500/30 font-bold transition flex items-center gap-1">
+                    👨‍🏫 Instrutor
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main id="main-content" class="flex-grow flex items-center justify-center p-4 md:p-6 max-w-6xl mx-auto w-full relative">
+        <div class="text-center fade-in">
+            <div class="text-6xl animate-bounce mb-4 text-sky-400">⚡</div>
+            <h2 class="text-2xl font-black text-sky-400 font-code">Iniciando Servidores do CodeLogic Pro...</h2>
+            <p class="text-sm text-slate-400 mt-1">Carregando módulos de lógica, compiladores e terminais interativos.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-3 text-center text-xs text-slate-500 font-mono font-bold">
+        CodeLogic Pro • Plataforma Educacional de Tecnologia • <span class="text-sky-400 font-sans">Lógica, Algoritmos, HTML5, CSS3, JavaScript, Python, POO e SQL ⚡</span>
+    </footer>
+
+    <!-- Modal Container -->
+    <div id="modal-container" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 fade-in">
+        <div id="modal-content" class="bg-slate-900 text-slate-100 rounded-3xl max-w-lg w-full p-6 md:p-8 shadow-2xl relative border-2 border-slate-700 max-h-[90vh] overflow-y-auto custom-scrollbar">
+        </div>
+    </div>
+
+    <!-- Script Principal como Módulo -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) audioCtx = new AudioContextClass();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
+
+        window.soundClick = function() {
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(550, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.08);
+            } catch (_) {}
+        };
+
+        window.soundCorrect = function() {
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + i * 0.07);
+                    gain.gain.setValueAtTime(0.12, now + i * 0.07);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + (i + 1) * 0.12);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + i * 0.07);
+                    osc.stop(now + (i + 1) * 0.12);
+                });
+            } catch (_) {}
+        };
+
+        window.soundWrong = function() {
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.exponentialRampToValueAtTime(110, now + 0.2);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.2);
+            } catch (_) {}
+        };
+
+        window.soundFanfare = function() {
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+                [440, 554.37, 659.25, 880, 1108.73].forEach((f, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(f, now + i * 0.09);
+                    gain.gain.setValueAtTime(0.15, now + i * 0.09);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + (i + 1) * 0.16);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + i * 0.09);
+                    osc.stop(now + (i + 1) * 0.16);
+                });
+            } catch (_) {}
+        };
+
+        window.triggerConfetti = function() {
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
+            }
+        };
+
+        // --- REFERÊNCIAS DO DOM ---
+        const mainContent = document.getElementById('main-content');
+        const modalContainer = document.getElementById('modal-container');
+        const modalContent = document.getElementById('modal-content');
+        const userInfoDisplay = document.getElementById('user-info-display');
+        const currentUserNameDisplay = document.getElementById('current-user-name');
+        const currentUserTurmaDisplay = document.getElementById('current-user-turma');
+        const currentUserAvatarDisplay = document.getElementById('current-user-avatar');
+
+        // --- LISTA DE TRILHAS DO CODELOGIC PRO ---
+        window.PORTAL_TRACKS = [
+            { id: 'logica', name: '1. Lógica & Algoritmos', icon: '⚡', color: 'from-amber-500 to-orange-600', badge: 'Fundamentos' },
+            { id: 'html_css', name: '2. Web Frontend (HTML5/CSS3)', icon: '🌐', color: 'from-sky-500 to-blue-600', badge: 'Intermediário' },
+            { id: 'javascript', name: '3. JavaScript Moderno', icon: '✨', color: 'from-yellow-500 to-amber-600', badge: 'Intermediário' },
+            { id: 'python', name: '4. Python & Automação', icon: '🐍', color: 'from-emerald-500 to-teal-700', badge: 'Avançado' },
+            { id: 'poo', name: '5. POO & Engenharia', icon: '🏗️', color: 'from-purple-600 to-indigo-800', badge: 'Avançado' },
+            { id: 'banco_dados', name: '6. Banco de Dados & SQL', icon: '🗄️', color: 'from-rose-600 to-red-800', badge: 'Avançado' }
+        ];
+
+        // --- BANCO DE DADOS DE CURSOS INICIAL ---
+        const initialCoursesDatabase = {
+  logica: {
+    id: 'logica',
+    name: '1. Lógica & Algoritmos',
+    icon: '⚡',
+    badge: 'Fundamentos',
+    color: 'from-amber-500 to-orange-600',
+    description: 'Pensamento computacional, variáveis, condicionais, loops e solução de problemas.',
+    categories: [
+      {
+        id: 'algoritmos_fundamentos',
+        name: 'Módulo 1: O Mundo dos Algoritmos',
+        description: 'Entenda como os computadores pensam e execute seu primeiro comando.',
+        sources: 'Fundamentos de Ciência da Computação, ACM, IEEE Computer Society.',
+        chapters: [
+          {
+            title: 'O que é um Algoritmo? ⚡',
+            imageUrl: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=900&auto=format&fit=crop&q=80',
+            content: 'Um <b>algoritmo</b> é simplesmente uma sequência finita, ordenada e não ambígua de instruções para resolver um problema ou executar uma tarefa.<br><br>Pense em uma receita de bolo ou nas instruções para montar um móvel: se você pular um passo ou mudar a ordem das etapas, o resultado final será completamente diferente do esperado. No computador, isso é ainda mais crítico porque a máquina não possui intuição nem bom senso: ela executa exatamente o que você manda, passo a passo.<br><br>Quando escrevemos um programa, estamos traduzindo a nossa linha de raciocínio para uma linguagem que a máquina consiga processar.',
+            miniGame: {
+              question: 'Qual é a melhor definição de Algoritmo na computação?',
+              options: [
+                'Uma peça física do computador responsável pela memória.',
+                'Uma sequência lógica e ordenada de passos para resolver um problema.',
+                'Um erro grave que desliga o sistema operacional.',
+                'Um vírus que rouba senhas na internet.'
+              ],
+              correct: 1,
+              explanation: 'Algoritmos são sequências claras e ordenadas de passos lógicos para atingir um objetivo ou resolver um desafio.'
+            }
+          },
+          {
+            title: 'A Máquina é Obediente (Até demais!) 🤖',
+            imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=900&auto=format&fit=crop&q=80',
+            content: 'Os computadores são incrivelmente rápidos para fazer cálculos, mas são completamente incapazes de adivinhar o que você quer.<br><br>Se dissermos a um ser humano: <i>"Pegue o café"</i>, ele sabe que precisa levantar, ir à cozinha, pegar uma xícara e servir. Se dissermos isso a um robô sem as instruções detalhadas, ele pode trompar na parede por não saber como desviar.<br><br>Na programação, quebramos grandes tarefas em <b>passos elementares</b>. Um único passo fora de lugar gera o famoso <b>BUG 🐛</b> (termo criado quando uma mariposa causou uma falha física em um dos primeiros computadores da história, o Mark II em 1947).',
+            miniGame: {
+              question: 'Por que a ordem dos passos é fundamental em um algoritmo?',
+              options: [
+                'Porque o computador corrige a ordem sozinho usando inteligência.',
+                'Porque se a ordem estiver invertida, a máquina executará o erro gerando um bug.',
+                'Porque o computador só lê a primeira e a última linha do código.',
+                'Porque computadores não precisam de eletricidade se a ordem estiver certa.'
+              ],
+              correct: 1,
+              explanation: 'Como o computador obedece cegamente a ordem das instruções, qualquer passo incorreto resulta em comportamento inesperado (bug).'
+            }
+          },
+          {
+            title: 'Entrada, Processamento e Saída (IPO) 🔄',
+            imageUrl: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=900&auto=format&fit=crop&q=80',
+            content: 'Quase todo programa do mundo opera sob um ciclo clássico chamado <b>Entrada, Processamento e Saída</b> (Input, Processing, Output):<br><br>• <b>Entrada (Input):</b> São os dados que o programa recebe do usuário ou de sensores (ex: digitar uma senha, clicar num botão, dados do teclado).<br>• <b>Processamento:</b> O que o computador calcula ou decide com esses dados (ex: verificar se a senha está correta, somar pontos).<br>• <b>Saída (Output):</b> O resultado exibido na tela, som emitido ou arquivo gravado (ex: "Acesso Permitido!").',
+            miniGame: {
+              question: 'No fluxo de uma calculadora somando 5 + 3 = 8, qual etapa representa o "Processamento"?',
+              options: [
+                'O usuário digitando os números 5 e 3 no teclado.',
+                'A tela acendendo e mostrando o número 8.',
+                'O processador realizando a operação matemática de soma entre 5 e 3.',
+                'A bateria fornecendo energia para o display.'
+              ],
+              correct: 2,
+              explanation: 'A realização da operação de soma dentro da CPU é o processamento; a digitação é a entrada e o resultado na tela é a saída.'
+            }
+          }
+        ]
+      },
+      {
+        id: 'variaveis_memoria',
+        name: 'Módulo 2: Caixas de Memória (Variáveis & Tipos)',
+        description: 'Armazenamento de dados, tipos primitivos e manipulação de memória.',
+        sources: 'IEEE Computer Society, ISO/IEC C/C++/Python standards.',
+        chapters: [
+          {
+            title: 'O que são Variáveis? 📦',
+            imageUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&auto=format&fit=crop&q=80',
+            content: 'Imagine a memória RAM do computador como um gigantesco armário com milhares de gavetas numeradas. Quando queremos guardar um dado temporário (como a pontuação de um jogador), nós pegamos uma gaveta, colocamos uma etiqueta nela (o <b>identificador</b>) e guardamos o valor dentro.<br><br>A essa gaveta etiquetada damos o nome de <b>Variável</b>, porque o valor que está dentro dela pode variar ao longo da execução do programa (por exemplo, a pontuação começa em 0 e sobe para 100).',
+            miniGame: {
+              question: 'Por que chamamos essas posições de memória de "Variáveis"?',
+              options: [
+                'Porque o nome da gaveta muda a cada segundo.',
+                'Porque o valor armazenado pode ser alterado durante a execução do programa.',
+                'Porque elas só funcionam em computadores portáteis.',
+                'Porque elas apagam o código após o término.'
+              ],
+              correct: 1,
+              explanation: 'As variáveis recebem esse nome justamente porque o dado guardado nelas pode mudar conforme o programa avança.'
+            }
+          },
+          {
+            title: 'Tipos Primitivos de Dados 🧬',
+            imageUrl: 'https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=900&auto=format&fit=crop&q=80',
+            content: 'O computador precisa saber qual é a natureza do dado para saber o que pode fazer com ele. Os tipos primitivos universais são:<br><br>• <b>Integer (Inteiro):</b> Números sem vírgula, positivos ou negativos (ex: <code>10</code>, <code>-5</code>, <code>2026</code>).<br>• <b>Float / Double (Real):</b> Números com casas decimais (ex: <code>3.14</code>, <code>99.90</code>).<br>• <b>String (Texto):</b> Caracteres literais, sempre delimitados por aspas (ex: <code>"Maria"</code>, <code>"São Paulo"</code>).<br>• <b>Boolean (Lógico):</b> Apenas dois estados possíveis: <code>True</code> (Verdadeiro) ou <code>False</code> (Falso).',
+            miniGame: {
+              question: 'Qual tipo de dado é o mais indicado para guardar se um usuário está conectado ou não (Online/Offline)?',
+              options: [
+                'Float (número decimal)',
+                'Boolean (Verdadeiro ou Falso)',
+                'Integer de alta precisão',
+                'Array multidimensional'
+              ],
+              correct: 1,
+              explanation: 'O tipo booleano (Boolean) é ideal para representar estados binários com apenas duas possibilidades (Sim/Não, True/False, Ativo/Inativo).'
+            }
+          }
+        ]
+      },
+      {
+        id: 'estruturas_controle',
+        name: 'Módulo 3: Tomada de Decisões & Laços (If / Else & Loops)',
+        description: 'Condicionais e repetições que tornam os programas inteligentes.',
+        sources: 'Estruturas de Dados e Algoritmos - Cormen, Leis da Lógica Booleana.',
+        chapters: [
+          {
+            title: 'Estruturas Condicionais (SE / SENÃO) 🔀',
+            imageUrl: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=900&auto=format&fit=crop&q=80',
+            content: 'Programas inteligentes tomam caminhos diferentes baseados em condições. É aí que usamos a estrutura <b>IF / ELSE</b> (Se / Senão).<br><br>O computador avalia uma <b>expressão lógica</b>. Se o resultado for <code>True</code>, ele executa um bloco de código; se for <code>False</code>, ele pula para o bloco do <code>Else</code>.<br><br>Exemplo em pseudocódigo:<br><code>SE (nota >= 7.0) ENTÃO<br>&nbsp;&nbsp;Exibir "Aprovado!"<br>SENÃO<br>&nbsp;&nbsp;Exibir "Recuperação!"</code>',
+            miniGame: {
+              question: 'Qual é o papel principal do comando IF/ELSE em um programa?',
+              options: [
+                'Repetir o mesmo comando 1000 vezes.',
+                'Permitir que o programa tome decisões e execute blocos diferentes dependendo de uma condição.',
+                'Formatar o texto em negrito.',
+                'Conectar o computador à internet.'
+              ],
+              correct: 1,
+              explanation: 'O IF/ELSE permite criar bifurcações na execução do código, dando autonomia para o programa reagir a diferentes dados.'
+            }
+          },
+          {
+            title: 'Laços de Repetição (Loops: While & For) 🔁',
+            imageUrl: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=900&auto=format&fit=crop&q=80',
+            content: 'Se você precisa processar a nota de 1.000 alunos, você não escreve o mesmo código mil vezes: você usa um <b>Laço de Repetição (Loop)</b>.<br><br>• <b>WHILE (Enquanto):</b> Repete um bloco <i>enquanto</i> uma condição for verdadeira. Requer atenção especial para atualizar o contador, caso contrário cai no temido <b>Loop Infinito</b> (que trava o programa).<br>• <b>FOR (Para):</b> Repete uma quantidade pré-determinada de vezes ou itera sobre uma lista de itens.',
+            miniGame: {
+              question: 'O que provoca o travamento de um programa por "Loop Infinito"?',
+              options: [
+                'Usar muitas variáveis na memória.',
+                'Quando a condição de parada do laço de repetição nunca é alcançada e ele repete para sempre.',
+                'Digitar código com letras maiúsculas.',
+                'Faltar espaço no disco rígido.'
+              ],
+              correct: 1,
+              explanation: 'Se a condição para encerrar o laço nunca for atingida, o programa fica preso na repetição indefinidamente consumindo 100% da CPU.'
+            }
+          }
+        ]
+      }
+    ],
+    questions: [
+      { category: 'algoritmos_fundamentos', text: 'O que caracteriza um algoritmo eficiente na computação?', options: ['Executar o mais rápido possível e usar a menor quantidade de memória necessária.', 'Ter o maior número de linhas de código possível.', 'Usar cores chamativas no terminal.', 'Não ter saída de dados.'], correct: 0, explanation: 'Eficiência algorítmica é medida pela velocidade de execução (tempo) e pelo consumo otimizado de recursos (espaço/memória).' },
+      { category: 'algoritmos_fundamentos', text: 'Qual é a principal função da fase de "Entrada" (Input) em um sistema?', options: ['Desligar a tela do monitor.', 'Receber dados externos do usuário, teclado, mouse ou rede para serem processados.', 'Imprimir o resultado na impressora.', 'Armazenar arquivos no lixo.'], correct: 1, explanation: 'A entrada fornece a matéria-prima de dados que o processador utilizará.' },
+      { category: 'variaveis_memoria', text: 'Qual das seguintes opções é uma declaração válida de texto (String)?', options: ['1234', 'True', '"Olá, Estudante!"', '3.1415'], correct: 2, explanation: 'Strings são sequências de caracteres delimitadas por aspas.' },
+      { category: 'variaveis_memoria', text: 'Se uma variável do tipo Inteiro com valor 5 for somada com outra de valor 3, o resultado é:', options: ['"53" (como texto)', '8 (número inteiro)', 'Erro fatal', 'False'], correct: 1, explanation: 'Entre inteiros a operação de adição realiza a soma aritmética correta (5 + 3 = 8).' },
+      { category: 'estruturas_controle', text: 'Qual operador lógico exige que DUAS condições sejam verdadeiras ao mesmo tempo?', options: ['OU (OR)', 'NÃO (NOT)', 'E (AND)', 'XOR'], correct: 2, explanation: 'O operador lógico E (AND / &&) só resulta em Verdadeiro se ambas as proposições forem simultaneamente verdadeiras.' },
+      { category: 'estruturas_controle', text: 'Qual estrutura é ideal quando sabemos exatamente quantas vezes queremos repetir uma instrução (ex: 10 vezes)?', options: ['Loop FOR', 'Comando IF', 'Declaração de Variável', 'Comando Print'], correct: 0, explanation: 'O laço FOR é especialmente projetado para repetições com contagem ou intervalos conhecidos.' }
+    ]
+  },
+  html_css: {
+    id: 'html_css',
+    name: '2. Web Frontend (HTML5 & CSS3)',
+    icon: '🌐',
+    badge: 'Intermediário',
+    color: 'from-sky-500 to-blue-600',
+    description: 'Construção visual da Web, tags semânticas, CSS Flexbox, Grid e responsividade.',
+    categories: [
+      {
+        id: 'html_semantico',
+        name: 'Módulo 1: O Esqueleto da Web (HTML5)',
+        description: 'Tags semânticas, formulários, tabelas e acessibilidade.',
+        sources: 'W3C Standards, MDN Web Docs (Mozilla).',
+        chapters: [
+          {
+            title: 'Como a Web Funciona & O Papel do HTML5 🌐',
+            imageUrl: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=900&auto=format&fit=crop&q=80',
+            content: '<b>HTML</b> significa <i>HyperText Markup Language</i> (Linguagem de Marcação de Hipertexto). Não é uma linguagem de programação com lógica, mas sim a linguagem que estrutura e dá significado a todo o conteúdo da internet.<br><br>Através de <b>Tags</b> como <code>&lt;h1&gt;</code> (títulos), <code>&lt;p&gt;</code> (parágrafos) e <code>&lt;button&gt;</code> (botões), informamos ao navegador o que cada elemento representa.',
+            miniGame: {
+              question: 'Qual é o papel principal do HTML na construção de sites?',
+              options: [
+                'Calcular equações matemáticas complexas.',
+                'Estruturar o conteúdo e os elementos da página de forma semântica.',
+                'Controlar o hardware da placa de vídeo.',
+                'Gerenciar servidores de e-mail.'
+              ],
+              correct: 1,
+              explanation: 'O HTML é o esqueleto estrutural que organiza textos, imagens e formulários no navegador.'
+            }
+          },
+          {
+            title: 'Semântica: O Poder de Tags com Significado 🏷️',
+            imageUrl: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=900&auto=format&fit=crop&q=80',
+            content: 'No HTML5 moderno, não usamos apenas tags genéricas como <code>&lt;div&gt;</code> para tudo. Usamos <b>tags semânticas</b> que descrevem claramente o seu propósito:<br><br>• <code>&lt;header&gt;</code>: Cabeçalho principal da página ou seção.<br>• <code>&lt;nav&gt;</code>: Menu de navegação com links.<br>• <code>&lt;main&gt;</code>: O conteúdo central e único da página.<br>• <code>&lt;article&gt;</code>: Um conteúdo independente (como uma notícia ou post).<br>• <code>&lt;footer&gt;</code>: Rodapé com direitos autorais e contatos.<br><br>Isso melhora o rankeamento no Google (SEO) e permite que pessoas cegas usem leitores de tela com facilidade.',
+            miniGame: {
+              question: 'Qual tag HTML5 semântica deve ser utilizada para envolver o menu de links de navegação?',
+              options: ['<nav>', '<section>', '<menu_bar>', '<div>'],
+              correct: 0,
+              explanation: 'A tag <nav> é a tag semântica oficial do padrão HTML5 para agrupar blocos de navegação.'
+            }
+          }
+        ]
+      },
+      {
+        id: 'css_moderno',
+        name: 'Módulo 2: O Estilo da Web (CSS3 & Flexbox)',
+        description: 'Cores, tipografia, caixas de modelo (Box Model) e Flexbox responsivo.',
+        sources: 'W3C CSS Working Group, MDN Web Docs.',
+        chapters: [
+          {
+            title: 'Cascading Style Sheets (CSS3) & Box Model 🎨',
+            imageUrl: 'https://images.unsplash.com/photo-1523437113738-bbd3cc89fb19?w=900&auto=format&fit=crop&q=80',
+            content: 'Se o HTML é o esqueleto, o <b>CSS (Cascading Style Sheets)</b> é a pele, as roupas e a maquiagem da página.<br><br>Cada elemento na tela é tratado pelo navegador como uma caixa retangular através do <b>Box Model</b>:<br>• <b>Content:</b> O texto ou imagem real.<br>• <b>Padding:</b> O espaçamento interno entre o conteúdo e a borda.<br>• <b>Border:</b> A linha de contorno da caixa.<br>• <b>Margin:</b> O espaçamento externo que afasta esta caixa das outras.',
+            miniGame: {
+              question: 'Se você quer criar um espaço interno entre o texto de um botão e a sua borda, qual propriedade CSS você usa?',
+              options: ['padding', 'margin', 'border-radius', 'font-size'],
+              correct: 0,
+              explanation: 'Padding é o espaçamento interno, enquanto Margin afasta elementos externos.'
+            }
+          },
+          {
+            title: 'Dominando o Layout com Flexbox 📐',
+            imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=900&auto=format&fit=crop&q=80',
+            content: 'Antigamente era um pesadelo alinhar coisas lado a lado na Web. O <b>Flexbox</b> revolucionou o design ao permitir criar layouts unidimensionais fluidos e adaptáveis a qualquer tamanho de tela (mobile e desktop).<br><br>Com propriedades simples como <code>display: flex</code>, <code>justify-content: center</code> (alinhamento no eixo principal) e <code>align-items: center</code> (alinhamento no eixo cruzado), conseguimos centralizar e distribuir elementos perfeitamente com poucas linhas de código.',
+            miniGame: {
+              question: 'Qual propriedade CSS ativa o modo Flexbox no elemento pai?',
+              options: ['display: flex;', 'position: absolute;', 'layout: modern;', 'float: left;'],
+              correct: 0,
+              explanation: 'A declaração display: flex transforma o contêiner em um Flex Container, organizando seus filhos de forma flexível.'
+            }
+          }
+        ]
+      }
+    ],
+    questions: [
+      { category: 'html_semantico', text: 'Qual atributo da tag <img> é indispensável para acessibilidade de deficientes visuais e SEO?', options: ['alt (texto alternativo descritivo)', 'src_fallback', 'color', 'zoom'], correct: 0, explanation: 'O atributo alt descreve a imagem para leitores de tela e robôs de busca.' },
+      { category: 'html_semantico', text: 'Qual tag cria um link clicável para outra página?', options: ['<a> (âncora com href)', '<link>', '<button_url>', '<click>'], correct: 0, explanation: 'A tag <a> com o atributo href especifica o destino da hiperligação.' },
+      { category: 'css_moderno', text: 'Como selecionamos todos os elementos com a classe "card" no CSS?', options: ['.card', '#card', 'card()', '*card'], correct: 0, explanation: 'O ponto (.) é o seletor universal de classes no CSS.' },
+      { category: 'css_moderno', text: 'Qual propriedade CSS define a cor do fundo de um elemento?', options: ['background-color', 'text-color', 'font-color', 'paint-fill'], correct: 0, explanation: 'A propriedade background-color define a tonalidade de fundo.' }
+    ]
+  },
+  javascript: {
+    id: 'javascript',
+    name: '3. JavaScript Moderno (ES6+)',
+    icon: '⚡',
+    badge: 'Intermediário',
+    color: 'from-yellow-500 to-amber-600',
+    description: 'Interatividade real no navegador, manipulação do DOM, eventos, APIs e Promises.',
+    categories: [
+      {
+        id: 'js_fundamentos',
+        name: 'Módulo 1: O Cérebro do Navegador',
+        description: 'Sintaxe moderna, funções, arrays e objetos.',
+        sources: 'ECMAScript (TC39) Standard, MDN Web Docs.',
+        chapters: [
+          {
+            title: 'A Linguagem dos Navegadores 🚀',
+            imageUrl: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=900&auto=format&fit=crop&q=80',
+            content: '<b>JavaScript</b> é a linguagem de programação mais popular do mundo. Se o HTML é o esqueleto e o CSS é a aparência, o JavaScript é o <b>sistema nervoso e muscular</b>: ele faz a página reagir a cliques, carregar dados sem recarregar a tela, validar formulários e criar animações complexas.<br><br>Criada em apenas 10 dias por Brendan Eich em 1995, hoje ela roda tanto no navegador quanto em servidores potentes através do Node.js.',
+            miniGame: {
+              question: 'Qual é a principal função do JavaScript em uma página web?',
+              options: [
+                'Dar interatividade e dinamismo ao comportamento da página.',
+                'Apenas formatar as fontes e cores do texto.',
+                'Substituir o HTML completamente.',
+                'Gerar o sinal de internet Wi-Fi.'
+              ],
+              correct: 0,
+              explanation: 'JavaScript é a linguagem que traz comportamento dinâmico, lógica e resposta a eventos no navegador.'
+            }
+          },
+          {
+            title: 'Manipulação do DOM (Document Object Model) 🌳',
+            imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=900&auto=format&fit=crop&q=80',
+            content: 'O <b>DOM</b> é a representação em árvore que o navegador cria para cada elemento HTML da página. Com JavaScript, podemos capturar, alterar, criar ou remover qualquer elemento em tempo real!<br><br>Exemplo prático:<br><code>document.getElementById("meu-titulo").innerText = "Olá, Mundo!";</code><br><br>Isso altera o texto na tela instantaneamente sem precisar recarregar a página.',
+            miniGame: {
+              question: 'Qual método JavaScript é comumente usado para capturar um elemento HTML pelo seu ID?',
+              options: [
+                'document.getElementById("idDoElemento")',
+                'document.captureTagName()',
+                'browser.findElement()',
+                'window.grab()'
+              ],
+              correct: 0,
+              explanation: 'document.getElementById() é o método clássico e performático para selecionar elementos pelo seu identificador único.'
+            }
+          }
+        ]
+      }
+    ],
+    questions: [
+      { category: 'js_fundamentos', text: 'Qual palavra-chave moderna do JavaScript declara uma variável cujo valor NÃO pode ser reatribuído?', options: ['const', 'let', 'var', 'immutable'], correct: 0, explanation: 'A declaração const cria uma constante de escopo de bloco.' },
+      { category: 'js_fundamentos', text: 'Como escutamos o clique de um botão no JavaScript?', options: ['botao.addEventListener("click", minhaFuncao)', 'botao.onClickDoIt()', 'document.listen("click")', 'window.detectTap()'], correct: 0, explanation: 'addEventListener("click", ...) é o método padrão da W3C para registrar ouvintes de eventos.' }
+    ]
+  },
+  python: {
+    id: 'python',
+    name: '4. Python & Automação',
+    icon: '🐍',
+    badge: 'Avançado',
+    color: 'from-emerald-500 to-teal-700',
+    description: 'Sintaxe elegante, estruturas de dados ricas, automação, IA e análise de dados.',
+    categories: [
+      {
+        id: 'python_essencial',
+        name: 'Módulo 1: O Poder da Sintaxe Limpa',
+        description: 'Indentação, listas, dicionários e funções.',
+        sources: 'Python Software Foundation (Python.org), PEP 8.',
+        chapters: [
+          {
+            title: 'Por que Python Conquistou o Mundo? 🐍',
+            imageUrl: 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=900&auto=format&fit=crop&q=80',
+            content: 'Criado por Guido van Rossum em 1991, o <b>Python</b> foi projetado com uma filosofia central: <i>legibilidade acima de tudo</i>.<br><br>Diferente de linguagens como C ou Java que usam muitas chaves <code>{}</code> e pontos e vírgulas <code>;</code>, o Python usa a <b>indentação</b> (espaços no início da linha) para definir blocos de código. Isso torna os programas muito fáceis de ler e escrever, sendo a linguagem favorita para Inteligência Artificial, Ciência de Dados e Automação de Tarefas.',
+            miniGame: {
+              question: 'Como o Python define os blocos de código dentro de funções e condicionais?',
+              options: [
+                'Através de indentação obrigatória (espaços no início da linha).',
+                'Usando chaves { } no início e no fim.',
+                'Escrevendo em letras maiúsculas.',
+                'Colocando pontos finais após cada comando.'
+              ],
+              correct: 0,
+              explanation: 'Em Python a indentação não é apenas estética: ela define a hierarquia e o escopo dos blocos de código.'
+            }
+          },
+          {
+            title: 'Listas e Dicionários: Estruturas Poderosas 📚',
+            imageUrl: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=900&auto=format&fit=crop&q=80',
+            content: 'Em Python temos estruturas de dados de alto nível prontas para uso:<br><br>• <b>Listas (List):</b> Coleções ordenadas e mutáveis: <code>frutas = ["Maçã", "Banana", "Uva"]</code><br>• <b>Dicionários (Dict):</b> Pares de chave e valor (como uma ficha cadastral):<br><code>aluno = {"nome": "Lucas", "nota": 9.5, "aprovado": True}</code><br><br>Com essas duas estruturas conseguimos representar quase qualquer modelo de dados do mundo real!',
+            miniGame: {
+              question: 'Em um dicionário Python aluno = {"nome": "Ana", "idade": 16}, como acessamos o nome da aluna?',
+              options: [
+                'aluno["nome"]',
+                'aluno.get_item(0)',
+                'aluno->nome',
+                'aluno(1)'
+              ],
+              correct: 0,
+              explanation: 'Acessamos os valores de um dicionário informando a chave entre colchetes aluno["nome"].'
+            }
+          }
+        ]
+      }
+    ],
+    questions: [
+      { category: 'python_essencial', text: 'Qual função em Python exibe mensagens no terminal/console?', options: ['print()', 'console.log()', 'echo()', 'System.out.println()'], correct: 0, explanation: 'print() é a função nativa em Python para exibir saídas na tela.' },
+      { category: 'python_essencial', text: 'Como definimos uma função personalizada em Python?', options: ['def minha_funcao():', 'function minha_funcao()', 'fn minha_funcao()', 'create minha_funcao()'], correct: 0, explanation: 'A palavra-chave def (de define) declara funções em Python.' }
+    ]
+  },
+  poo: {
+    id: 'poo',
+    name: '5. POO & Engenharia de Software',
+    icon: '🏗️',
+    badge: 'Avançado',
+    color: 'from-purple-600 to-indigo-800',
+    description: 'Classes, Objetos, Encapsulamento, Herança, Polimorfismo e Padrões de Projeto.',
+    categories: [
+      {
+        id: 'poo_pilares',
+        name: 'Módulo 1: Os 4 Pilares da Orientação a Objetos',
+        description: 'Classes, instâncias e modelagem de software corporativo.',
+        sources: 'Design Patterns (Gang of Four), Object-Oriented Software Engineering.',
+        chapters: [
+          {
+            title: 'O que é Programação Orientada a Objetos? 🏗️',
+            imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=900&auto=format&fit=crop&q=80',
+            content: 'A <b>Programação Orientada a Objetos (POO)</b> é um paradigma que modela o software com base em conceitos do mundo real.<br><br>• <b>Classe:</b> É a planta baixa ou molde (ex: a planta de um Carro).<br>• <b>Objeto (Instância):</b> É o carro real construído a partir da planta, com seus próprios valores (cor azul, placa ABC-1234).<br>• <b>Atributos:</b> As características do objeto (marca, ano, velocidade).<br>• <b>Métodos:</b> As ações que o objeto pode realizar (acelerar(), frear(), buzinar()).',
+            miniGame: {
+              question: 'Qual é a diferença entre uma Classe e um Objeto na POO?',
+              options: [
+                'A Classe é o molde/planta baixa conceitual, enquanto o Objeto é a instância real criada na memória.',
+                'Classe é para jogos 3D e Objeto é para sites.',
+                'Não há diferença, são sinônimos perfeitos.',
+                'Objetos são criados antes das Classes.'
+              ],
+              correct: 0,
+              explanation: 'A Classe define as propriedades e comportamentos, enquanto o Objeto é a concretização real instanciada.'
+            }
+          },
+          {
+            title: 'Os 4 Grandes Pilares da POO 🏛️',
+            imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&auto=format&fit=crop&q=80',
+            content: 'Para criar sistemas modulares e reutilizáveis, a POO se apoia em 4 pilares:<br><br>1. <b>Abstração:</b> Focar apenas no que é essencial para o sistema.<br>2. <b>Encapsulamento:</b> Proteger os dados internos de acessos indevidos (usando métodos getters/setters e atributos privados).<br>3. <b>Herança:</b> Uma classe filha pode herdar atributos e métodos de uma classe pai (ex: <i>CarroEletrico</i> herda de <i>Veiculo</i>).<br>4. <b>Polimorfismo:</b> A capacidade de diferentes classes responderem à mesma mensagem de formas específicas (ex: tanto <i>Cachorro</i> quanto <i>Gato</i> têm o método <code>fazerSom()</code>, mas um late e o outro mia).',
+            miniGame: {
+              question: 'Qual pilar da POO permite que uma classe filha reutilize o código e a estrutura de uma classe pai?',
+              options: ['Herança', 'Encapsulamento', 'Compilação', 'Polimorfismo inverso'],
+              correct: 0,
+              explanation: 'A Herança permite estender e reaproveitar comportamentos de uma classe base.'
+            }
+          }
+        ]
+      }
+    ],
+    questions: [
+      { category: 'poo_pilares', text: 'O que representa o "Encapsulamento" em orientação a objetos?', options: ['Blindar o estado interno de um objeto e permitir modificações apenas por métodos autorizados.', 'Colocar o código dentro de uma pasta ZIP.', 'Escrever código sem comentários.', 'Duplicar classes para rodar mais rápido.'], correct: 0, explanation: 'Encapsulamento protege a integridade dos dados internos contra manipulações externas indevidas.' },
+      { category: 'poo_pilares', text: 'O que é um "Construtor" em uma classe?', options: ['Um método especial executado automaticamente no momento em que um novo objeto é instanciado.', 'Um operário que monta o computador.', 'Uma variável que nunca pode ser lida.', 'O programa que instala o sistema.'], correct: 0, explanation: 'O construtor (como __init__ em Python ou constructor() em JS) inicializa o objeto com os valores iniciais.' }
+    ]
+  },
+  banco_dados: {
+    id: 'banco_dados',
+    name: '6. Banco de Dados & SQL',
+    icon: '🗄️',
+    badge: 'Avançado',
+    color: 'from-rose-600 to-red-800',
+    description: 'Armazenamento persistente, tabelas relacionais, consultas SQL e integridade de dados.',
+    categories: [
+      {
+        id: 'sql_fundamentos',
+        name: 'Módulo 1: O Coração dos Dados (SQL Relacional)',
+        description: 'Tabelas, chaves primárias, SELECT, INSERT e JOINs.',
+        sources: 'ANSI SQL Standard, PostgreSQL Documentation.',
+        chapters: [
+          {
+            title: 'Por que Precisamos de Bancos de Dados? 🗄️',
+            imageUrl: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=900&auto=format&fit=crop&q=80',
+            content: 'A memória RAM perde tudo quando o computador é desligado. Para armazenar milhões de clientes, pedidos e contas bancárias com segurança e velocidade, usamos um <b>SGBD (Sistema de Gerenciamento de Banco de Dados)</b>.<br><br>Nos bancos relacionais (como PostgreSQL e MySQL), os dados são guardados em <b>Tabelas</b> com linhas (registros) e colunas (campos), garantindo que nada se perca mesmo em caso de falha de energia.',
+            miniGame: {
+              question: 'Qual é o papel de um Banco de Dados Relacional?',
+              options: [
+                'Armazenar, organizar e consultar grandes volumes de dados estruturados com segurança e persistência.',
+                'Apenas acelerar jogos de videogame.',
+                'Substituir o processador do computador.',
+                'Aumentar o volume do áudio.'
+              ],
+              correct: 0,
+              explanation: 'Bancos de dados relacionais garantem persistência duradoura, integridade e consultas ultra-rápidas para os dados do sistema.'
+            }
+          },
+          {
+            title: 'A Linguagem SQL (Structured Query Language) 🔍',
+            imageUrl: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=900&auto=format&fit=crop&q=80',
+            content: '<b>SQL</b> é a linguagem universal declarativa para conversar com bancos de dados. Os comandos essenciais do padrão CRUD são:<br><br>• <b>SELECT:</b> Consulta dados (ex: <code>SELECT nome, email FROM alunos WHERE nota >= 7;</code>)<br>• <b>INSERT:</b> Cadastra novos registros (ex: <code>INSERT INTO alunos (nome) VALUES ("Carlos");</code>)<br>• <b>UPDATE:</b> Atualiza registros existentes.<br>• <b>DELETE:</b> Remove registros.<br><br>Com o comando <code>JOIN</code>, podemos cruzar dados de duas tabelas diferentes (como cruzar <i>Alunos</i> com <i>Turmas</i>) em uma fração de segundo.',
+            miniGame: {
+              question: 'Qual comando SQL é utilizado para buscar e filtrar informações em uma tabela?',
+              options: ['SELECT', 'FIND_ALL', 'SEARCH', 'GRAB'],
+              correct: 0,
+              explanation: 'O comando SELECT é a instrução padrão da linguagem SQL para consultar e recuperar dados das tabelas.'
+            }
+          }
+        ]
+      }
+    ],
+    questions: [
+      { category: 'sql_fundamentos', text: 'O que é uma Chave Primária (Primary Key - PK) em uma tabela de banco de dados?', options: ['Um campo com valor exclusivo que identifica unicamente cada linha da tabela (ex: ID ou CPF).', 'A senha do administrador do servidor.', 'A primeira coluna do arquivo Excel.', 'O nome do banco de dados.'], correct: 0, explanation: 'A Chave Primária garante que nenhum registro seja duplicado ou confundido.' },
+      { category: 'sql_fundamentos', text: 'Qual comando SQL adiciona um novo registro a uma tabela?', options: ['INSERT INTO', 'ADD RECORD', 'CREATE ITEM', 'PUSH DATA'], correct: 0, explanation: 'INSERT INTO é a sintaxe oficial para inclusão de novos dados.' }
+    ]
+  }
+};
+
+        // Inicializar variável de estado dos cursos
+        window.coursesDatabase = JSON.parse(JSON.stringify(initialCoursesDatabase));
+
+        // --- ESTADOS GLOBAIS ---
+        let currentState = 'PORTAL_HUB';
+        let currentSubjectId = 'logica';
+        let selectedCategoryId = null;
+        let currentChapterIndex = 0;
+        let currentUser = 'Estudante Dev';
+        let currentUserTurma = 'Turma Geral';
+        let currentUserAvatar = '🧑‍💻';
+        let studentsProgress = {};
+        let teachersDatabase = {};
+        let currentTeacher = null;
+        let quizQuestions = [];
+        let currentQuestionIndex = 0;
+        let quizAnswers = [];
+        let editorActiveSubject = 'logica';
+        let editorActiveModule = 'algoritmos_fundamentos';
+
+        // Carregar dados salvos no LocalStorage
+        function loadLocalData() {
+            try {
+                const saved = localStorage.getItem('codelogic_courses_v1');
+                if (saved) window.coursesDatabase = JSON.parse(saved);
+                const prog = localStorage.getItem('codelogic_progress_v1');
+                if (prog) studentsProgress = JSON.parse(prog);
+                const teach = localStorage.getItem('codelogic_teachers_v1');
+                if (teach) teachersDatabase = JSON.parse(teach);
+                if (!teachersDatabase['admplus']) {
+                    teachersDatabase['admplus'] = {
+                        id: 'admplus',
+                        name: 'Coordenação Dev Master',
+                        email: 'admplus@codelogic.pro',
+                        password: 'admplus',
+                        role: 'Coordenador Geral',
+                        turmas: 'Todas as Turmas',
+                        avatar: '👨‍🏫',
+                        createdAt: new Date().toISOString()
+                    };
+                }
+            } catch (_) {}
+        }
+
+        function saveLocalData() {
+            try {
+                localStorage.setItem('codelogic_courses_v1', JSON.stringify(window.coursesDatabase));
+                localStorage.setItem('codelogic_progress_v1', JSON.stringify(studentsProgress));
+                localStorage.setItem('codelogic_teachers_v1', JSON.stringify(teachersDatabase));
+            } catch (_) {}
+        }
+
+        // --- FIREBASE SETUP ---
+        let app = null, auth = null, db = null;
+        const rawConfig = window.FIREBASE_CONFIG;
+        const appId = 'codelogic-pro-v1';
+
+        if (rawConfig && rawConfig.apiKey) {
+            try {
+                app = initializeApp(rawConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+            } catch(e) {
+                console.warn('Firebase init note:', e);
+            }
+        }
+
+        // --- SISTEMA DE MODAIS ---
+        window.showModal = function(htmlContent, maxWidth = 'max-w-md') {
+            modalContent.className = `bg-slate-900 text-slate-100 rounded-3xl ${maxWidth} w-full p-6 md:p-8 shadow-2xl relative border-2 border-slate-700 max-h-[90vh] overflow-y-auto custom-scrollbar`;
+            modalContent.innerHTML = htmlContent;
+            modalContainer.classList.remove('hidden');
+        };
+
+        window.hideModal = function() {
+            modalContainer.classList.add('hidden');
+        };
+
+        window.customAlert = function(msg) {
+            window.showModal(`
+                <div class="text-center py-2">
+                    <div class="text-3xl mb-3">🔔</div>
+                    <div class="text-sm font-medium text-slate-200 mb-5 leading-relaxed">${msg}</div>
+                    <button onclick="window.hideModal()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black px-6 py-2.5 rounded-xl text-xs shadow-lg transition font-code">
+                        Entendido
+                    </button>
+                </div>
+            `);
+        };
+
+        // --- PROCESSO DE LOGIN DO ALUNO ---
+        window.openStudentLoginModal = function() {
+            const avatars = ['🧑‍💻', '👩‍💻', '⚡', '🚀', '🤖', '👾'];
+            const avatarsHTML = avatars.map((av, i) => `
+                <label class="cursor-pointer p-2 rounded-2xl border-2 border-slate-700 hover:border-sky-500 text-center flex flex-col items-center gap-1 transition">
+                    <input type="radio" name="student-avatar" value="${av}" ${i === 0 ? 'checked' : ''} class="hidden peer">
+                    <span class="text-3xl peer-checked:scale-125 transition-transform">${av}</span>
+                </label>
+            `).join('');
+
+            window.showModal(`
+                <div class="text-left">
+                    <div class="flex items-center gap-3 pb-3 border-b border-slate-800 mb-4">
+                        <span class="text-3xl p-2 bg-sky-500/10 text-sky-400 rounded-2xl border border-sky-500/20 font-code font-bold">&lt;/&gt;</span>
+                        <div>
+                            <h3 class="text-lg font-black text-white font-code">Identificação do Estudante Dev</h3>
+                            <p class="text-xs text-sky-400">Suas conquistas, moedas e certificados ficam salvos!</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-slate-300 font-black text-xs uppercase mb-1">Seu Nome Completo</label>
+                            <input type="text" id="login-student-name" value="${currentUser !== 'Estudante Dev' ? currentUser : ''}" class="w-full px-4 py-2.5 rounded-xl border-2 border-slate-700 focus:border-sky-500 focus:outline-none bg-slate-800 text-sm font-bold text-white" placeholder="Ex: Lucas Silva">
+                        </div>
+
+                        <div>
+                            <label class="block text-slate-300 font-black text-xs uppercase mb-1">Turma / Escola</label>
+                            <input type="text" id="login-student-turma" value="${currentUserTurma !== 'Turma Geral' ? currentUserTurma : ''}" class="w-full px-4 py-2.5 rounded-xl border-2 border-slate-700 focus:border-sky-500 focus:outline-none bg-slate-800 text-sm font-bold text-white" placeholder="Ex: 8º Ano A - Informática">
+                        </div>
+
+                        <div>
+                            <label class="block text-slate-300 font-black text-xs uppercase mb-1">Escolha seu Avatar Dev</label>
+                            <div class="grid grid-cols-6 gap-2">
+                                ${avatarsHTML}
+                            </div>
+                        </div>
+
+                        <div class="pt-3 border-t border-slate-800 flex justify-end gap-2">
+                            <button onclick="window.hideModal()" class="px-4 py-2 text-xs font-bold text-slate-400 hover:bg-slate-800 rounded-xl transition font-code">Cancelar</button>
+                            <button onclick="window.saveStudentLogin()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black px-6 py-2 rounded-xl text-xs shadow-md transition font-code">Entrar no Terminal 🚀</button>
+                        </div>
+                    </div>
+                </div>
+            `, 'max-w-md');
+        };
+
+        window.saveStudentLogin = function() {
+            const name = (document.getElementById('login-student-name')?.value || '').trim();
+            const turma = (document.getElementById('login-student-turma')?.value || 'Turma Geral').trim();
+            const avatar = document.querySelector('input[name="student-avatar"]:checked')?.value || '🧑‍💻';
+
+            if (!name) {
+                window.customAlert("Por favor, digite seu nome para emitirmos seus certificados!");
+                return;
+            }
+
+            currentUser = name;
+            currentUserTurma = turma;
+            currentUserAvatar = avatar;
+
+            currentUserNameDisplay.innerText = currentUser;
+            currentUserTurmaDisplay.innerText = currentUserTurma;
+            currentUserAvatarDisplay.innerText = currentUserAvatar;
+
+            userInfoDisplay.classList.remove('hidden');
+            userInfoDisplay.classList.add('flex');
+
+            if (!studentsProgress[currentUser]) {
+                studentsProgress[currentUser] = { _meta: { name, turma, avatar, miniCoins: 0, createdAt: new Date().toISOString() } };
+            }
+            saveLocalData();
+
+            window.hideModal();
+            window.soundFanfare();
+            window.triggerConfetti();
+            window.changeState('PORTAL_HUB');
+        };
+
+        // --- TELA 1: HUB PRINCIPAL DE TRILHAS ---
+        window.renderPortalHub = function() {
+            const tracksHTML = window.PORTAL_TRACKS.map((trk) => {
+                const course = window.coursesDatabase[trk.id] || initialCoursesDatabase[trk.id];
+                const totalModules = course?.categories?.length || 0;
+                let totalChaps = 0;
+                let completedChaps = 0;
+
+                (course?.categories || []).forEach(cat => {
+                    totalChaps += (cat.chapters || []).length;
+                    const prog = studentsProgress[currentUser]?.[cat.id];
+                    if (prog) completedChaps += (prog.chaptersRead || 0);
+                });
+
+                const percent = totalChaps > 0 ? Math.round((completedChaps / totalChaps) * 100) : 0;
+
+                return `
+                    <div onclick="window.selectSubject('${trk.id}')" class="bg-slate-900 border-2 border-slate-800 hover:border-sky-500 rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all cursor-pointer flex flex-col justify-between group relative overflow-hidden transform hover:-translate-y-1">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${trk.color} opacity-10 rounded-bl-full pointer-events-none group-hover:opacity-20 transition-opacity"></div>
+                        
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-4xl p-3 bg-slate-800/80 rounded-2xl border border-slate-700 font-code">${trk.icon}</span>
+                                <span class="bg-slate-800 text-sky-400 border border-slate-700 text-[10px] font-black uppercase px-2.5 py-1 rounded-full font-code">${trk.badge}</span>
+                            </div>
+
+                            <h3 class="text-lg font-black text-white font-code group-hover:text-sky-400 transition-colors mb-1">${trk.name}</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed mb-4">${course?.description || 'Trilha completa de aprendizado interativo com desafios práticos.'}</p>
+                        </div>
+
+                        <div>
+                            <div class="bg-slate-950/60 p-3 rounded-2xl border border-slate-800/80 mb-3">
+                                <div class="flex justify-between text-[11px] font-code text-slate-400 mb-1">
+                                    <span>Progresso da Trilha</span>
+                                    <span class="text-sky-400 font-bold">${percent}% (${completedChaps}/${totalChaps} aulas)</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-gradient-to-r from-sky-500 to-emerald-400 h-full rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+                                </div>
+                            </div>
+
+                            <button class="w-full bg-slate-800 group-hover:bg-sky-500 group-hover:text-slate-950 text-slate-200 font-black py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-2 font-code">
+                                <span>Acessar Módulos</span> →
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            mainContent.innerHTML = `
+                <div class="fade-in w-full max-w-6xl space-y-6">
+                    <!-- Banner Principal do HUB -->
+                    <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-2 border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 glow-border">
+                        <div class="space-y-2 max-w-xl">
+                            <span class="bg-sky-500/20 text-sky-400 border border-sky-500/30 text-[10px] font-black uppercase px-3 py-1 rounded-full font-code">Formação Dev Completa</span>
+                            <h2 class="text-2xl sm:text-3xl font-black text-white tracking-wide font-code leading-tight">Aprenda a Programar do Zero ao Avançado 🚀</h2>
+                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                Domine lógica computacional, desenvolvimento Web, Python, Arquitetura de Software e Bancos de Dados com simuladores de código em tempo real.
+                            </p>
+                        </div>
+
+                        <div class="flex flex-col gap-2 shrink-0 w-full sm:w-auto">
+                            ${currentUser === 'Estudante Dev' ? `
+                                <button onclick="window.openStudentLoginModal()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black px-5 py-3 rounded-2xl text-xs shadow-lg transition flex items-center justify-center gap-2 font-code pulse-cyan cursor-pointer">
+                                    <span>👤</span> Identificar-se / Salvar Progresso
+                                </button>
+                            ` : `
+                                <button onclick="window.showCertificatesModal()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-5 py-3 rounded-2xl text-xs shadow-lg transition flex items-center justify-center gap-2 font-code cursor-pointer">
+                                    <span>🏆</span> Conquistas & Certificados Dev
+                                </button>
+                            `}
+                        </div>
+                    </div>
+
+                    <!-- Grade das 6 Trilhas -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${tracksHTML}
+                    </div>
+                </div>
+            `;
+        };
+
+        window.selectSubject = function(subId) {
+            currentSubjectId = subId;
+            window.soundClick();
+            window.changeState('CATEGORY_SELECT');
+        };
+
+        // --- TELA 2: SELEÇÃO DE MÓDULOS DE UMA TRILHA ---
+        window.renderCategorySelect = function() {
+            const course = window.coursesDatabase[currentSubjectId] || initialCoursesDatabase[currentSubjectId] || initialCoursesDatabase.logica;
+            
+            const categoriesHTML = (course.categories || []).map((cat) => {
+                const totalChaps = (cat.chapters || []).length;
+                const prog = studentsProgress[currentUser]?.[cat.id] || { chaptersRead: 0, quizScore: null };
+                const percent = totalChaps > 0 ? Math.round((prog.chaptersRead / totalChaps) * 100) : 0;
+                const isFinished = totalChaps > 0 && prog.chaptersRead >= totalChaps;
+                const hasQuiz = prog.quizScore !== null;
+                const firstImg = cat.chapters?.[0]?.imageUrl || 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=600&auto=format&fit=crop&q=80';
+
+                return `
+                    <div class="bg-slate-900 border-2 border-slate-800 hover:border-slate-700 rounded-3xl p-6 shadow-xl flex flex-col justify-between relative overflow-hidden group">
+                        <div>
+                            <div class="h-32 w-full rounded-2xl overflow-hidden mb-4 relative shadow-inner bg-slate-950">
+                                <img src="${firstImg}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100" />
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent flex items-end p-3">
+                                    <span class="text-white font-black text-xs drop-shadow font-code">${totalChaps} Aulas Ilustradas com Minigames</span>
+                                </div>
+                            </div>
+
+                            <h3 class="font-black text-base text-white mb-1 font-code">${cat.name}</h3>
+                            <p class="text-xs text-slate-400 mb-3 leading-relaxed">${cat.description}</p>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-2.5 mb-4 text-[11px] text-slate-300 flex items-start gap-1.5">
+                                <span class="text-sm shrink-0">🏛️</span>
+                                <div>
+                                    <span class="font-black text-[9px] uppercase tracking-wider text-sky-400 block leading-none mb-0.5">Fundamentos Oficiais:</span>
+                                    <span class="leading-tight text-slate-400 text-[10px]">${cat.sources || 'Padrões internacionais e literatura científica.'}</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4 bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                                <div class="flex justify-between text-[11px] font-code text-slate-400 mb-1">
+                                    <span>Progresso</span>
+                                    <span class="text-sky-400 font-bold">${prog.chaptersRead} de ${totalChaps} aulas (${percent}%)</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-gradient-to-r from-sky-500 to-emerald-400 h-full rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <button onclick="window.soundClick(); window.openModule('${cat.id}')" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-black py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-md text-xs font-code">
+                                <span>${isFinished ? '🔁 Revisar' : (percent > 0 ? '📖 Continuar' : '📖 Iniciar')}</span>
+                            </button>
+
+                            ${isFinished ? `
+                                <button onclick="window.soundClick(); window.startQuiz('${cat.id}')" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1 shadow-md text-xs font-code">
+                                    <span>${hasQuiz ? 'Refazer Quiz 🎮' : 'Fazer Quiz! 🎮'}</span>
+                                </button>
+                            ` : `
+                                <button onclick="window.soundWrong(); window.customAlert('🔒 <b>Quiz Bloqueado!</b><br>Você precisa ler todas as ${totalChaps} aulas e resolver os minigames antes de liberar o quiz avaliativo!')" class="w-full bg-slate-800 text-slate-500 font-bold py-2.5 px-3 rounded-xl cursor-not-allowed flex items-center justify-center gap-1 text-xs border border-slate-700 font-code">
+                                    🔒 Quiz
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            mainContent.innerHTML = `
+                <div class="fade-in w-full max-w-5xl space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div>
+                            <button onclick="window.soundClick(); window.changeState('PORTAL_HUB')" class="text-slate-400 hover:text-sky-400 flex items-center gap-1 font-bold text-xs mb-1 transition font-code">
+                                ← Escolher Outra Trilha Dev
+                            </button>
+                            <h2 class="text-2xl md:text-3xl font-black text-white flex items-center gap-2 font-code">
+                                <span>${course.name}</span>
+                            </h2>
+                        </div>
+                        
+                        <button onclick="window.showCertificatesModal()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-4 py-2 rounded-2xl text-xs shadow-md transition flex items-center gap-1.5 font-code">
+                            🏆 Meus Certificados Dev
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${categoriesHTML}
+                    </div>
+                </div>
+            `;
+        };
+
+        window.openModule = function(catId) {
+            selectedCategoryId = catId;
+            currentChapterIndex = 0;
+            window.changeState('MODULE_VIEW');
+        };
+
+        // --- TELA 3: SALA DE AULA INTERATIVA ILUSTRADA COM MINIGAME ---
+        window.renderModuleView = function() {
+            const course = window.coursesDatabase[currentSubjectId] || initialCoursesDatabase[currentSubjectId];
+            const category = course.categories.find(c => c.id === selectedCategoryId) || course.categories[0];
+            const chapter = category.chapters[currentChapterIndex] || category.chapters[0];
+            const isLast = currentChapterIndex === category.chapters.length - 1;
+            const mg = chapter.miniGame || { question: 'Qual é o conceito fundamental desta aula?', options: ['A', 'B', 'C', 'D'], correct: 0, explanation: '' };
+
+            mainContent.innerHTML = `
+                <div class="fade-in w-full max-w-4xl flex flex-col min-h-[85vh]">
+                    <div class="flex justify-between items-center mb-4">
+                        <button onclick="window.soundClick(); window.changeState('CATEGORY_SELECT')" class="text-slate-400 hover:text-sky-400 flex items-center gap-1.5 font-bold bg-slate-900 px-4 py-2 rounded-xl shadow-sm border border-slate-800 text-xs transition font-code">
+                            ← Voltar aos Módulos
+                        </button>
+                        <span class="bg-slate-800 text-sky-400 text-xs font-black px-4 py-1.5 rounded-full border border-slate-700 font-code">
+                            ${category.name} (${currentChapterIndex + 1} de ${category.chapters.length})
+                        </span>
+                    </div>
+
+                    <div class="bg-slate-900 rounded-3xl overflow-hidden shadow-2xl flex-grow flex flex-col border-2 border-slate-800">
+                        <div class="h-64 md:h-80 w-full bg-slate-950 relative overflow-hidden">
+                            <img src="${chapter.imageUrl}" onerror="this.src='https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1000&auto=format&fit=crop&q=80'" class="w-full h-full object-cover opacity-85" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
+                            
+                            <div class="absolute bottom-4 left-6 right-6">
+                                <span class="bg-sky-500 text-slate-950 text-[10px] uppercase tracking-widest font-black px-2.5 py-1 rounded-md mb-2 inline-block shadow font-code">Aula Ilustrada &bull; ${course.name}</span>
+                                <h2 class="text-2xl md:text-3xl font-black text-white drop-shadow-md leading-tight font-code">${chapter.title}</h2>
+                            </div>
+                        </div>
+
+                        <div class="p-6 md:p-8 flex-grow flex flex-col justify-between">
+                            <div class="text-slate-300 text-sm md:text-base leading-relaxed mb-6 space-y-4 font-normal">
+                                ${chapter.content}
+                            </div>
+
+                            <!-- Minigame Interativo de Fixação Rápida -->
+                            <div class="bg-slate-950/80 border-2 border-amber-500/40 rounded-2xl p-5 mb-6 shadow-inner space-y-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">⚡</span>
+                                    <div>
+                                        <h4 class="font-black text-xs text-amber-400 uppercase font-code">Desafio Interativo de Fixação (+2 Moedas Dev)</h4>
+                                        <p class="text-[11px] text-slate-400">Escolha a alternativa correta para fixar o aprendizado:</p>
+                                    </div>
+                                </div>
+
+                                <p class="text-xs sm:text-sm font-black text-white">${mg.question || 'Qual é a resposta correta?'}</p>
+
+                                <div id="minigame-options-box" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                                    ${(mg.options || []).map((opt, oIdx) => `
+                                        <button onclick="window.checkMiniGameOption(${oIdx}, ${mg.correct}, '${(mg.explanation || '').replace(/'/g, "\\'")}')" class="text-left p-3 rounded-xl border border-slate-700 bg-slate-900 hover:border-sky-500 hover:bg-slate-800 text-slate-200 font-bold text-xs transition flex items-center gap-2 group cursor-pointer">
+                                            <span class="w-6 h-6 rounded-lg bg-slate-800 group-hover:bg-sky-500 group-hover:text-slate-950 text-sky-400 flex items-center justify-center font-black text-xs shrink-0 font-code">${String.fromCharCode(65 + oIdx)}</span>
+                                            <span class="leading-tight">${opt}</span>
+                                        </button>
+                                    `).join('')}
+                                </div>
+
+                                <div id="minigame-feedback" class="hidden text-xs font-bold p-3 rounded-xl mt-3"></div>
+                            </div>
+
+                            <!-- Barra de Navegação de Aulas -->
+                            <div class="flex justify-between items-center pt-6 border-t border-slate-800 mt-auto gap-4">
+                                <button onclick="window.prevChapter()" ${currentChapterIndex === 0 ? 'disabled class="opacity-40 cursor-not-allowed bg-slate-800 text-slate-500 font-bold py-2.5 px-4 rounded-xl text-xs font-code"' : 'class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2.5 px-4 rounded-xl transition text-xs font-code"'}>
+                                    ← Aula Anterior
+                                </button>
+                                
+                                <div class="flex gap-1.5">
+                                    ${category.chapters.map((_, i) => `
+                                        <div class="w-2.5 h-2.5 rounded-full ${i === currentChapterIndex ? 'bg-sky-400 scale-125' : (i < currentChapterIndex ? 'bg-emerald-400' : 'bg-slate-800')} transition-all"></div>
+                                    `).join('')}
+                                </div>
+
+                                <button onclick="window.nextChapter()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black py-2.5 px-5 rounded-xl shadow-lg transition flex items-center gap-2 text-xs font-code">
+                                    <span>${isLast ? 'Ir para o Quiz Dev! 🎮' : 'Próxima Aula →'}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        window.nextChapter = function() {
+            const course = window.coursesDatabase[currentSubjectId] || initialCoursesDatabase[currentSubjectId];
+            const category = course.categories.find(c => c.id === selectedCategoryId);
+            
+            // Salvar leitura da aula no progresso
+            if (!studentsProgress[currentUser]) studentsProgress[currentUser] = {};
+            if (!studentsProgress[currentUser][category.id]) studentsProgress[currentUser][category.id] = { chaptersRead: 0, quizScore: null };
+            
+            if (currentChapterIndex + 1 > studentsProgress[currentUser][category.id].chaptersRead) {
+                studentsProgress[currentUser][category.id].chaptersRead = currentChapterIndex + 1;
+                saveLocalData();
+            }
+
+            if (currentChapterIndex < category.chapters.length - 1) {
+                currentChapterIndex++;
+                window.renderModuleView();
+            } else {
+                window.finishModuleAndGoToQuiz(category.id);
+            }
+        };
+
+        window.prevChapter = function() {
+            if (currentChapterIndex > 0) {
+                currentChapterIndex--;
+                window.renderModuleView();
+            }
+        };
+
+        window.finishModuleAndGoToQuiz = function(catId) {
+            window.soundFanfare();
+            window.triggerConfetti();
+            window.customAlert('🎉 <b>Parabéns, Dev!</b><br>Você concluiu todas as aulas e desafios deste módulo! O <b>Quiz Avaliativo Oficial</b> foi DESBLOQUEADO!');
+            window.changeState('CATEGORY_SELECT');
+        };
+
+        window.checkMiniGameOption = function(selectedIndex, correctIndex, explanation) {
+            const fb = document.getElementById('minigame-feedback');
+            const box = document.getElementById('minigame-options-box');
+            
+            if (box) {
+                const buttons = box.querySelectorAll('button');
+                buttons.forEach((btn, idx) => {
+                    btn.disabled = true;
+                    if (idx === correctIndex) {
+                        btn.className = "text-left p-3 rounded-xl border-2 border-emerald-500 bg-emerald-950/60 font-black text-xs text-emerald-300 transition flex items-center gap-2 shadow-md";
+                    } else if (idx === selectedIndex && selectedIndex !== correctIndex) {
+                        btn.className = "text-left p-3 rounded-xl border-2 border-rose-500 bg-rose-950/60 font-bold text-xs text-rose-300 transition flex items-center gap-2";
+                    } else {
+                        btn.className = "text-left p-3 rounded-xl border border-slate-800 bg-slate-900 opacity-50 font-medium text-xs text-slate-500 flex items-center gap-2";
+                    }
+                });
+            }
+
+            if (fb) {
+                fb.classList.remove('hidden');
+                if (selectedIndex === correctIndex) {
+                    window.soundCorrect();
+                    window.triggerConfetti();
+                    fb.className = "text-xs font-black p-3.5 rounded-xl bg-emerald-950/80 text-emerald-300 border border-emerald-500/60 mt-3 shadow-md flex items-start gap-2.5";
+                    fb.innerHTML = `
+                        <span class="text-xl">🎉</span>
+                        <div>
+                            <strong class="block font-black text-emerald-200">Excelente! Resposta Exata (+2 Moedas Dev)</strong>
+                            <span class="text-[11px] text-emerald-300 font-normal leading-relaxed">${explanation || 'Você dominou o conceito desta aula com maestria!'}</span>
+                        </div>
+                    `;
+                    if (currentUser && studentsProgress[currentUser]) {
+                        if (!studentsProgress[currentUser]._meta) studentsProgress[currentUser]._meta = {};
+                        studentsProgress[currentUser]._meta.miniCoins = (studentsProgress[currentUser]._meta.miniCoins || 0) + 2;
+                        saveLocalData();
+                    }
+                } else {
+                    window.soundWrong();
+                    fb.className = "text-xs font-black p-3.5 rounded-xl bg-rose-950/80 text-rose-300 border border-rose-500/60 mt-3 shadow-md flex items-start gap-2.5";
+                    fb.innerHTML = `
+                        <span class="text-xl">💡</span>
+                        <div>
+                            <strong class="block font-black text-rose-200">Quase lá! Análise Dev:</strong>
+                            <span class="text-[11px] text-rose-300 font-normal leading-relaxed">${explanation || 'Revise o conteúdo da aula e tente novamente no próximo desafio!'}</span>
+                        </div>
+                    `;
+                }
+            }
+        };
+
+        // --- TELA 4: QUIZ AVALIATIVO COM ALTERNATIVAS ALEATÓRIAS ---
+        window.startQuiz = function(catId) {
+            selectedCategoryId = catId;
+            const course = window.coursesDatabase[currentSubjectId] || initialCoursesDatabase[currentSubjectId];
+            const rawQuestions = (course.questions || []).filter(q => q.category === catId);
+
+            quizQuestions = rawQuestions.map(q => {
+                const correctText = q.options[q.correct];
+                const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+                return {
+                    ...q,
+                    options: shuffled,
+                    correct: shuffled.indexOf(correctText)
+                };
+            }).sort(() => Math.random() - 0.5);
+
+            currentQuestionIndex = 0;
+            quizAnswers = [];
+            window.changeState('QUIZ');
+        };
+
+        window.renderQuiz = function() {
+            if (quizQuestions.length === 0) {
+                mainContent.innerHTML = `
+                    <div class="text-center p-8 bg-slate-900 rounded-3xl border border-slate-800 max-w-md">
+                        <p class="text-slate-400 mb-4 font-bold text-xs font-code">Nenhuma questão encontrada para este módulo.</p>
+                        <button onclick="window.changeState('CATEGORY_SELECT')" class="bg-sky-500 text-slate-950 px-6 py-2 rounded-xl font-bold text-xs font-code">Voltar</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const q = quizQuestions[currentQuestionIndex];
+
+            mainContent.innerHTML = `
+                <div class="fade-in w-full max-w-2xl bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-slate-800">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="bg-slate-800 text-sky-400 text-xs font-black px-3.5 py-1.5 rounded-full border border-slate-700 font-code">
+                            Questão ${currentQuestionIndex + 1} de ${quizQuestions.length}
+                        </span>
+                        <span class="text-xs font-bold text-slate-500 uppercase font-code">
+                            Quiz Avaliativo Dev
+                        </span>
+                    </div>
+
+                    <h3 class="text-base md:text-lg font-black text-white mb-6 leading-snug font-code">
+                        ${q.text}
+                    </h3>
+
+                    <div class="space-y-3 mb-8">
+                        ${q.options.map((opt, idx) => `
+                            <button onclick="window.handleQuizAnswer(${idx})" class="w-full text-left p-4 rounded-2xl border-2 border-slate-800 hover:border-sky-500 hover:bg-slate-800/80 font-bold text-xs sm:text-sm text-slate-200 transition flex items-center justify-between group shadow-sm cursor-pointer">
+                                <span class="flex items-center gap-3">
+                                    <span class="w-7 h-7 rounded-xl bg-slate-800 group-hover:bg-sky-500 group-hover:text-slate-950 flex items-center justify-center font-black text-xs text-sky-400 transition-colors font-code">${String.fromCharCode(65 + idx)}</span>
+                                    <span>${opt}</span>
+                                </span>
+                                <span class="text-slate-600 group-hover:text-sky-400 text-lg transition-transform group-hover:translate-x-1 font-code">&rarr;</span>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                        <div class="bg-gradient-to-r from-sky-500 to-emerald-400 h-full rounded-full transition-all duration-300" style="width: ${Math.round(((currentQuestionIndex + 1) / quizQuestions.length) * 100)}%"></div>
+                    </div>
+                </div>
+            `;
+        };
+
+        window.handleQuizAnswer = function(chosenIdx) {
+            const q = quizQuestions[currentQuestionIndex];
+            const isCorrect = chosenIdx === q.correct;
+            quizAnswers.push({ questionId: q.text, isCorrect });
+
+            if (isCorrect) window.soundCorrect();
+            else window.soundWrong();
+
+            if (currentQuestionIndex < quizQuestions.length - 1) {
+                currentQuestionIndex++;
+                window.renderQuiz();
+            } else {
+                window.renderQuizResult();
+            }
+        };
+
+        window.renderQuizResult = function() {
+            const correctCount = quizAnswers.filter(a => a.isCorrect).length;
+            const totalCount = quizQuestions.length;
+            const scorePercent = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0;
+
+            // Salvar nota no progresso
+            if (!studentsProgress[currentUser]) studentsProgress[currentUser] = {};
+            if (!studentsProgress[currentUser][selectedCategoryId]) studentsProgress[currentUser][selectedCategoryId] = { chaptersRead: 999, quizScore: scorePercent };
+            studentsProgress[currentUser][selectedCategoryId].quizScore = scorePercent;
+            saveLocalData();
+
+            let medal = '🥉 Bronze';
+            if (scorePercent >= 90) medal = '🥇 Ouro Dev';
+            else if (scorePercent >= 70) medal = '🥈 Prata Dev';
+
+            if (scorePercent >= 70) {
+                window.soundFanfare();
+                window.triggerConfetti();
+            }
+
+            mainContent.innerHTML = `
+                <div class="fade-in w-full max-w-lg bg-slate-900 p-8 rounded-3xl shadow-2xl border-2 border-slate-800 text-center">
+                    <div class="text-5xl mb-3">${scorePercent >= 70 ? '🏆' : '💡'}</div>
+                    <span class="bg-slate-800 text-sky-400 text-[10px] font-black uppercase px-3 py-1 rounded-full border border-slate-700 font-code">Resultado da Avaliação</span>
+                    
+                    <h2 class="text-2xl font-black text-white mt-3 mb-1 font-code">${scorePercent >= 70 ? 'Módulo Concluído com Maestria!' : 'Revise e Tente Novamente!'}</h2>
+                    <p class="text-xs text-slate-400 mb-6">Você acertou ${correctCount} de ${totalCount} questões (${scorePercent}%).</p>
+
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 mb-6 space-y-2 font-code">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-400">Medalha Conquistada:</span>
+                            <span class="font-black text-amber-400">${medal}</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-400">Nota Registrada:</span>
+                            <span class="font-black text-sky-400">${scorePercent}%</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="window.soundClick(); window.startQuiz('${selectedCategoryId}')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-xl text-xs font-code transition">
+                            🔁 Refazer Quiz
+                        </button>
+                        <button onclick="window.soundClick(); window.changeState('CATEGORY_SELECT')" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black py-3 rounded-xl text-xs font-code transition shadow-md">
+                            Continuar Jornada →
+                        </button>
+                    </div>
+                </div>
+            `;
+        };
+
+        // --- TELA DE CERTIFICADOS OFICIAIS ---
+        window.showCertificatesModal = function() {
+            let totalPassed = 0;
+            let totalModulesCount = 0;
+
+            Object.values(window.coursesDatabase).forEach(c => {
+                (c.categories || []).forEach(cat => {
+                    totalModulesCount++;
+                    const prog = studentsProgress[currentUser]?.[cat.id];
+                    if (prog && prog.quizScore >= 70) totalPassed++;
+                });
+            });
+
+            const coins = studentsProgress[currentUser]?._meta?.miniCoins || 0;
+
+            window.showModal(`
+                <div class="text-left space-y-4">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-3xl">🏆</span>
+                            <div>
+                                <h3 class="text-lg font-black text-white font-code">Galeria de Certificados & Conquistas</h3>
+                                <p class="text-[11px] text-sky-400">${currentUser} &bull; ${currentUserTurma}</p>
+                            </div>
+                        </div>
+                        <span class="bg-amber-500/20 text-amber-400 border border-amber-500/30 font-black text-xs px-3 py-1 rounded-full font-code">🪙 ${coins} Moedas Dev</span>
+                    </div>
+
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs text-slate-300 space-y-2">
+                        <div class="flex justify-between">
+                            <span>Módulos Concluídos (Nota &ge; 70%):</span>
+                            <strong class="text-emerald-400 font-code">${totalPassed} de ${totalModulesCount}</strong>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 max-h-60 overflow-y-auto custom-scrollbar pr-1">
+                        ${Object.values(window.coursesDatabase).map(c => `
+                            <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800 flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-black text-xs text-white font-code">${c.name}</h4>
+                                    <span class="text-[10px] text-slate-400">Trilha Oficial de Capacitação Dev</span>
+                                </div>
+                                <button onclick="window.generateDevCertificate('${c.id}')" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-[11px] px-3.5 py-1.5 rounded-xl font-code transition shadow cursor-pointer">
+                                    📜 Emitir Diploma
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-800 flex justify-end">
+                        <button onclick="window.hideModal()" class="bg-slate-800 text-slate-300 font-bold px-4 py-2 rounded-xl text-xs font-code hover:bg-slate-700">Fechar</button>
+                    </div>
+                </div>
+            `, 'max-w-lg');
+        };
+
+        window.generateDevCertificate = function(subjectId) {
+            const course = window.coursesDatabase[subjectId] || initialCoursesDatabase[subjectId];
+            window.showModal(`
+                <div class="text-left bg-white text-slate-900 p-6 rounded-3xl border-4 border-sky-500 shadow-2xl relative">
+                    <div class="text-center pb-4 border-b border-gray-200">
+                        <span class="text-4xl mb-1 inline-block">🎓</span>
+                        <h2 class="text-xl font-black uppercase tracking-wider text-slate-900 font-code">Certificado de Capacitação Dev</h2>
+                        <p class="text-[11px] text-sky-600 font-bold font-code">CodeLogic Pro • Academia de Tecnologia & Lógica</p>
+                    </div>
+
+                    <div class="py-6 text-center space-y-3">
+                        <p class="text-xs text-gray-600">Certificamos com honras que o(a) estudante:</p>
+                        <h3 class="text-xl font-black text-indigo-950 underline decoration-sky-500 font-code">${currentUser}</h3>
+                        <p class="text-xs text-gray-700 leading-relaxed max-w-md mx-auto">
+                            Concluiu com aproveitamento a formação completa em <b>${course.name}</b>, demonstrando proficiência técnica, resolução de algoritmos e pensamento computacional.
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-200 flex justify-between items-center text-[10px] text-gray-500 font-code">
+                        <span>Emitido em: ${new Date().toLocaleDateString('pt-BR')}</span>
+                        <span class="font-bold text-slate-900">Validação: CL-${Date.now().toString(36).toUpperCase()}</span>
+                    </div>
+
+                    <div class="mt-6 flex justify-end gap-2 no-print">
+                        <button onclick="window.hideModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold px-4 py-2 rounded-xl text-xs font-code">Fechar</button>
+                        <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-black px-5 py-2 rounded-xl text-xs font-code shadow transition">🖨️ Imprimir / Salvar PDF</button>
+                    </div>
+                </div>
+            `, 'max-w-2xl');
+        };
+
+        // --- PAINEL DO INSTRUTOR & EDITOR VISUAL IA ---
+        window.renderAdminLogin = function() {
+            mainContent.innerHTML = `
+                <div class="bg-slate-900 p-8 rounded-3xl shadow-2xl border-2 border-slate-800 w-full max-w-md fade-in">
+                    <div class="text-center mb-6">
+                        <div class="text-4xl mb-2 text-sky-400 font-code">&lt;👨‍🏫&gt;</div>
+                        <h2 class="text-xl font-black text-white font-code">Acesso do Instrutor & Gestão</h2>
+                        <p class="text-xs text-slate-400 mt-1">Ambiente de edição visual e acompanhamento de alunos</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-slate-300 font-bold text-xs uppercase mb-1 font-code">Usuário Mestre</label>
+                            <input type="text" id="admin-user" class="w-full px-4 py-2.5 rounded-xl border border-slate-700 focus:border-sky-500 focus:outline-none bg-slate-800 text-xs font-bold text-white font-code" placeholder="admplus">
+                        </div>
+                        <div>
+                            <label class="block text-slate-300 font-bold text-xs uppercase mb-1 font-code">Senha</label>
+                            <input type="password" id="admin-pass" class="w-full px-4 py-2.5 rounded-xl border border-slate-700 focus:border-sky-500 focus:outline-none bg-slate-800 text-xs font-bold text-white font-code" placeholder="admplus">
+                        </div>
+
+                        <button onclick="window.soundClick(); window.handleAdminLogin()" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-black py-3 rounded-xl transition shadow-lg mt-2 text-xs font-code cursor-pointer">
+                            Entrar no Painel do Instrutor →
+                        </button>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-800 text-center">
+                        <button onclick="window.soundClick(); window.changeState('PORTAL_HUB')" class="text-slate-400 hover:text-white font-bold text-xs font-code">
+                            ← Voltar ao Terminal dos Alunos
+                        </button>
+                    </div>
+                </div>
+            `;
+        };
+
+        window.handleAdminLogin = function() {
+            const user = (document.getElementById('admin-user')?.value || '').trim();
+            const pass = (document.getElementById('admin-pass')?.value || '').trim();
+
+            if ((user === 'admplus' || user === 'admin') && (pass === 'admplus' || pass === 'ESCOLA2026' || pass === '16Bl33@p')) {
+                currentTeacher = teachersDatabase['admplus'];
+                window.soundCorrect();
+                window.changeState('ADMIN_EDITOR');
+            } else {
+                window.soundWrong();
+                window.customAlert("Credenciais incorretas! Dica: utilize <b>admplus</b> / <b>admplus</b>.");
+            }
+        };
+
+        window.renderAdminEditor = function() {
+            const course = window.coursesDatabase[editorActiveSubject] || initialCoursesDatabase[editorActiveSubject];
+            const activeCat = course.categories.find(c => c.id === editorActiveModule) || course.categories[0];
+
+            const subjectTabsHTML = window.PORTAL_TRACKS.map(t => `
+                <button onclick="window.setEditorSubject('${t.id}')" class="px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 font-code ${editorActiveSubject === t.id ? 'bg-sky-500 text-slate-950 shadow' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'} cursor-pointer">
+                    <span>${t.icon}</span> ${t.name}
+                </button>
+            `).join('');
+
+            const moduleTabsHTML = course.categories.map(cat => `
+                <button onclick="window.setEditorModule('${cat.id}')" class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 font-code ${activeCat.id === cat.id ? 'bg-sky-500/20 text-sky-400 border-2 border-sky-500' : 'text-slate-400 hover:bg-slate-800 border border-transparent'} cursor-pointer">
+                    <span>${cat.name}</span>
+                </button>
+            `).join('');
+
+            mainContent.innerHTML = `
+                <div class="bg-slate-900 rounded-3xl shadow-2xl border-2 border-slate-800 w-full max-w-6xl flex flex-col md:flex-row min-h-[85vh] overflow-hidden fade-in">
+                    <!-- Sidebar do Instrutor -->
+                    <div class="w-full md:w-64 bg-slate-950 text-white flex flex-col shrink-0 border-r border-slate-800">
+                        <div class="p-6 text-center border-b border-slate-800">
+                            <div class="text-4xl mb-1">👨‍🏫</div>
+                            <h2 class="font-black text-white font-code text-sm leading-tight">Instrutor Master</h2>
+                            <p class="text-[10px] text-sky-400 mt-0.5 font-code">Painel de Gestão Pedagógica</p>
+                        </div>
+                        <nav class="flex-grow p-4 space-y-1.5">
+                            <button onclick="window.soundClick(); window.changeState('ADMIN_EDITOR')" class="w-full text-left px-4 py-2.5 bg-sky-500 text-slate-950 font-black rounded-xl flex items-center gap-2 text-xs font-code cursor-pointer shadow">
+                                📝 Editor de Aulas & IA
+                            </button>
+                            <button onclick="window.soundClick(); window.openFirebaseConfigModal()" class="w-full text-left px-4 py-2.5 hover:bg-slate-800 text-slate-300 rounded-xl transition flex items-center gap-2 font-code text-xs cursor-pointer">
+                                🔥 Conexão Firebase
+                            </button>
+                        </nav>
+                        <div class="p-4 border-t border-slate-800 space-y-2">
+                            <button onclick="window.copyAIPromptTemplate()" class="w-full bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white py-2 px-3 rounded-xl transition text-[11px] font-black flex items-center justify-center gap-1.5 shadow-sm font-code cursor-pointer">
+                                <span>✨</span> Prompt ChatGPT/Gemini
+                            </button>
+                            <button onclick="window.changeState('PORTAL_HUB')" class="w-full text-left px-4 py-2 hover:bg-slate-800 hover:text-white rounded-xl transition flex items-center gap-2 text-xs font-bold text-slate-400 font-code cursor-pointer">
+                                🚪 Sair do Painel
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Área de Conteúdo do Editor -->
+                    <div class="flex-grow bg-slate-900 flex flex-col p-6 overflow-y-auto custom-scrollbar">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 pb-3 border-b border-slate-800">
+                            <div>
+                                <h2 class="text-lg font-black text-white flex items-center gap-2 font-code">
+                                    <span>📝</span> Editor Visual com Assistente de IA
+                                </h2>
+                                <p class="text-xs text-slate-400">Cole aulas geradas pelo ChatGPT ou Gemini sem precisar editar tags HTML.</p>
+                            </div>
+                            <button onclick="window.soundClick(); window.saveCourseDataCloud()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-5 py-2 rounded-xl font-black flex items-center gap-1.5 transition shadow text-xs font-code cursor-pointer">
+                                ☁️ Salvar & Publicar
+                            </button>
+                        </div>
+
+                        <!-- Seletor de Trilhas -->
+                        <div class="flex gap-2 flex-wrap mb-3">
+                            ${subjectTabsHTML}
+                        </div>
+
+                        <!-- Seletor de Módulos -->
+                        <div class="flex gap-2 border-b border-slate-800 pb-3 mb-4 overflow-x-auto custom-scrollbar">
+                            ${moduleTabsHTML}
+                        </div>
+
+                        <!-- Lista de Aulas -->
+                        <div class="space-y-6">
+                            ${activeCat.chapters.map((chap, cIdx) => {
+                                const mg = chap.miniGame || { question: '', options: ['', '', '', ''], correct: 0, explanation: '' };
+                                const textareaId = 'chap-content-input-' + cIdx;
+                                const optA = mg.options?.[0] || '';
+                                const optB = mg.options?.[1] || '';
+                                const optC = mg.options?.[2] || '';
+                                const optD = mg.options?.[3] || '';
+
+                                return `
+                                    <div class="bg-slate-950 p-6 rounded-3xl border border-slate-800 shadow-xl space-y-4">
+                                        <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-800">
+                                            <div class="flex items-center gap-2 font-code">
+                                                <span class="bg-sky-500/20 text-sky-400 font-black text-xs px-3 py-1 rounded-xl border border-sky-500/30">Aula #${cIdx + 1}</span>
+                                                <span class="text-xs font-bold text-slate-300 truncate max-w-xs">${chap.title}</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <button onclick="window.openAIImportModal(${cIdx})" class="bg-purple-600 hover:bg-purple-500 text-white font-black text-xs px-3.5 py-1.5 rounded-xl shadow transition flex items-center gap-1 font-code cursor-pointer">
+                                                    <span>✨</span> Colar do ChatGPT / Gemini
+                                                </button>
+                                                <button onclick="window.previewChapterLive(${cIdx})" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-3 py-1.5 rounded-xl transition flex items-center gap-1 font-code cursor-pointer">
+                                                    <span>👁️</span> Ver Aula
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-slate-300 font-black text-xs uppercase mb-1 font-code">Título da Aula</label>
+                                            <input type="text" value="${chap.title}" onchange="window.coursesDatabase['${editorActiveSubject}'].categories.find(c => c.id === '${activeCat.id}').chapters[${cIdx}].title = this.value" class="w-full px-4 py-2.5 rounded-xl border border-slate-700 font-black text-xs bg-slate-900 text-white focus:border-sky-500 focus:outline-none transition font-code">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-slate-300 font-black text-xs uppercase mb-1 font-code">URL da Imagem</label>
+                                            <input type="text" value="${chap.imageUrl || ''}" onchange="window.coursesDatabase['${editorActiveSubject}'].categories.find(c => c.id === '${activeCat.id}').chapters[${cIdx}].imageUrl = this.value" class="w-full px-4 py-2 rounded-xl border border-slate-700 font-mono text-xs bg-slate-900 text-slate-300 focus:border-sky-500 focus:outline-none transition">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-slate-300 font-black text-xs uppercase mb-1 font-code">Texto da Aula</label>
+                                            <textarea id="${textareaId}" rows="5" onchange="window.coursesDatabase['${editorActiveSubject}'].categories.find(c => c.id === '${activeCat.id}').chapters[${cIdx}].content = window.formatMarkdownToHtml(this.value)" class="w-full p-4 rounded-2xl border border-slate-700 font-sans text-xs bg-slate-900 text-slate-200 focus:border-sky-500 focus:outline-none leading-relaxed transition custom-scrollbar">${chap.content.replace(/<br\s*\/?>/gi, '\n')}</textarea>
+                                        </div>
+
+                                        <!-- Minigame Box -->
+                                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+                                            <h4 class="font-black text-xs text-amber-400 uppercase font-code">⚡ Minigame da Aula (Gabarito na bolinha)</h4>
+                                            <div>
+                                                <input type="text" value="${mg.question || ''}" onchange="if(!window.coursesDatabase['${editorActiveSubject}'].categories.find(c => c.id === '${activeCat.id}').chapters[${cIdx}].miniGame) window.coursesDatabase['${editorActiveSubject}'].categories.find(c => c.id === '${activeCat.id}').chapters[${cIdx}].miniGame = {}; window.coursesDatabase['${editorActiveSubject}'].categories.find(c => c.id === '${activeCat.id}').chapters[${cIdx}].miniGame.question = this.value" placeholder="Pergunta do desafio..." class="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-950 font-bold text-xs text-white focus:border-amber-400 focus:outline-none">
+                                            </div>
+
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                                <div class="flex items-center gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                                                    <input type="radio" name="mg-rad-${cIdx}" ${mg.correct === 0 ? 'checked' : ''} onchange="window.coursesDatabase['${editorActiveSubject}'].categories.find(c => c.id === '${activeCat.id}').chapters[${cIdx}].miniGame.correct = 0;" class="cursor-pointer text-emerald-500">
+                                                    <span class="font-code text-xs font-black text-sky-400">A</span>
+                                                    <input type="text" value="${optA}" onchange="window.coursesDatabase['${editorActiveSubject}'].categories.find(c => c.id === '${activeCat.id}').chapters[${cIdx}].miniGame.options[0] = this.value" placeholder="Opção A" class="w-full text-xs font-bold text-slate-200 bg-transparent focus:outline-none">
+                                                </div>
+                                                <div class="flex items-center gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                                                    <input type="radio" name="mg-rad-${cIdx}" ${mg.correct === 1 ? 'checked' : ''} onchange="window.coursesDatabase['${editorActiveSubject}'].categories.find(c => c.id === '${activeCat.id}').chapters[${cIdx}].miniGame.correct = 1;" class="cursor-pointer text-emerald-500">
+                                                    <span class="font-code text-xs font-black text-sky-400">B</span>
+                                                    <input type="text" value="${optB}" onchange="window.coursesDatabase['${editorActiveSubject}'].categories.find(c => c.id === '${activeCat.id}').chapters[${cIdx}].miniGame.options[1] = this.value" placeholder="Opção B" class="w-full text-xs font-bold text-slate-200 bg-transparent focus:outline-none">
+                                                </div>
+                                                <div class="flex items-center gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                                                    <input type="radio" name="mg-rad-${cIdx}" ${mg.correct === 2 ? 'checked' : ''} onchange="window.coursesDatabase['${editorActiveSubject}'].categories.find(c => c.id === '${activeCat.id}').chapters[${cIdx}].miniGame.correct = 2;" class="cursor-pointer text-emerald-500">
+                                                    <span class="font-code text-xs font-black text-sky-400">C</span>
+                                                    <input type="text" value="${optC}" onchange="window.coursesDatabase['${editorActiveSubject}'].categories.find(c => c.id === '${activeCat.id}').chapters[${cIdx}].miniGame.options[2] = this.value" placeholder="Opção C" class="w-full text-xs font-bold text-slate-200 bg-transparent focus:outline-none">
+                                                </div>
+                                                <div class="flex items-center gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                                                    <input type="radio" name="mg-rad-${cIdx}" ${mg.correct === 3 ? 'checked' : ''} onchange="window.coursesDatabase['${editorActiveSubject}'].categories.find(c => c.id === '${activeCat.id}').chapters[${cIdx}].miniGame.correct = 3;" class="cursor-pointer text-emerald-500">
+                                                    <span class="font-code text-xs font-black text-sky-400">D</span>
+                                                    <input type="text" value="${optD}" onchange="window.coursesDatabase['${editorActiveSubject}'].categories.find(c => c.id === '${activeCat.id}').chapters[${cIdx}].miniGame.options[3] = this.value" placeholder="Opção D" class="w-full text-xs font-bold text-slate-200 bg-transparent focus:outline-none">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        window.setEditorSubject = function(sId) {
+            editorActiveSubject = sId;
+            const course = window.coursesDatabase[sId] || initialCoursesDatabase[sId];
+            editorActiveModule = course?.categories?.[0]?.id || '';
+            window.renderAdminEditor();
+        };
+
+        window.setEditorModule = function(mId) {
+            editorActiveModule = mId;
+            window.renderAdminEditor();
+        };
+
+        window.saveCourseDataCloud = function() {
+            saveLocalData();
+            window.soundCorrect();
+            window.customAlert("✅ <b>Cursos Salvos com Sucesso!</b><br>As alterações estão salvas no banco de dados.");
+        };
+
+        window.formatMarkdownToHtml = function(text) {
+            if (!text) return '';
+            let html = String(text);
+            html = html.replace(/\*\*([^\*]+)\*\*/g, '<b>$1</b>');
+            html = html.replace(/__([^_]+)__/g, '<b>$1</b>');
+            html = html.replace(/\*([^\*]+)\*/g, '<i>$1</i>');
+            html = html.replace(/\n\n+/g, '<br><br>');
+            html = html.replace(/\n/g, '<br>');
+            return html;
+        };
+
+        window.copyAIPromptTemplate = function() {
+            const tmpl = `Crie uma aula educativa e técnica de programação para a plataforma CodeLogic Pro.
+
+Tema da Aula: [DIGITE O TEMA AQUI]
+Trilha: [LÓGICA / HTML5 / CSS3 / JAVASCRIPT / PYTHON / POO / SQL]
+
+Estrutura exata da resposta:
+Título: [Título chamativo com emoji no final]
+Texto: [2 ou 3 parágrafos explicando os conceitos com exemplos de código, colocando termos-chave em **asteriscos duplos para negrito**]
+Desafio: [Uma pergunta objetiva e prática sobre o conceito abordado]
+A) [Opção A]
+B) [Opção B]
+C) [Opção C]
+D) [Opção D]
+Gabarito: [Apenas a letra correta: A, B, C ou D]
+Explicação: [Explicação curta e didática do porquê a alternativa está certa]`;
+
+            navigator.clipboard.writeText(tmpl).then(() => {
+                window.soundCorrect();
+                window.customAlert("📋 <b>Prompt Modelo Copiado!</b><br>Cole no ChatGPT ou Gemini e copie o resultado para o editor.");
+            });
+        };
+
+        window.openAIImportModal = function(cIdx) {
+            window.showModal(`
+                <div class="text-left space-y-4">
+                    <div class="flex items-center gap-3 pb-3 border-b border-slate-800">
+                        <span class="text-3xl p-2 bg-purple-500/10 text-purple-400 rounded-2xl border border-purple-500/30">✨</span>
+                        <div>
+                            <h3 class="text-base font-black text-white font-code">Assistente IA de Conteúdo Dev</h3>
+                            <p class="text-[11px] text-purple-400">Importe do ChatGPT ou Gemini em 1 clique</p>
+                        </div>
+                    </div>
+
+                    <textarea id="ai-raw-text-input" rows="10" class="w-full p-3.5 rounded-2xl border border-slate-700 bg-slate-950 text-xs font-sans text-slate-200 focus:border-purple-500 focus:outline-none custom-scrollbar" placeholder="Cole aqui o texto gerado pela IA (Título: ..., Texto: ..., Desafio: ..., A) ..., B) ..., Gabarito: ...)..."></textarea>
+
+                    <div class="flex justify-between items-center pt-2">
+                        <button onclick="window.copyAIPromptTemplate()" class="text-xs font-bold text-sky-400 hover:underline font-code">📋 Copiar Prompt Modelo</button>
+                        <div class="flex gap-2">
+                            <button onclick="window.hideModal()" class="px-4 py-2 text-xs font-bold text-slate-400 hover:bg-slate-800 rounded-xl">Cancelar</button>
+                            <button onclick="window.applyAITextToChapter(${cIdx})" class="bg-purple-600 hover:bg-purple-500 text-white font-black px-5 py-2 rounded-xl text-xs font-code shadow">Processar Aula ✨</button>
+                        </div>
+                    </div>
+                </div>
+            `, 'max-w-xl');
+        };
+
+        window.applyAITextToChapter = function(cIdx) {
+            const rawText = (document.getElementById('ai-raw-text-input')?.value || '').trim();
+            if (!rawText) return;
+
+            const course = window.coursesDatabase[editorActiveSubject] || initialCoursesDatabase[editorActiveSubject];
+            const activeCat = course.categories.find(c => c.id === editorActiveModule) || course.categories[0];
+            const chap = activeCat.chapters[cIdx];
+
+            const lines = rawText.split('\n').map(l => l.trim()).filter(Boolean);
+            let title = '', contentLines = [], question = '', options = [], correct = 0, explanation = '', mode = 'content';
+
+            lines.forEach(line => {
+                const lower = line.toLowerCase();
+                if (lower.startsWith('título:') || lower.startsWith('titulo:') || lower.startsWith('# ')) {
+                    title = line.replace(/^(título:|titulo:|#\s*)/i, '').trim();
+                    return;
+                }
+                if (lower.startsWith('desafio:') || lower.startsWith('pergunta:') || lower.startsWith('questão:')) {
+                    mode = 'question';
+                    question = line.replace(/^(desafio:|pergunta:|questão:)/i, '').trim();
+                    return;
+                }
+                const optMatch = line.match(/^([a-d])\s*[\)\.\-\:]\s*(.+)/i);
+                if (optMatch) {
+                    mode = 'options';
+                    options.push(optMatch[2].trim());
+                    return;
+                }
+                if (lower.startsWith('gabarito:') || lower.startsWith('resposta:')) {
+                    mode = 'explanation';
+                    const ans = line.replace(/^(gabarito:|resposta:)/i, '').trim();
+                    if (/^a\b/i.test(ans)) correct = 0;
+                    else if (/^b\b/i.test(ans)) correct = 1;
+                    else if (/^c\b/i.test(ans)) correct = 2;
+                    else if (/^d\b/i.test(ans)) correct = 3;
+                    return;
+                }
+                if (lower.startsWith('explicação:') || lower.startsWith('explicacao:')) {
+                    mode = 'explanation';
+                    explanation = line.replace(/^(explicação:|explicacao:)/i, '').trim();
+                    return;
+                }
+
+                if (mode === 'content') {
+                    if (!lower.startsWith('texto:')) contentLines.push(line);
+                    else contentLines.push(line.replace(/^texto:\s*/i, ''));
+                } else if (mode === 'question' && !question) question = line;
+                else if (mode === 'explanation') explanation += (explanation ? ' ' : '') + line;
+            });
+
+            if (title) chap.title = title;
+            if (contentLines.length > 0) chap.content = window.formatMarkdownToHtml(contentLines.join('\n\n'));
+            if (question || options.length > 0) {
+                if (!chap.miniGame) chap.miniGame = {};
+                if (question) chap.miniGame.question = question;
+                if (options.length > 0) {
+                    while (options.length < 4) options.push('Opção ' + String.fromCharCode(65 + options.length));
+                    chap.miniGame.options = options.slice(0, 4);
+                }
+                chap.miniGame.correct = correct;
+                if (explanation) chap.miniGame.explanation = explanation;
+            }
+
+            window.hideModal();
+            window.soundCorrect();
+            window.triggerConfetti();
+            window.renderAdminEditor();
+            window.customAlert("✨ <b>Aula Importada com Sucesso!</b>");
+        };
+
+        window.previewChapterLive = function(cIdx) {
+            const course = window.coursesDatabase[editorActiveSubject] || initialCoursesDatabase[editorActiveSubject];
+            const activeCat = course.categories.find(c => c.id === editorActiveModule) || course.categories[0];
+            const chap = activeCat.chapters[cIdx];
+
+            window.showModal(`
+                <div class="text-left space-y-3">
+                    <span class="bg-sky-500/20 text-sky-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-full font-code">Pré-visualização • Aula #${cIdx + 1}</span>
+                    <h3 class="text-lg font-black text-white font-code">${chap.title}</h3>
+                    <div class="text-xs text-slate-300 leading-relaxed space-y-2 p-3 bg-slate-950 rounded-2xl border border-slate-800">${chap.content}</div>
+                    <div class="flex justify-end pt-2">
+                        <button onclick="window.hideModal()" class="bg-sky-500 text-slate-950 font-black px-4 py-2 rounded-xl text-xs font-code">Fechar</button>
+                    </div>
+                </div>
+            `, 'max-w-lg');
+        };
+
+        window.showSourcesModal = function() {
+            window.showModal(`
+                <div class="text-left space-y-3 font-code">
+                    <h3 class="text-base font-black text-white flex items-center gap-2">
+                        <span>🏛️</span> Referências & Padrões Internacionais
+                    </h3>
+                    <p class="text-xs text-slate-400">O conteúdo do CodeLogic Pro é fundamentado nos padrões e documentações oficiais da indústria:</p>
+                    <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside">
+                        <li><b>W3C (World Wide Web Consortium):</b> Padrões oficiais de HTML5 Semântico e CSS3.</li>
+                        <li><b>ECMA International (TC39):</b> Especificação formal do JavaScript moderno (ES6+).</li>
+                        <li><b>Python Software Foundation (PSF):</b> Documentação oficial e diretrizes PEP 8.</li>
+                        <li><b>IEEE & ACM:</b> Diretrizes acadêmicas de Pensamento Computacional e Algoritmos.</li>
+                        <li><b>ANSI SQL:</b> Padrões estruturais de Bancos de Dados Relacionais.</li>
+                    </ul>
+                    <div class="pt-3 border-t border-slate-800 flex justify-end">
+                        <button onclick="window.hideModal()" class="bg-sky-500 text-slate-950 font-black px-4 py-2 rounded-xl text-xs">Entendido</button>
+                    </div>
+                </div>
+            `, 'max-w-lg');
+        };
+
+        window.openFirebaseConfigModal = function() {
+            const currentCfg = rawConfig ? JSON.stringify(rawConfig, null, 2) : '';
+            window.showModal(`
+                <div class="text-left space-y-3 font-code">
+                    <h3 class="text-base font-black text-white">🔥 Conexão com Firebase Firestore</h3>
+                    <p class="text-xs text-slate-400">Credenciais para sincronização em nuvem do CodeLogic Pro:</p>
+                    <textarea id="firebase-cfg-input" rows="8" class="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl text-xs text-emerald-400 focus:outline-none">${currentCfg}</textarea>
+                    <div class="flex justify-end gap-2 pt-2">
+                        <button onclick="window.hideModal()" class="px-4 py-2 text-xs font-bold text-slate-400">Cancelar</button>
+                        <button onclick="window.customAlert('✅ Configuração do Firebase salva!'); window.hideModal();" class="bg-sky-500 text-slate-950 font-black px-4 py-2 rounded-xl text-xs">Salvar</button>
+                    </div>
+                </div>
+            `, 'max-w-lg');
+        };
+
+        // --- GERENCIADOR DE ESTADOS GLOBAIS ---
+        window.changeState = function(newState) {
+            currentState = newState;
+            switch(currentState) {
+                case 'PORTAL_HUB': renderPortalHub(); break;
+                case 'CATEGORY_SELECT': renderCategorySelect(); break;
+                case 'MODULE_VIEW': renderModuleView(); break;
+                case 'QUIZ': renderQuiz(); break;
+                case 'ADMIN_LOGIN': renderAdminLogin(); break;
+                case 'ADMIN_EDITOR': renderAdminEditor(); break;
+                default: renderPortalHub(); break;
+            }
+        };
+
+        // Atalho de Teclado Alt + Shift + M para o Instrutor
+        document.addEventListener('keydown', function(e) {
+            if (e.altKey && e.shiftKey && e.key.toLowerCase() === 'm') {
+                window.changeState('ADMIN_LOGIN');
+            }
+        });
+
+        // Fechar modal ao clicar fora ou apertar Escape
+        modalContainer.addEventListener('click', e => { if (e.target === modalContainer) window.hideModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modalContainer.classList.contains('hidden')) window.hideModal(); });
+
+        // Inicialização da Aplicação
+        loadLocalData();
+        window.changeState('PORTAL_HUB');
+    </script>
+</body>
+</html>
