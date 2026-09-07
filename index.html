@@ -32,36 +32,31 @@
                 <span class="text-2xl p-2 bg-sky-500/10 text-sky-400 rounded-2xl border border-sky-500/20 font-code font-bold glow-border">&lt;/&gt;</span>
                 <div>
                     <div class="flex items-center gap-2">
-                        <h1 class="font-black text-lg md:text-xl tracking-wider font-code text-white">Code<span class="text-sky-400">Logic</span><span class="text-xs text-amber-400 ml-1 font-sans font-black bg-amber-400/10 border border-amber-400/30 px-1.5 py-0.5 rounded-full">PRO</span></h1>
-                        <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[9px] font-black uppercase px-2.5 py-0.5 rounded-full font-code inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>PLATAFORMA INTERATIVA</span>
-                    </div>
-                    <p class="text-[10px] text-slate-400">Super Plataforma Interativa • Lógica, Web, Python, POO & SQL</p>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-2">
                 <div id="user-info-display" class="hidden items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-2xl border border-slate-700">
                     <span id="current-user-avatar" class="text-lg">🧑‍💻</span>
                     <div class="text-left leading-tight hidden sm:block">
                         <span id="current-user-name" class="font-black text-xs text-sky-400 block font-code">Dev</span>
                         <span id="current-user-turma" class="text-[10px] text-slate-400 block">Turma Geral</span>
                     </div>
-                    <button onclick="window.showCertificatesModal()" title="Ver Certificados e Conquistas" class="ml-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-1 rounded-full text-xs transition">
+                    <button onclick="window.showCertificatesModal()" title="Ver Certificados e Conquistas" class="ml-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-1 rounded-full text-xs transition cursor-pointer">
                         🏆
                     </button>
                 </div>
 
-                <button onclick="window.forceRestoreOfficialCourses()" title="Sincronizar e Restaurar Todas as 62 Aulas Oficiais" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1 cursor-pointer"><span>🔄</span> <span class="hidden sm:inline">Sincronizar (62 Aulas)</span></button>
-                <button onclick="window.showDeveloperModal()" title="Conheça o Desenvolvedor do Projeto" class="bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2.5 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1 cursor-pointer"><span>👨‍💻</span> <span class="hidden md:inline">Autor</span></button>
-                <button onclick="window.showValidatorModal()" title="Validar autenticidade de um certificado" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1 cursor-pointer"><span>🔍</span> <span class="hidden md:inline">Validar Certificado</span></button>
-                <button onclick="window.showPedagogyModal()" title="O que você vai aprender e nossa proposta pedagógica sincera" class="bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 px-2.5 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1 cursor-pointer"><span>🎯</span> <span class="hidden md:inline">Proposta Pedagógica</span></button>
-                <button onclick="window.showSourcesModal()" title="Origem dos Padrões e Referências Oficiais (W3C, Python, IEEE)" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1"><span>ℹ️</span> <span class="hidden md:inline">Fontes</span></button>
-                <button onclick="window.soundClick(); window.changeState('PORTAL_HUB')" title="Menu de Trilhas" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1">
-                    💻 Trilhas
+                <button onclick="window.forceRestoreOfficialCourses()" title="Sincronizar e Restaurar Todas as 62 Aulas Oficiais" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                    <span>🔄</span> <span class="hidden sm:inline">Sincronizar</span>
                 </button>
                 
-                <button id="admin-badge-btn" onclick="window.soundClick(); window.changeState('ADMIN_LOGIN')" class="text-xs bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 px-3 py-1.5 rounded-xl border border-sky-500/30 font-bold transition flex items-center gap-1">
-                    👨‍🏫 Instrutor
+                <button onclick="window.soundClick(); window.changeState('PORTAL_HUB')" title="Menu de Trilhas" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                    💻 <span class="hidden sm:inline">Trilhas</span>
+                </button>
+
+                <button onclick="window.scrollToFooterInfo()" title="Ver links úteis, autor, validador e proposta pedagógica" class="bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 px-2.5 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                    <span>ℹ️</span> <span>Sobre & Links</span>
+                </button>
+                
+                <button id="admin-badge-btn" onclick="window.soundClick(); window.changeState('ADMIN_LOGIN')" class="text-xs bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 px-3 py-1.5 rounded-xl border border-indigo-500/30 font-bold transition flex items-center gap-1 cursor-pointer">
+                    👨‍🏫 <span class="hidden sm:inline">Instrutor</span>
                 </button>
             </div>
         </div>
@@ -77,18 +72,45 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 border-t border-slate-800 py-4 px-4 text-center text-xs text-slate-500 font-mono font-medium">
-        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
-            <div>
-                CodeLogic Pro • Plataforma Educacional de Tecnologia ⚡
+    <footer id="global-footer" class="bg-slate-900/95 border-t border-slate-800 py-6 px-4 text-xs text-slate-400 font-sans">
+        <div class="max-w-6xl mx-auto space-y-4">
+            <!-- Linha Superior do Footer: Navegação de Links Úteis -->
+            <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-xl p-1 bg-sky-500/10 text-sky-400 rounded-lg border border-sky-500/20 font-mono font-bold">&lt;/&gt;</span>
+                    <div>
+                        <span class="font-black text-sm text-white font-mono">Code<span class="text-sky-400">Logic</span> <span class="text-amber-400 text-xs">PRO</span></span>
+                        <span class="text-[11px] text-slate-400 block font-normal">Plataforma Educacional Aberta de Programação & Lógica</span>
+                    </div>
+                </div>
+
+                <!-- Botões e Links Rápidos -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="window.showValidatorModal()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 hover:text-emerald-300 px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1 cursor-pointer shadow-sm">
+                        <span>🔍</span> Validar Certificado
+                    </button>
+                    <button onclick="window.showPedagogyModal()" class="bg-slate-800 hover:bg-slate-700 text-sky-300 hover:text-sky-200 px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1 cursor-pointer shadow-sm">
+                        <span>🎯</span> Proposta Pedagógica
+                    </button>
+                    <button onclick="window.showSourcesModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1 cursor-pointer shadow-sm">
+                        <span>📚</span> Fontes & Referências
+                    </button>
+                    <button onclick="window.showDeveloperModal()" class="bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 px-3 py-1.5 rounded-xl border border-indigo-500/30 font-bold text-xs transition flex items-center gap-1 cursor-pointer shadow-sm">
+                        <span>👨‍💻</span> Desenvolvedor
+                    </button>
+                </div>
             </div>
-            <div class="flex items-center gap-2 flex-wrap justify-center">
-                <button onclick="window.showDeveloperModal()" class="text-sky-400 hover:text-sky-300 font-sans font-bold flex items-center gap-1.5 transition underline decoration-sky-500/40 underline-offset-4 cursor-pointer">
-                    <span>👨‍💻</span> Criado & Desenvolvido por <strong>Murilo Silva</strong>
-                </button>
-                <button onclick="window.showValidatorModal()" class="text-emerald-400 hover:text-emerald-300 font-sans font-bold flex items-center gap-1 transition underline decoration-emerald-500/40 underline-offset-4 cursor-pointer"><span>🔍</span> Validar Certificado</button>
-                <span class="text-slate-600 hidden sm:inline">•</span>
-                <span class="text-slate-400 font-sans text-[11px]">Gestão em TI (Universidade Cruzeiro do Sul & UNICID)</span>
+
+            <!-- Linha Inferior do Footer: Créditos e Amparo Legal -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] text-slate-500">
+                <div class="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+                    <span>Criado & Desenvolvido por <strong class="text-slate-300">Murilo Silva</strong></span>
+                    <span>•</span>
+                    <span>Gestão em TI (Universidade Cruzeiro do Sul & UNICID)</span>
+                </div>
+                <div class="text-slate-500 text-center sm:text-right">
+                    Cursos Livres de Capacitação conforme a Lei nº 9.394/96 ⚡
+                </div>
             </div>
         </div>
     </footer>
