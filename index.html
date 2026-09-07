@@ -3434,36 +3434,103 @@ if (soma >= 40) {
             `, 'max-w-lg');
         };
 
+        
         window.generateDevCertificate = function(subjectId) {
-            const course = window.coursesDatabase[subjectId] || initialCoursesDatabase[subjectId];
+            const course = window.coursesDatabase[subjectId] || initialCoursesDatabase[subjectId] || initialCoursesDatabase.logica;
+            const hoursData = {
+                'historia': { hours: 10, topics: 'Origem da Computação, Gerações de Hardware, Lógica Booleana, Evolução dos Softwares, Redes & Internet, Era Moderna' },
+                'logica': { hours: 20, topics: 'Algoritmos, Variáveis & Tipos, Operadores Lógicos, Estruturas de Decisão, Laços de Repetição, Funções & Modularização' },
+                'html_css': { hours: 20, topics: 'Semântica HTML5, Estilização CSS3, Flexbox, Layouts Responsivos, Acessibilidade e UI Moderna' },
+                'javascript': { hours: 25, topics: 'Sintaxe ES6+, Manipulação do DOM, Funções, Arrays & Métodos de Iteração, Assincronismo e Eventos' },
+                'python': { hours: 25, topics: 'Fundamentos do Python, Estruturas de Dados, Funções, Automação de Scripts e Resolução de Problemas' },
+                'poo': { hours: 25, topics: 'Classes e Objetos, Encapsulamento, Herança, Polimorfismo e Arquitetura de Software' },
+                'banco_dados': { hours: 25, topics: 'Modelagem de Dados, SQL DDL/DML, Consultas Avançadas, Junções (JOINs) e Agrupamentos' }
+            }[subjectId] || { hours: 20, topics: 'Fundamentos teóricos, prática de código em sandbox e testes de fixação' };
+
+            const totalAulasTrilha = (course.categories || []).reduce((acc, cat) => acc + (cat.chapters || []).length, 0);
+            const certCode = 'CL-' + subjectId.substring(0, 3).toUpperCase() + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+            const dataEmissao = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+
             window.showModal(`
-                <div class="text-left bg-white text-slate-900 p-6 rounded-3xl border-4 border-sky-500 shadow-2xl relative">
-                    <div class="text-center pb-4 border-b border-gray-200">
-                        <span class="text-4xl mb-1 inline-block">🎓</span>
-                        <h2 class="text-xl font-black uppercase tracking-wider text-slate-900 font-code">Certificado de Estudos Livres</h2>
-                        <p class="text-[11px] text-sky-600 font-bold font-code">CodeLogic Pro • Plataforma Educacional de Estudos Livres</p>
+                <div class="text-left bg-[#fcfcfc] text-slate-900 p-6 sm:p-8 rounded-3xl border-8 border-double border-sky-600 shadow-2xl relative font-sans print:border-4 print:p-4">
+                    <!-- Marca d'água de fundo -->
+                    <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none text-9xl font-mono font-black">
+                        &lt;/&gt;
                     </div>
 
-                    <div class="py-6 text-center space-y-3">
-                        <p class="text-xs text-gray-600">Certificamos com honras que o(a) estudante:</p>
-                        <h3 class="text-xl font-black text-indigo-950 underline decoration-sky-500 font-code">${currentUser}</h3>
-                        <p class="text-xs text-gray-700 leading-relaxed max-w-md mx-auto">
-                            Concluiu com aproveitamento a formação completa em <b>${course.name}</b>, demonstrando proficiência técnica, resolução de algoritmos e pensamento computacional.
+                    <!-- Cabeçalho do Certificado -->
+                    <div class="text-center pb-4 border-b-2 border-slate-200 relative z-10">
+                        <div class="flex items-center justify-center gap-2 mb-1">
+                            <span class="text-2xl p-1.5 bg-sky-100 text-sky-700 rounded-xl border border-sky-300 font-mono font-bold">&lt;/&gt;</span>
+                            <span class="text-xl sm:text-2xl font-black font-mono tracking-wider text-slate-900">Code<span class="text-sky-600">Logic</span> <span class="text-amber-500 text-sm">PRO</span></span>
+                        </div>
+                        <h2 class="text-lg sm:text-xl font-black uppercase tracking-widest text-slate-800 font-mono mt-1">CERTIFICADO DE ESTUDOS LIVRES</h2>
+                        <p class="text-[11px] text-sky-700 font-semibold uppercase tracking-wider">Capacitação Prática em Tecnologia & Programação</p>
+                    </div>
+
+                    <!-- Corpo Principal -->
+                    <div class="py-6 text-center space-y-4 relative z-10">
+                        <p class="text-xs sm:text-sm text-slate-600 font-medium">
+                            Certificamos para os devidos fins de comprovação curricular e estudos práticos que
                         </p>
+                        
+                        <div class="border-b-2 border-indigo-900 inline-block px-8 py-1">
+                            <h3 class="text-xl sm:text-2xl font-black text-indigo-950 font-mono tracking-wide">${currentUser}</h3>
+                        </div>
+                        
+                        ${currentUserTurma !== 'Turma Geral' ? `<p class="text-xs text-slate-500 font-mono font-bold">Turma / Instituição: ${currentUserTurma}</p>` : ''}
+
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed max-w-xl mx-auto font-normal">
+                            concluiu com êxito todas as aulas interativas e desafios de código da trilha de 
+                            <strong class="text-slate-900 font-bold font-mono text-sm sm:text-base block mt-1 text-sky-800">${course.name}</strong>
+                        </p>
+
+                        <!-- Box de Carga Horária e Detalhamento -->
+                        <div class="bg-slate-100 p-4 rounded-2xl border border-slate-300 text-left max-w-xl mx-auto space-y-2">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-200 pb-2">
+                                <span class="text-xs font-bold text-slate-700">⏱️ Carga Horária Estimada:</span>
+                                <span class="text-xs font-black font-mono text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300 w-fit">${hoursData.hours} Horas de Prática</span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-200 pb-2 text-[11px] text-slate-600">
+                                <span>📚 Aulas e Desafios Práticos:</span>
+                                <strong class="font-mono text-slate-800">${totalAulasTrilha} Aulas Concluídas</strong>
+                            </div>
+                            <div class="text-[11px] text-slate-600 leading-relaxed pt-1">
+                                <strong class="text-slate-700 block mb-0.5">Conteúdo Programático Praticado:</strong>
+                                ${hoursData.topics}.
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="pt-4 border-t border-gray-200 flex justify-between items-center text-[10px] text-gray-500 font-code">
-                        <span>Emitido em: ${new Date().toLocaleDateString('pt-BR')}</span>
-                        <span class="font-bold text-slate-900">Código de Conclusão: CL-${Date.now().toString(36).toUpperCase()}</span>
+                    <!-- Rodapé do Certificado & Assinatura -->
+                    <div class="pt-4 border-t-2 border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-4 items-end relative z-10">
+                        <div class="text-[10px] text-slate-500 space-y-1 text-left font-mono">
+                            <div>📅 <strong>Data de Emissão:</strong> ${dataEmissao}</div>
+                            <div>🔑 <strong>Registro de Autenticidade:</strong> <span class="text-slate-900 font-bold">${certCode}</span></div>
+                            <div class="text-[9px] text-slate-400 leading-tight pt-1">
+                                * Certificado de Curso Livre emitido conforme a Lei nº 9.394/96 (Diretrizes e Bases da Educação Nacional) e Decreto Presidencial nº 5.154/04. Válido para enriquecimento curricular e comprovação de horas de estudos independentes.
+                            </div>
+                        </div>
+
+                        <div class="text-center sm:text-right flex flex-col items-center sm:items-end">
+                            <div class="w-48 border-b border-slate-400 mb-1"></div>
+                            <span class="text-xs font-bold text-slate-900 font-mono">Murilo Silva</span>
+                            <span class="text-[10px] text-slate-600">Gestão em TI (Cruzeiro do Sul & UNICID)</span>
+                            <span class="text-[9px] text-sky-700 font-mono font-bold">CodeLogic Pro • Coordenação</span>
+                        </div>
                     </div>
 
-                    <div class="mt-6 flex justify-end gap-2 no-print">
-                        <button onclick="window.hideModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold px-4 py-2 rounded-xl text-xs font-code">Fechar</button>
-                        <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-black px-5 py-2 rounded-xl text-xs font-code shadow transition">🖨️ Imprimir / Salvar PDF</button>
+                    <!-- Botões de Ação (Ocultos na Impressão) -->
+                    <div class="mt-6 flex justify-end gap-2 no-print border-t border-slate-200 pt-4">
+                        <button onclick="window.hideModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-2 rounded-xl text-xs font-mono transition">Fechar</button>
+                        <button onclick="window.print()" class="bg-sky-600 hover:bg-sky-500 text-white font-black px-5 py-2 rounded-xl text-xs font-mono shadow-lg transition flex items-center gap-1.5 cursor-pointer">
+                            <span>🖨️</span> Imprimir / Salvar em PDF
+                        </button>
                     </div>
                 </div>
             `, 'max-w-2xl');
         };
+
 
         // --- PAINEL DO INSTRUTOR & EDITOR VISUAL IA ---
         window.renderAdminLogin = function() {
