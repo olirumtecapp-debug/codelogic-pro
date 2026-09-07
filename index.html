@@ -3256,75 +3256,160 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
         };
 
         // --- TELA DE CERTIFICADOS OFICIAIS ---
+        
+        // --- GALERIA DE CERTIFICADOS POR TRILHA COMPLETA COM CARGA HORÁRIA ---
+        const TRACK_HOURS_CONFIG = {
+            'historia': { hours: 10, topics: 'Origem da Computação, Gerações de Hardware, Lógica Booleana, Evolução dos Softwares, Redes & Internet, Era Moderna' },
+            'logica': { hours: 20, topics: 'Algoritmos, Variáveis & Tipos, Operadores Lógicos, Estruturas de Decisão, Laços de Repetição, Funções & Modularização' },
+            'html_css': { hours: 20, topics: 'Semântica HTML5, Estilização CSS3, Flexbox, Layouts Responsivos, Acessibilidade e UI Moderna' },
+            'javascript': { hours: 25, topics: 'Sintaxe ES6+, Manipulação do DOM, Funções, Arrays & Métodos de Iteração, Assincronismo e Eventos' },
+            'python': { hours: 25, topics: 'Fundamentos do Python, Estruturas de Dados, Funções, Automação de Scripts e Resolução de Problemas' },
+            'poo': { hours: 25, topics: 'Classes e Objetos, Encapsulamento, Herança, Polimorfismo e Arquitetura de Software' },
+            'banco_dados': { hours: 25, topics: 'Modelagem de Dados, SQL DDL/DML, Consultas Avançadas, Junções (JOINs) e Agrupamentos' }
+        };
+
         window.showCertificatesModal = function() {
-            let totalPassed = 0;
-            let totalModulesCount = 0;
+            window.soundClick();
+            let totalAulasGlobal = 0;
+            let totalConcluidasGlobal = 0;
+            let trilhasCompletasCount = 0;
 
-            Object.values(window.coursesDatabase).forEach(c => {
-                (c.categories || []).forEach(cat => {
-                    totalModulesCount++;
+            const tracksCardsHTML = window.PORTAL_TRACKS.map(trk => {
+                const course = window.coursesDatabase[trk.id] || initialCoursesDatabase[trk.id];
+                const cfg = TRACK_HOURS_CONFIG[trk.id] || { hours: 20 };
+                
+                let totalChaps = 0;
+                let completedChaps = 0;
+
+                (course?.categories || []).forEach(cat => {
+                    const count = (cat.chapters || []).length;
+                    totalChaps += count;
+                    totalAulasGlobal += count;
                     const prog = studentsProgress[currentUser]?.[cat.id];
-                    if (prog && prog.quizScore >= 70) totalPassed++;
+                    const read = prog?.chaptersRead || 0;
+                    completedChaps += read;
+                    totalConcluidasGlobal += read;
                 });
-            });
 
+                const percent = totalChaps > 0 ? Math.round((completedChaps / totalChaps) * 100) : 0;
+                const isComplete = totalChaps > 0 && completedChaps >= totalChaps;
+
+                if (isComplete) trilhasCompletasCount++;
+
+                return `
+                    <div class="bg-slate-950/80 p-4 rounded-2xl border ${isComplete ? 'border-emerald-500/60 bg-emerald-950/10' : 'border-slate-800'} flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xl">${trk.icon}</span>
+                                <h4 class="font-black text-xs sm:text-sm text-white font-code">${trk.name}</h4>
+                                <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${isComplete ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-400'}">${cfg.hours}h</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-[11px] text-slate-400">
+                                <span>Progresso: <strong>${completedChaps}/${totalChaps} aulas</strong> (${percent}%)</span>
+                                <div class="w-20 bg-slate-800 h-1.5 rounded-full overflow-hidden inline-block">
+                                    <div class="bg-gradient-to-r ${isComplete ? 'from-emerald-400 to-teal-300' : 'from-sky-500 to-indigo-500'} h-full rounded-full" style="width: ${percent}%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            ${isComplete ? `
+                                <button onclick="window.generateDevCertificate('${trk.id}')" class="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-xl font-code transition shadow-lg flex items-center justify-center gap-1.5 cursor-pointer transform hover:scale-105">
+                                    <span>📜</span> Emitir Certificado (${cfg.hours}h)
+                                </button>
+                            ` : `
+                                <button onclick="window.customAlert('🔒 <b>Certificado Bloqueado</b><br>Para desbloquear o Certificado de <b>${cfg.hours} Horas</b> desta trilha, você precisa concluir todas as <b>${totalChaps} aulas e desafios</b> (faltam ${totalChaps - completedChaps} aulas).')" class="w-full sm:w-auto bg-slate-800/80 hover:bg-slate-800 text-slate-400 font-bold text-xs px-4 py-2 rounded-xl font-code transition border border-slate-700 flex items-center justify-center gap-1.5 cursor-pointer">
+                                    <span>🔒</span> Bloqueado (${percent}%)
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const allComplete = trilhasCompletasCount === window.PORTAL_TRACKS.length;
             const coins = studentsProgress[currentUser]?._meta?.miniCoins || 0;
 
             window.showModal(`
                 <div class="text-left space-y-4">
+                    <!-- Cabeçalho -->
                     <div class="flex items-center justify-between pb-3 border-b border-slate-800">
                         <div class="flex items-center gap-2.5">
-                            <span class="text-3xl">🏆</span>
+                            <span class="text-3xl p-2 bg-amber-500/10 rounded-2xl border border-amber-500/20">🏆</span>
                             <div>
-                                <h3 class="text-lg font-black text-white font-code">Galeria de Certificados & Conquistas</h3>
+                                <h3 class="text-lg font-black text-white font-code">Certificados de Conclusão por Trilha</h3>
                                 <p class="text-[11px] text-sky-400">${currentUser} &bull; ${currentUserTurma}</p>
                             </div>
                         </div>
-                        <span class="bg-amber-500/20 text-amber-400 border border-amber-500/30 font-black text-xs px-3 py-1 rounded-full font-code">🪙 ${coins} Moedas Dev</span>
+                        <span class="bg-amber-500/20 text-amber-400 border border-amber-500/30 font-black text-xs px-3 py-1.5 rounded-full font-code">🪙 ${coins} Moedas Dev</span>
                     </div>
 
+                    <!-- Informação de Regra de Conclusão -->
                     <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs text-slate-300 space-y-2">
-                        <div class="flex justify-between">
-                            <span>Módulos Concluídos (Nota &ge; 70%):</span>
-                            <strong class="text-emerald-400 font-code">${totalPassed} de ${totalModulesCount}</strong>
+                        <div class="flex justify-between items-center">
+                            <span>🎓 Trilhas 100% Concluídas:</span>
+                            <strong class="text-emerald-400 font-code text-sm">${trilhasCompletasCount} de ${window.PORTAL_TRACKS.length} Trilhas</strong>
+                        </div>
+                        <p class="text-[11px] text-slate-400 leading-relaxed">
+                            💡 <i>Cada certificado é liberado exclusivamente após você concluir 100% das aulas práticas da respectiva trilha, registrando a carga horária e o conteúdo no documento.</i>
+                        </p>
+                    </div>
+
+                    <!-- Lista de Trilhas -->
+                    <div class="space-y-3 max-h-72 overflow-y-auto custom-scrollbar pr-1">
+                        ${tracksCardsHTML}
+                    </div>
+
+                    <!-- Certificado Especial Master Global (150 Horas) -->
+                    <div class="p-4 rounded-2xl border-2 ${allComplete ? 'border-amber-400 bg-gradient-to-r from-amber-950/40 to-slate-950' : 'border-slate-800 bg-slate-950/60'} flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                        <div class="space-y-0.5">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xl">🌟</span>
+                                <h4 class="font-black text-xs sm:text-sm text-amber-300 font-code">FORMAÇÃO FULL STACK COMPLETA (150 HORAS)</h4>
+                            </div>
+                            <p class="text-[11px] text-slate-400">Certificado Master abrangendo todas as 7 Trilhas e 62 aulas do CodeLogic PRO.</p>
+                        </div>
+
+                        <div>
+                            ${allComplete ? `
+                                <button onclick="window.generateDevCertificate('global_master')" class="bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-xs px-4 py-2.5 rounded-xl font-code transition shadow-lg flex items-center gap-1.5 cursor-pointer">
+                                    <span>🌟</span> Emitir Certificado Master (150h)
+                                </button>
+                            ` : `
+                                <span class="text-[10px] font-mono text-slate-500 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl block text-center">
+                                    🔒 Conclua as 7 Trilhas (${trilhasCompletasCount}/7)
+                                </span>
+                            `}
                         </div>
                     </div>
 
-                    <div class="space-y-3 max-h-60 overflow-y-auto custom-scrollbar pr-1">
-                        ${Object.values(window.coursesDatabase).map(c => `
-                            <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800 flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-black text-xs text-white font-code">${c.name}</h4>
-                                    <span class="text-[10px] text-slate-400">Trilha Prática de Estudos Livres</span>
-                                </div>
-                                <button onclick="window.generateDevCertificate('${c.id}')" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-[11px] px-3.5 py-1.5 rounded-xl font-code transition shadow cursor-pointer">
-                                    📜 Emitir Certificado
-                                </button>
-                            </div>
-                        `).join('')}
-                    </div>
-
                     <div class="pt-3 border-t border-slate-800 flex justify-end">
-                        <button onclick="window.hideModal()" class="bg-slate-800 text-slate-300 font-bold px-4 py-2 rounded-xl text-xs font-code hover:bg-slate-700">Fechar</button>
+                        <button onclick="window.hideModal()" class="bg-slate-800 text-slate-300 font-bold px-5 py-2 rounded-xl text-xs font-code hover:bg-slate-700 cursor-pointer">Fechar</button>
                     </div>
                 </div>
-            `, 'max-w-lg');
+            `, 'max-w-xl');
         };
 
-        
         window.generateDevCertificate = function(subjectId) {
-            const course = window.coursesDatabase[subjectId] || initialCoursesDatabase[subjectId] || initialCoursesDatabase.logica;
-            const hoursData = {
-                'historia': { hours: 10, topics: 'Origem da Computação, Gerações de Hardware, Lógica Booleana, Evolução dos Softwares, Redes & Internet, Era Moderna' },
-                'logica': { hours: 20, topics: 'Algoritmos, Variáveis & Tipos, Operadores Lógicos, Estruturas de Decisão, Laços de Repetição, Funções & Modularização' },
-                'html_css': { hours: 20, topics: 'Semântica HTML5, Estilização CSS3, Flexbox, Layouts Responsivos, Acessibilidade e UI Moderna' },
-                'javascript': { hours: 25, topics: 'Sintaxe ES6+, Manipulação do DOM, Funções, Arrays & Métodos de Iteração, Assincronismo e Eventos' },
-                'python': { hours: 25, topics: 'Fundamentos do Python, Estruturas de Dados, Funções, Automação de Scripts e Resolução de Problemas' },
-                'poo': { hours: 25, topics: 'Classes e Objetos, Encapsulamento, Herança, Polimorfismo e Arquitetura de Software' },
-                'banco_dados': { hours: 25, topics: 'Modelagem de Dados, SQL DDL/DML, Consultas Avançadas, Junções (JOINs) e Agrupamentos' }
-            }[subjectId] || { hours: 20, topics: 'Fundamentos teóricos, prática de código em sandbox e testes de fixação' };
+            let courseName = '';
+            let hours = 20;
+            let topics = '';
+            let totalAulas = 0;
 
-            const totalAulasTrilha = (course.categories || []).reduce((acc, cat) => acc + (cat.chapters || []).length, 0);
+            if (subjectId === 'global_master') {
+                courseName = 'Formação Completa em Lógica, Programação, Web, Python & Banco de Dados';
+                hours = 150;
+                topics = 'Origem e História da Tecnologia, Algoritmos e Lógica Computacional, Desenvolvimento Web Frontend (HTML5/CSS3), JavaScript Moderno ES6+, Programação em Python, Arquitetura Orientada a Objetos (POO) e Bancos de Dados Relacionais SQL';
+                totalAulas = 62;
+            } else {
+                const course = window.coursesDatabase[subjectId] || initialCoursesDatabase[subjectId] || initialCoursesDatabase.logica;
+                courseName = course.name;
+                const cfg = TRACK_HOURS_CONFIG[subjectId] || { hours: 20, topics: 'Fundamentos teóricos, prática de código em sandbox e testes de fixação' };
+                hours = cfg.hours;
+                topics = cfg.topics;
+                totalAulas = (course.categories || []).reduce((acc, cat) => acc + (cat.chapters || []).length, 0);
+            }
+
             const certCode = 'CL-' + subjectId.substring(0, 3).toUpperCase() + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
             const dataEmissao = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
 
@@ -3358,23 +3443,23 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                         ${currentUserTurma !== 'Turma Geral' ? `<p class="text-xs text-slate-500 font-mono font-bold">Turma / Instituição: ${currentUserTurma}</p>` : ''}
 
                         <p class="text-xs sm:text-sm text-slate-700 leading-relaxed max-w-xl mx-auto font-normal">
-                            concluiu com êxito todas as aulas interativas e desafios de código da trilha de 
-                            <strong class="text-slate-900 font-bold font-mono text-sm sm:text-base block mt-1 text-sky-800">${course.name}</strong>
+                            concluiu com êxito e dedicação todas as aulas interativas e desafios de código da trilha
+                            <strong class="text-slate-900 font-bold font-mono text-sm sm:text-base block mt-1 text-sky-800">${courseName}</strong>
                         </p>
 
                         <!-- Box de Carga Horária e Detalhamento -->
                         <div class="bg-slate-100 p-4 rounded-2xl border border-slate-300 text-left max-w-xl mx-auto space-y-2">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-200 pb-2">
-                                <span class="text-xs font-bold text-slate-700">⏱️ Carga Horária Estimada:</span>
-                                <span class="text-xs font-black font-mono text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300 w-fit">${hoursData.hours} Horas de Prática</span>
+                                <span class="text-xs font-bold text-slate-700">⏱️ Carga Horária Cumprida:</span>
+                                <span class="text-xs font-black font-mono text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300 w-fit">${hours} Horas de Prática</span>
                             </div>
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-200 pb-2 text-[11px] text-slate-600">
                                 <span>📚 Aulas e Desafios Práticos:</span>
-                                <strong class="font-mono text-slate-800">${totalAulasTrilha} Aulas Concluídas</strong>
+                                <strong class="font-mono text-slate-800">${totalAulas} Aulas 100% Concluídas</strong>
                             </div>
                             <div class="text-[11px] text-slate-600 leading-relaxed pt-1">
                                 <strong class="text-slate-700 block mb-0.5">Conteúdo Programático Praticado:</strong>
-                                ${hoursData.topics}.
+                                ${topics}.
                             </div>
                         </div>
                     </div>
@@ -3385,7 +3470,7 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                             <div>📅 <strong>Data de Emissão:</strong> ${dataEmissao}</div>
                             <div>🔑 <strong>Registro de Autenticidade:</strong> <span class="text-slate-900 font-bold">${certCode}</span></div>
                             <div class="text-[9px] text-slate-400 leading-tight pt-1">
-                                * Certificado de Curso Livre emitido conforme a Lei nº 9.394/96 (Diretrizes e Bases da Educação Nacional) e Decreto Presidencial nº 5.154/04. Válido para enriquecimento curricular e comprovação de horas de estudos independentes.
+                                * Certificado de Curso Livre emitido conforme a Lei nº 9.394/96 (Diretrizes e Bases da Educação Nacional) e Decreto Presidencial nº 5.154/04. Válido para enriquecimento curricular, horas complementares e comprovação de estudos independentes.
                             </div>
                         </div>
 
@@ -3399,7 +3484,7 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
 
                     <!-- Botões de Ação (Ocultos na Impressão) -->
                     <div class="mt-6 flex justify-end gap-2 no-print border-t border-slate-200 pt-4">
-                        <button onclick="window.hideModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-2 rounded-xl text-xs font-mono transition">Fechar</button>
+                        <button onclick="window.hideModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-2 rounded-xl text-xs font-mono transition cursor-pointer">Fechar</button>
                         <button onclick="window.print()" class="bg-sky-600 hover:bg-sky-500 text-white font-black px-5 py-2 rounded-xl text-xs font-mono shadow-lg transition flex items-center gap-1.5 cursor-pointer">
                             <span>🖨️</span> Imprimir / Salvar em PDF
                         </button>
@@ -3407,8 +3492,6 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                 </div>
             `, 'max-w-2xl');
         };
-
-
         // --- PAINEL DO INSTRUTOR & EDITOR VISUAL IA ---
         window.renderAdminLogin = function() {
             mainContent.innerHTML = `
