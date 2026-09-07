@@ -203,445 +203,1592 @@
 
         // --- BANCO DE DADOS DE CURSOS INICIAL ---
         const initialCoursesDatabase = {
-  logica: {
-    id: 'logica',
-    name: '1. Lógica & Algoritmos',
-    icon: '⚡',
-    badge: 'Fundamentos',
-    color: 'from-amber-500 to-orange-600',
-    description: 'Pensamento computacional, variáveis, condicionais, loops e solução de problemas.',
-    categories: [
+  "logica": {
+    "id": "logica",
+    "name": "1. Lógica & Algoritmos",
+    "icon": "⚡",
+    "badge": "Fundamentos",
+    "color": "from-amber-500 to-orange-600",
+    "description": "Pensamento computacional, variáveis, condicionais, loops, vetores, funções e solução estruturada de problemas.",
+    "categories": [
       {
-        id: 'algoritmos_fundamentos',
-        name: 'Módulo 1: O Mundo dos Algoritmos',
-        description: 'Entenda como os computadores pensam e execute seu primeiro comando.',
-        sources: 'Fundamentos de Ciência da Computação, ACM, IEEE Computer Society.',
-        chapters: [
+        "id": "algoritmos_fundamentos",
+        "name": "Módulo 1: Pensamento Computacional & Algoritmos",
+        "description": "Os 4 pilares do raciocínio lógico e o fluxo de instruções.",
+        "sources": "Fundamentos de Ciência da Computação, ACM, IEEE Computer Society.",
+        "chapters": [
           {
-            title: 'O que é um Algoritmo? ⚡',
-            imageUrl: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=900&auto=format&fit=crop&q=80',
-            content: 'Um <b>algoritmo</b> é simplesmente uma sequência finita, ordenada e não ambígua de instruções para resolver um problema ou executar uma tarefa.<br><br>Pense em uma receita de bolo ou nas instruções para montar um móvel: se você pular um passo ou mudar a ordem das etapas, o resultado final será completamente diferente do esperado. No computador, isso é ainda mais crítico porque a máquina não possui intuição nem bom senso: ela executa exatamente o que você manda, passo a passo.<br><br>Quando escrevemos um programa, estamos traduzindo a nossa linha de raciocínio para uma linguagem que a máquina consiga processar.',
-            miniGame: {
-              question: 'Qual é a melhor definição de Algoritmo na computação?',
-              options: [
-                'Uma peça física do computador responsável pela memória.',
-                'Uma sequência lógica e ordenada de passos para resolver um problema.',
-                'Um erro grave que desliga o sistema operacional.',
-                'Um vírus que rouba senhas na internet.'
+            "title": "1. O que é um Algoritmo & Pensamento Computacional ⚡",
+            "imageUrl": "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=900&auto=format&fit=crop&q=80",
+            "content": "Um <b>algoritmo</b> é uma sequência finita, ordenada e não ambígua de passos para resolver um problema específico.<br><br>Para programar com maestria, desenvolvemos os <b>4 Pilares do Pensamento Computacional</b>:<br>1. <b>Decomposição:</b> Dividir um problema complexo em partes menores e mais fáceis de resolver.<br>2. <b>Reconhecimento de Padrões:</b> Identificar semelhanças e repetições em problemas anteriores.<br>3. <b>Abstração:</b> Focar apenas nas informações essenciais e ignorar detalhes irrelevantes.<br>4. <b>Design de Algoritmos:</b> Criar o passo a passo ordenado para a solução.",
+            "miniGame": {
+              "question": "Qual pilar do Pensamento Computacional consiste em quebrar um grande problema em partes menores?",
+              "options": [
+                "Abstração",
+                "Decomposição",
+                "Reconhecimento de Padrões",
+                "Algoritmo"
               ],
-              correct: 1,
-              explanation: 'Algoritmos são sequências claras e ordenadas de passos lógicos para atingir um objetivo ou resolver um desafio.'
+              "correct": 1,
+              "explanation": "Decomposição é a técnica de dividir um problema complexo em sub-problemas gerenciáveis."
             }
           },
           {
-            title: 'A Máquina é Obediente (Até demais!) 🤖',
-            imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=900&auto=format&fit=crop&q=80',
-            content: 'Os computadores são incrivelmente rápidos para fazer cálculos, mas são completamente incapazes de adivinhar o que você quer.<br><br>Se dissermos a um ser humano: <i>"Pegue o café"</i>, ele sabe que precisa levantar, ir à cozinha, pegar uma xícara e servir. Se dissermos isso a um robô sem as instruções detalhadas, ele pode trompar na parede por não saber como desviar.<br><br>Na programação, quebramos grandes tarefas em <b>passos elementares</b>. Um único passo fora de lugar gera o famoso <b>BUG 🐛</b> (termo criado quando uma mariposa causou uma falha física em um dos primeiros computadores da história, o Mark II em 1947).',
-            miniGame: {
-              question: 'Por que a ordem dos passos é fundamental em um algoritmo?',
-              options: [
-                'Porque o computador corrige a ordem sozinho usando inteligência.',
-                'Porque se a ordem estiver invertida, a máquina executará o erro gerando um bug.',
-                'Porque o computador só lê a primeira e a última linha do código.',
-                'Porque computadores não precisam de eletricidade se a ordem estiver certa.'
+            "title": "2. A Máquina Obediente, Fluxogramas & Pseudocódigo 🤖",
+            "imageUrl": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=900&auto=format&fit=crop&q=80",
+            "content": "O computador é uma máquina incrivelmente rápida, mas sem intuição: ele executa rigorosamente aquilo que é comandado.<br><br>Para planejar soluções antes de escrever código real, usamos duas ferramentas universais:<br>• <b>Fluxograma:</b> Representação visual com formas geométricas (losango para decisões, retângulos para processos, elipses para início/fim).<br>• <b>Pseudocódigo (Portugol):</b> Uma linguagem intermediária escrita em idioma natural estruturado, facilitando o raciocínio sem se preocupar com sintaxe estrita.",
+            "miniGame": {
+              "question": "No desenho de um fluxograma padrão, qual formato geométrico representa uma tomada de decisão (SE/SENÃO)?",
+              "options": [
+                "Retângulo",
+                "Losango",
+                "Círculo perfeito",
+                "Linha tracejada"
               ],
-              correct: 1,
-              explanation: 'Como o computador obedece cegamente a ordem das instruções, qualquer passo incorreto resulta em comportamento inesperado (bug).'
+              "correct": 1,
+              "explanation": "O losango é a convenção universal para representar decisões condicionais em fluxogramas."
             }
           },
           {
-            title: 'Entrada, Processamento e Saída (IPO) 🔄',
-            imageUrl: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=900&auto=format&fit=crop&q=80',
-            content: 'Quase todo programa do mundo opera sob um ciclo clássico chamado <b>Entrada, Processamento e Saída</b> (Input, Processing, Output):<br><br>• <b>Entrada (Input):</b> São os dados que o programa recebe do usuário ou de sensores (ex: digitar uma senha, clicar num botão, dados do teclado).<br>• <b>Processamento:</b> O que o computador calcula ou decide com esses dados (ex: verificar se a senha está correta, somar pontos).<br>• <b>Saída (Output):</b> O resultado exibido na tela, som emitido ou arquivo gravado (ex: "Acesso Permitido!").',
-            miniGame: {
-              question: 'No fluxo de uma calculadora somando 5 + 3 = 8, qual etapa representa o "Processamento"?',
-              options: [
-                'O usuário digitando os números 5 e 3 no teclado.',
-                'A tela acendendo e mostrando o número 8.',
-                'O processador realizando a operação matemática de soma entre 5 e 3.',
-                'A bateria fornecendo energia para o display.'
+            "title": "3. Ciclo Entrada, Processamento e Saída (IPO) 🔄",
+            "imageUrl": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=900&auto=format&fit=crop&q=80",
+            "content": "Todo sistema digital do planeta opera sob a tríade <b>Input, Processing, Output (IPO)</b>:<br><br>1. <b>Entrada (Input):</b> Dados brutos capturados via teclado, mouse, câmera, microfone ou sensores de rede.<br>2. <b>Processamento:</b> A CPU executa operações matemáticas, comparações lógicas e transformações sobre esses dados.<br>3. <b>Saída (Output):</b> O resultado refinado é entregue ao mundo exterior (exibição no monitor, áudio, impressão ou acionamento de motores).",
+            "miniGame": {
+              "question": "Quando um aplicativo bancário calcula os juros e atualiza o saldo após receber a digitação do valor, o cálculo de juros é o quê?",
+              "options": [
+                "Entrada (Input)",
+                "Processamento (Processing)",
+                "Saída (Output)",
+                "Falha de hardware"
               ],
-              correct: 2,
-              explanation: 'A realização da operação de soma dentro da CPU é o processamento; a digitação é a entrada e o resultado na tela é a saída.'
+              "correct": 1,
+              "explanation": "O cálculo matemático executado pela CPU sobre os dados recebidos é a etapa de Processamento."
             }
           }
         ]
       },
       {
-        id: 'variaveis_memoria',
-        name: 'Módulo 2: Caixas de Memória (Variáveis & Tipos)',
-        description: 'Armazenamento de dados, tipos primitivos e manipulação de memória.',
-        sources: 'IEEE Computer Society, ISO/IEC C/C++/Python standards.',
-        chapters: [
+        "id": "logica_memoria",
+        "name": "Módulo 2: Memória, Variáveis & Operadores",
+        "description": "Armazenamento de dados, tipos primitivos e operadores lógicos.",
+        "sources": "IEEE Computer Society, ISO/IEC C/C++/Python Standards.",
+        "chapters": [
           {
-            title: 'O que são Variáveis? 📦',
-            imageUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&auto=format&fit=crop&q=80',
-            content: 'Imagine a memória RAM do computador como um gigantesco armário com milhares de gavetas numeradas. Quando queremos guardar um dado temporário (como a pontuação de um jogador), nós pegamos uma gaveta, colocamos uma etiqueta nela (o <b>identificador</b>) e guardamos o valor dentro.<br><br>A essa gaveta etiquetada damos o nome de <b>Variável</b>, porque o valor que está dentro dela pode variar ao longo da execução do programa (por exemplo, a pontuação começa em 0 e sobe para 100).',
-            miniGame: {
-              question: 'Por que chamamos essas posições de memória de "Variáveis"?',
-              options: [
-                'Porque o nome da gaveta muda a cada segundo.',
-                'Porque o valor armazenado pode ser alterado durante a execução do programa.',
-                'Porque elas só funcionam em computadores portáteis.',
-                'Porque elas apagam o código após o término.'
+            "title": "4. Caixas de Memória, Identificadores & Nomenclatura 📦",
+            "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&auto=format&fit=crop&q=80",
+            "content": "A memória RAM é dividida em milhões de endereços hexadecimais. Para não termos que decorar endereços como <code>0x7FFF5FBFF</code>, criamos <b>Variáveis</b> com nomes amigáveis (<b>Identificadores</b>).<br><br><b>Boas Práticas de Nomenclatura:</b><br>• <b>camelCase:</b> <code>saldoDaConta</code>, <code>nomeDoAluno</code> (padrão em JS/Java).<br>• <b>snake_case:</b> <code>saldo_da_conta</code>, <code>nome_do_aluno</code> (padrão em Python).<br>• Nomes devem ser <i>autodescritivos</i>: evite variáveis de uma única letra como <code>x</code> ou <code>a</code>.",
+            "miniGame": {
+              "question": "Qual das opções segue o padrão de nomenclatura camelCase recomendado na programação?",
+              "options": [
+                "salario_do_funcionario",
+                "SalarioDoFuncionario",
+                "salarioDoFuncionario",
+                "SALARIO-DO-FUNCIONARIO"
               ],
-              correct: 1,
-              explanation: 'As variáveis recebem esse nome justamente porque o dado guardado nelas pode mudar conforme o programa avança.'
+              "correct": 2,
+              "explanation": "camelCase inicia com letra minúscula e cada palavra subsequente tem a primeira letra maiúscula."
             }
           },
           {
-            title: 'Tipos Primitivos de Dados 🧬',
-            imageUrl: 'https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=900&auto=format&fit=crop&q=80',
-            content: 'O computador precisa saber qual é a natureza do dado para saber o que pode fazer com ele. Os tipos primitivos universais são:<br><br>• <b>Integer (Inteiro):</b> Números sem vírgula, positivos ou negativos (ex: <code>10</code>, <code>-5</code>, <code>2026</code>).<br>• <b>Float / Double (Real):</b> Números com casas decimais (ex: <code>3.14</code>, <code>99.90</code>).<br>• <b>String (Texto):</b> Caracteres literais, sempre delimitados por aspas (ex: <code>"Maria"</code>, <code>"São Paulo"</code>).<br>• <b>Boolean (Lógico):</b> Apenas dois estados possíveis: <code>True</code> (Verdadeiro) ou <code>False</code> (Falso).',
-            miniGame: {
-              question: 'Qual tipo de dado é o mais indicado para guardar se um usuário está conectado ou não (Online/Offline)?',
-              options: [
-                'Float (número decimal)',
-                'Boolean (Verdadeiro ou Falso)',
-                'Integer de alta precisão',
-                'Array multidimensional'
+            "title": "5. Tipos Primitivos de Dados & Type Casting 🧬",
+            "imageUrl": "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=900&auto=format&fit=crop&q=80",
+            "content": "Para economizar memória e aplicar as operações corretas, os dados são tipificados:<br><br>• <b>Inteiro (Int):</b> Números sem parte fracionária (<code>-10, 0, 42</code>).<br>• <b>Ponto Flutuante (Float/Double):</b> Números decimais (<code>3.1415, -0.05</code>).<br>• <b>String (Texto):</b> Caracteres entre aspas (<code>\"CodeLogic\"</code>).<br>• <b>Booleano (Bool):</b> Apenas <code>True</code> ou <code>False</code>.<br><br><b>Type Casting:</b> A conversão explícita de um tipo em outro (ex: transformar o texto <code>\"25\"</code> no número inteiro <code>25</code> para poder somar).",
+            "miniGame": {
+              "question": "Se tentarmos somar o texto \"10\" com o número 5 em JavaScript sem conversão, o que acontece?",
+              "options": [
+                "O programa calcula 15 perfeitamente.",
+                "Ocorre concatenação resultando no texto \"105\".",
+                "O computador desliga a tela.",
+                "Aparece o número 50."
               ],
-              correct: 1,
-              explanation: 'O tipo booleano (Boolean) é ideal para representar estados binários com apenas duas possibilidades (Sim/Não, True/False, Ativo/Inativo).'
+              "correct": 1,
+              "explanation": "Quando um texto é somado a um número, ocorre coerção/concatenação de strings resultando em \"105\"."
+            }
+          },
+          {
+            "title": "6. Operadores Aritméticos, Relacionais & Tabela Verdade ⚖️",
+            "imageUrl": "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=900&auto=format&fit=crop&q=80",
+            "content": "Programas realizam três tipos de operações fundamentais:<br><br>• <b>Aritméticos:</b> <code>+</code> (soma), <code>-</code> (subtração), <code>*</code> (multiplicação), <code>/</code> (divisão) e <code>%</code> (módulo/resto da divisão).<br>• <b>Relacionais:</b> <code>==</code> (igual), <code>!=</code> (diferente), <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>.<br>• <b>Lógicos (Álgebra Booleana):</b><br>&nbsp;&nbsp;- <b>E (AND / &&):</b> Verdadeiro apenas se TODAS as condições forem verdadeiras.<br>&nbsp;&nbsp;- <b>OU (OR / ||):</b> Verdadeiro se PELO MENOS UMA condição for verdadeira.<br>&nbsp;&nbsp;- <b>NÃO (NOT / !):</b> Inverte o valor lógico.",
+            "miniGame": {
+              "question": "Qual é o resultado da expressão lógica: (10 > 5) E (3 == 4)?",
+              "options": [
+                "Verdadeiro (True)",
+                "Falso (False)",
+                "Nulo (Null)",
+                "Indeterminado"
+              ],
+              "correct": 1,
+              "explanation": "Na operação E (AND), se uma das proposições for Falsa (3 == 4 é falso), o resultado geral é False."
             }
           }
         ]
       },
       {
-        id: 'estruturas_controle',
-        name: 'Módulo 3: Tomada de Decisões & Laços (If / Else & Loops)',
-        description: 'Condicionais e repetições que tornam os programas inteligentes.',
-        sources: 'Estruturas de Dados e Algoritmos - Cormen, Leis da Lógica Booleana.',
-        chapters: [
+        "id": "logica_controle",
+        "name": "Módulo 3: Estruturas de Controle de Fluxo",
+        "description": "Condicionais simples, compostas, switch e laços de repetição.",
+        "sources": "Estruturas de Dados e Algoritmos - Cormen.",
+        "chapters": [
           {
-            title: 'Estruturas Condicionais (SE / SENÃO) 🔀',
-            imageUrl: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=900&auto=format&fit=crop&q=80',
-            content: 'Programas inteligentes tomam caminhos diferentes baseados em condições. É aí que usamos a estrutura <b>IF / ELSE</b> (Se / Senão).<br><br>O computador avalia uma <b>expressão lógica</b>. Se o resultado for <code>True</code>, ele executa um bloco de código; se for <code>False</code>, ele pula para o bloco do <code>Else</code>.<br><br>Exemplo em pseudocódigo:<br><code>SE (nota >= 7.0) ENTÃO<br>&nbsp;&nbsp;Exibir "Aprovado!"<br>SENÃO<br>&nbsp;&nbsp;Exibir "Recuperação!"</code>',
-            miniGame: {
-              question: 'Qual é o papel principal do comando IF/ELSE em um programa?',
-              options: [
-                'Repetir o mesmo comando 1000 vezes.',
-                'Permitir que o programa tome decisões e execute blocos diferentes dependendo de uma condição.',
-                'Formatar o texto em negrito.',
-                'Conectar o computador à internet.'
+            "title": "7. Condicionais: IF, ELSE-IF, ELSE & SWITCH 🔀",
+            "imageUrl": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=900&auto=format&fit=crop&q=80",
+            "content": "As estruturas condicionais criam bifurcações no caminho do código:<br><br>• <b>IF / ELSE:</b> Avalia uma condição booleana. Se verdadeira executa o bloco IF; caso contrário, executa o bloco ELSE.<br>• <b>ELSE IF (Encadeamento):</b> Permite testar múltiplas condições em cascata (ex: Faixas salariais ou notas escolares A, B, C, D).<br>• <b>SWITCH / CASE:</b> Ideal para comparar uma mesma variável com múltiplos valores fixos específicos (como opções de um menu: 1-Cadastrar, 2-Editar, 3-Sair).",
+            "miniGame": {
+              "question": "Quando é mais recomendado usar SWITCH/CASE em vez de múltiplos IF/ELSE encadeados?",
+              "options": [
+                "Para calcular raízes quadradas.",
+                "Quando estamos comparando uma única variável com vários valores constantes fixos.",
+                "Para fazer repetições automáticas.",
+                "Quando não há condições no programa."
               ],
-              correct: 1,
-              explanation: 'O IF/ELSE permite criar bifurcações na execução do código, dando autonomia para o programa reagir a diferentes dados.'
+              "correct": 1,
+              "explanation": "SWITCH/CASE é ideal para seleções diretas de múltiplos valores discretos conhecidos."
             }
           },
           {
-            title: 'Laços de Repetição (Loops: While & For) 🔁',
-            imageUrl: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=900&auto=format&fit=crop&q=80',
-            content: 'Se você precisa processar a nota de 1.000 alunos, você não escreve o mesmo código mil vezes: você usa um <b>Laço de Repetição (Loop)</b>.<br><br>• <b>WHILE (Enquanto):</b> Repete um bloco <i>enquanto</i> uma condição for verdadeira. Requer atenção especial para atualizar o contador, caso contrário cai no temido <b>Loop Infinito</b> (que trava o programa).<br>• <b>FOR (Para):</b> Repete uma quantidade pré-determinada de vezes ou itera sobre uma lista de itens.',
-            miniGame: {
-              question: 'O que provoca o travamento de um programa por "Loop Infinito"?',
-              options: [
-                'Usar muitas variáveis na memória.',
-                'Quando a condição de parada do laço de repetição nunca é alcançada e ele repete para sempre.',
-                'Digitar código com letras maiúsculas.',
-                'Faltar espaço no disco rígido.'
+            "title": "8. Laços de Repetição: WHILE, DO-WHILE, FOR & Controles 🔁",
+            "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&auto=format&fit=crop&q=80",
+            "content": "Os laços automatizam repetições de instruções:<br><br>• <b>WHILE (Enquanto):</b> Testa a condição <i>antes</i> de executar. Se a condição for falsa de início, nunca executa.<br>• <b>DO-WHILE (Faça-Enquanto):</b> Executa o bloco <i>pelo menos uma vez</i> antes de testar a condição.<br>• <b>FOR (Para):</b> Estrutura compacta com (inicialização; condição; incremento), perfeita para repetições com contagem definida.<br>• <b>Instruções de Controle:</b> <code>break</code> (interrompe o loop imediatamente) e <code>continue</code> (pula para a próxima iteração).",
+            "miniGame": {
+              "question": "Qual comando dentro de um loop provoca a saída e interrupção imediata da repetição?",
+              "options": [
+                "continue",
+                "break",
+                "return_loop",
+                "pause"
               ],
-              correct: 1,
-              explanation: 'Se a condição para encerrar o laço nunca for atingida, o programa fica preso na repetição indefinidamente consumindo 100% da CPU.'
-            }
-          }
-        ]
-      }
-    ],
-    questions: [
-      { category: 'algoritmos_fundamentos', text: 'O que caracteriza um algoritmo eficiente na computação?', options: ['Executar o mais rápido possível e usar a menor quantidade de memória necessária.', 'Ter o maior número de linhas de código possível.', 'Usar cores chamativas no terminal.', 'Não ter saída de dados.'], correct: 0, explanation: 'Eficiência algorítmica é medida pela velocidade de execução (tempo) e pelo consumo otimizado de recursos (espaço/memória).' },
-      { category: 'algoritmos_fundamentos', text: 'Qual é a principal função da fase de "Entrada" (Input) em um sistema?', options: ['Desligar a tela do monitor.', 'Receber dados externos do usuário, teclado, mouse ou rede para serem processados.', 'Imprimir o resultado na impressora.', 'Armazenar arquivos no lixo.'], correct: 1, explanation: 'A entrada fornece a matéria-prima de dados que o processador utilizará.' },
-      { category: 'variaveis_memoria', text: 'Qual das seguintes opções é uma declaração válida de texto (String)?', options: ['1234', 'True', '"Olá, Estudante!"', '3.1415'], correct: 2, explanation: 'Strings são sequências de caracteres delimitadas por aspas.' },
-      { category: 'variaveis_memoria', text: 'Se uma variável do tipo Inteiro com valor 5 for somada com outra de valor 3, o resultado é:', options: ['"53" (como texto)', '8 (número inteiro)', 'Erro fatal', 'False'], correct: 1, explanation: 'Entre inteiros a operação de adição realiza a soma aritmética correta (5 + 3 = 8).' },
-      { category: 'estruturas_controle', text: 'Qual operador lógico exige que DUAS condições sejam verdadeiras ao mesmo tempo?', options: ['OU (OR)', 'NÃO (NOT)', 'E (AND)', 'XOR'], correct: 2, explanation: 'O operador lógico E (AND / &&) só resulta em Verdadeiro se ambas as proposições forem simultaneamente verdadeiras.' },
-      { category: 'estruturas_controle', text: 'Qual estrutura é ideal quando sabemos exatamente quantas vezes queremos repetir uma instrução (ex: 10 vezes)?', options: ['Loop FOR', 'Comando IF', 'Declaração de Variável', 'Comando Print'], correct: 0, explanation: 'O laço FOR é especialmente projetado para repetições com contagem ou intervalos conhecidos.' }
-    ]
-  },
-  html_css: {
-    id: 'html_css',
-    name: '2. Web Frontend (HTML5 & CSS3)',
-    icon: '🌐',
-    badge: 'Intermediário',
-    color: 'from-sky-500 to-blue-600',
-    description: 'Construção visual da Web, tags semânticas, CSS Flexbox, Grid e responsividade.',
-    categories: [
-      {
-        id: 'html_semantico',
-        name: 'Módulo 1: O Esqueleto da Web (HTML5)',
-        description: 'Tags semânticas, formulários, tabelas e acessibilidade.',
-        sources: 'W3C Standards, MDN Web Docs (Mozilla).',
-        chapters: [
-          {
-            title: 'Como a Web Funciona & O Papel do HTML5 🌐',
-            imageUrl: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=900&auto=format&fit=crop&q=80',
-            content: '<b>HTML</b> significa <i>HyperText Markup Language</i> (Linguagem de Marcação de Hipertexto). Não é uma linguagem de programação com lógica, mas sim a linguagem que estrutura e dá significado a todo o conteúdo da internet.<br><br>Através de <b>Tags</b> como <code>&lt;h1&gt;</code> (títulos), <code>&lt;p&gt;</code> (parágrafos) e <code>&lt;button&gt;</code> (botões), informamos ao navegador o que cada elemento representa.',
-            miniGame: {
-              question: 'Qual é o papel principal do HTML na construção de sites?',
-              options: [
-                'Calcular equações matemáticas complexas.',
-                'Estruturar o conteúdo e os elementos da página de forma semântica.',
-                'Controlar o hardware da placa de vídeo.',
-                'Gerenciar servidores de e-mail.'
-              ],
-              correct: 1,
-              explanation: 'O HTML é o esqueleto estrutural que organiza textos, imagens e formulários no navegador.'
-            }
-          },
-          {
-            title: 'Semântica: O Poder de Tags com Significado 🏷️',
-            imageUrl: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=900&auto=format&fit=crop&q=80',
-            content: 'No HTML5 moderno, não usamos apenas tags genéricas como <code>&lt;div&gt;</code> para tudo. Usamos <b>tags semânticas</b> que descrevem claramente o seu propósito:<br><br>• <code>&lt;header&gt;</code>: Cabeçalho principal da página ou seção.<br>• <code>&lt;nav&gt;</code>: Menu de navegação com links.<br>• <code>&lt;main&gt;</code>: O conteúdo central e único da página.<br>• <code>&lt;article&gt;</code>: Um conteúdo independente (como uma notícia ou post).<br>• <code>&lt;footer&gt;</code>: Rodapé com direitos autorais e contatos.<br><br>Isso melhora o rankeamento no Google (SEO) e permite que pessoas cegas usem leitores de tela com facilidade.',
-            miniGame: {
-              question: 'Qual tag HTML5 semântica deve ser utilizada para envolver o menu de links de navegação?',
-              options: ['<nav>', '<section>', '<menu_bar>', '<div>'],
-              correct: 0,
-              explanation: 'A tag <nav> é a tag semântica oficial do padrão HTML5 para agrupar blocos de navegação.'
+              "correct": 1,
+              "explanation": "O comando break aborta imediatamente o laço de repetição, passando para a linha seguinte fora dele."
             }
           }
         ]
       },
       {
-        id: 'css_moderno',
-        name: 'Módulo 2: O Estilo da Web (CSS3 & Flexbox)',
-        description: 'Cores, tipografia, caixas de modelo (Box Model) e Flexbox responsivo.',
-        sources: 'W3C CSS Working Group, MDN Web Docs.',
-        chapters: [
+        "id": "logica_estruturas",
+        "name": "Módulo 4: Vetores, Matrizes & Modularização",
+        "description": "Agrupamento de dados e funções reutilizáveis.",
+        "sources": "Clean Code - Robert C. Martin, Algoritmos - Nivio Ziviani.",
+        "chapters": [
           {
-            title: 'Cascading Style Sheets (CSS3) & Box Model 🎨',
-            imageUrl: 'https://images.unsplash.com/photo-1523437113738-bbd3cc89fb19?w=900&auto=format&fit=crop&q=80',
-            content: 'Se o HTML é o esqueleto, o <b>CSS (Cascading Style Sheets)</b> é a pele, as roupas e a maquiagem da página.<br><br>Cada elemento na tela é tratado pelo navegador como uma caixa retangular através do <b>Box Model</b>:<br>• <b>Content:</b> O texto ou imagem real.<br>• <b>Padding:</b> O espaçamento interno entre o conteúdo e a borda.<br>• <b>Border:</b> A linha de contorno da caixa.<br>• <b>Margin:</b> O espaçamento externo que afasta esta caixa das outras.',
-            miniGame: {
-              question: 'Se você quer criar um espaço interno entre o texto de um botão e a sua borda, qual propriedade CSS você usa?',
-              options: ['padding', 'margin', 'border-radius', 'font-size'],
-              correct: 0,
-              explanation: 'Padding é o espaçamento interno, enquanto Margin afasta elementos externos.'
+            "title": "9. Vetores (Arrays Unidimensionais) & Matrizes 📊",
+            "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop&q=80",
+            "content": "Em vez de criar 100 variáveis separadas (<code>nota1, nota2, ..., nota100</code>), usamos uma estrutura contígua de memória chamada <b>Vetor (Array)</b>.<br><br>• <b>Indexação Baseada em Zero:</b> Na grande maioria das linguagens, o primeiro elemento fica na posição <code>[0]</code>, o segundo na <code>[1]</code> e assim por diante.<br>• <b>Matrizes (Arrays Multidimensionais):</b> Vetores com linhas e colunas (como uma planilha ou tabuleiro de xadrez), acessadas por <code>matriz[linha][coluna]</code>.",
+            "miniGame": {
+              "question": "Em um array com 5 elementos chamado lista = [10, 20, 30, 40, 50], qual valor está em lista[2]?",
+              "options": [
+                "10",
+                "20",
+                "30",
+                "40"
+              ],
+              "correct": 2,
+              "explanation": "Com índice zero: lista[0]=10, lista[1]=20, lista[2]=30."
             }
           },
           {
-            title: 'Dominando o Layout com Flexbox 📐',
-            imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=900&auto=format&fit=crop&q=80',
-            content: 'Antigamente era um pesadelo alinhar coisas lado a lado na Web. O <b>Flexbox</b> revolucionou o design ao permitir criar layouts unidimensionais fluidos e adaptáveis a qualquer tamanho de tela (mobile e desktop).<br><br>Com propriedades simples como <code>display: flex</code>, <code>justify-content: center</code> (alinhamento no eixo principal) e <code>align-items: center</code> (alinhamento no eixo cruzado), conseguimos centralizar e distribuir elementos perfeitamente com poucas linhas de código.',
-            miniGame: {
-              question: 'Qual propriedade CSS ativa o modo Flexbox no elemento pai?',
-              options: ['display: flex;', 'position: absolute;', 'layout: modern;', 'float: left;'],
-              correct: 0,
-              explanation: 'A declaração display: flex transforma o contêiner em um Flex Container, organizando seus filhos de forma flexível.'
+            "title": "10. Modularização: Funções, Parâmetros, Retorno & Escopo 🧩",
+            "imageUrl": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=900&auto=format&fit=crop&q=80",
+            "content": "O princípio <b>DRY (Don't Repeat Yourself)</b> prega que nunca devemos duplicar código. Para isso usamos <b>Funções (Procedimentos/Sub-rotinas)</b>.<br><br>• <b>Parâmetros:</b> Variáveis que a função recebe para trabalhar.<br>• <b>Retorno (`return`):</b> O valor que a função devolve para quem a chamou.<br>• <b>Escopo de Variáveis:</b> Variáveis criadas dentro de uma função são <i>Locais</i> (nascem e morrem com a função); variáveis de fora são <i>Globais</i>.",
+            "miniGame": {
+              "question": "O que caracteriza uma variável com \"Escopo Local\"?",
+              "options": [
+                "Ela só pode ser acessada dentro do bloco/função onde foi declarada.",
+                "Ela funciona em qualquer computador do mundo.",
+                "Ela nunca pode ter o seu valor alterado.",
+                "Ela é apagada assim que o usuário liga o computador."
+              ],
+              "correct": 0,
+              "explanation": "Variáveis locais existem apenas dentro do contexto onde foram criadas, protegendo a integridade do código."
             }
           }
         ]
       }
     ],
-    questions: [
-      { category: 'html_semantico', text: 'Qual atributo da tag <img> é indispensável para acessibilidade de deficientes visuais e SEO?', options: ['alt (texto alternativo descritivo)', 'src_fallback', 'color', 'zoom'], correct: 0, explanation: 'O atributo alt descreve a imagem para leitores de tela e robôs de busca.' },
-      { category: 'html_semantico', text: 'Qual tag cria um link clicável para outra página?', options: ['<a> (âncora com href)', '<link>', '<button_url>', '<click>'], correct: 0, explanation: 'A tag <a> com o atributo href especifica o destino da hiperligação.' },
-      { category: 'css_moderno', text: 'Como selecionamos todos os elementos com a classe "card" no CSS?', options: ['.card', '#card', 'card()', '*card'], correct: 0, explanation: 'O ponto (.) é o seletor universal de classes no CSS.' },
-      { category: 'css_moderno', text: 'Qual propriedade CSS define a cor do fundo de um elemento?', options: ['background-color', 'text-color', 'font-color', 'paint-fill'], correct: 0, explanation: 'A propriedade background-color define a tonalidade de fundo.' }
+    "questions": [
+      {
+        "category": "algoritmos_fundamentos",
+        "text": "O que caracteriza a Decomposição no Pensamento Computacional?",
+        "options": [
+          "Quebrar problemas complexos em partes menores e mais fáceis.",
+          "Escrever código sem usar comentários.",
+          "Desinstalar programas desnecessários.",
+          "Comprar hardware novo."
+        ],
+        "correct": 0,
+        "explanation": "Decomposição é a quebra estruturada de problemas."
+      },
+      {
+        "category": "algoritmos_fundamentos",
+        "text": "Em um fluxograma, que figura representa o início e o fim do fluxo?",
+        "options": [
+          "Elipse/Círculo com bordas arredondadas",
+          "Losango",
+          "Retângulo pontiagudo",
+          "Triângulo invertido"
+        ],
+        "correct": 0,
+        "explanation": "A elipse ou retângulo arredondado é o terminador de início e fim."
+      },
+      {
+        "category": "logica_memoria",
+        "text": "Qual das seguintes opções é uma variável com identificador válido?",
+        "options": [
+          "123usuario",
+          "total_pontos",
+          "total-pontos!",
+          "let"
+        ],
+        "correct": 1,
+        "explanation": "total_pontos usa apenas letras e underscore sem começar com dígitos nem usar palavras reservadas."
+      },
+      {
+        "category": "logica_memoria",
+        "text": "Qual é o resultado da operação matemática 17 % 5 (resto da divisão)?",
+        "options": [
+          "3.4",
+          "2",
+          "3",
+          "0"
+        ],
+        "correct": 1,
+        "explanation": "17 dividido por 5 é 3 com resto 2. O operador módulo % retorna exatamente 2."
+      },
+      {
+        "category": "logica_controle",
+        "text": "Qual laço de repetição garante a execução do bloco de código PELO MENOS UMA VEZ antes do teste lógico?",
+        "options": [
+          "DO-WHILE (Faça-Enquanto)",
+          "WHILE (Enquanto)",
+          "FOR (Para)",
+          "IF/ELSE"
+        ],
+        "correct": 0,
+        "explanation": "O DO-WHILE testa a condição apenas no final da iteração."
+      },
+      {
+        "category": "logica_controle",
+        "text": "O que faz o comando \"continue\" dentro de uma repetição?",
+        "options": [
+          "Encerra o programa completamente.",
+          "Pula imediatamente para a próxima iteração do laço.",
+          "Reinicia o computador.",
+          "Gera um erro de sintaxe."
+        ],
+        "correct": 1,
+        "explanation": "continue pula as linhas restantes da iteração atual e avança para a próxima."
+      },
+      {
+        "category": "logica_estruturas",
+        "text": "Se um vetor possui tamanho 10, qual é o índice do último elemento válido?",
+        "options": [
+          "10",
+          "9",
+          "11",
+          "0"
+        ],
+        "correct": 1,
+        "explanation": "Como os índices vão de 0 a (tamanho - 1), o último é 9."
+      },
+      {
+        "category": "logica_estruturas",
+        "text": "Qual é a finalidade da instrução \"return\" em uma função?",
+        "options": [
+          "Devolver um valor calculado para o ponto onde a função foi chamada e encerrar a sua execução.",
+          "Repetir a função infinitamente.",
+          "Imprimir o texto na tela.",
+          "Fechar o navegador."
+        ],
+        "correct": 0,
+        "explanation": "return devolve o resultado final e devolve o controle ao chamador."
+      }
     ]
   },
-  javascript: {
-    id: 'javascript',
-    name: '3. JavaScript Moderno (ES6+)',
-    icon: '⚡',
-    badge: 'Intermediário',
-    color: 'from-yellow-500 to-amber-600',
-    description: 'Interatividade real no navegador, manipulação do DOM, eventos, APIs e Promises.',
-    categories: [
+  "html_css": {
+    "id": "html_css",
+    "name": "2. Web Frontend (HTML5 & CSS3)",
+    "icon": "🌐",
+    "badge": "Intermediário",
+    "color": "from-sky-500 to-blue-600",
+    "description": "Construção visual da Web, tags semânticas, formulários, acessibilidade, CSS Box Model, Flexbox, Grid e animações.",
+    "categories": [
       {
-        id: 'js_fundamentos',
-        name: 'Módulo 1: O Cérebro do Navegador',
-        description: 'Sintaxe moderna, funções, arrays e objetos.',
-        sources: 'ECMAScript (TC39) Standard, MDN Web Docs.',
-        chapters: [
+        "id": "html_semantico",
+        "name": "Módulo 1: Estrutura Semântica da Web (HTML5)",
+        "description": "Arquitetura HTTP, tags modernas com significado e formulários.",
+        "sources": "W3C Standards, MDN Web Docs (Mozilla), WHATWG HTML Living Standard.",
+        "chapters": [
           {
-            title: 'A Linguagem dos Navegadores 🚀',
-            imageUrl: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=900&auto=format&fit=crop&q=80',
-            content: '<b>JavaScript</b> é a linguagem de programação mais popular do mundo. Se o HTML é o esqueleto e o CSS é a aparência, o JavaScript é o <b>sistema nervoso e muscular</b>: ele faz a página reagir a cliques, carregar dados sem recarregar a tela, validar formulários e criar animações complexas.<br><br>Criada em apenas 10 dias por Brendan Eich em 1995, hoje ela roda tanto no navegador quanto em servidores potentes através do Node.js.',
-            miniGame: {
-              question: 'Qual é a principal função do JavaScript em uma página web?',
-              options: [
-                'Dar interatividade e dinamismo ao comportamento da página.',
-                'Apenas formatar as fontes e cores do texto.',
-                'Substituir o HTML completamente.',
-                'Gerar o sinal de internet Wi-Fi.'
+            "title": "1. Como a Web Funciona & Estrutura Básica HTML5 🌐",
+            "imageUrl": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=900&auto=format&fit=crop&q=80",
+            "content": "Quando você digita um site no navegador, acontece a dança do protocolo <b>HTTP/HTTPS</b>: seu computador (Cliente) faz uma requisição para um Servidor Web, que responde com arquivos <b>HTML, CSS e JavaScript</b>.<br><br>O <b>HTML5</b> é a espinha dorsal. Todo documento inicia com o <code>&lt;!DOCTYPE html&gt;</code>, seguido pela tag raiz <code>&lt;html lang=\"pt-BR\"&gt;</code>, dividida em:<br>• <code>&lt;head&gt;</code>: Metadados invisíveis (título da aba, codificação UTF-8, links de fontes e CSS).<br>• <code>&lt;body&gt;</code>: Tudo o que o usuário realmente vê na tela.",
+            "miniGame": {
+              "question": "Qual seção do documento HTML contém metadados, links de estilo e título da aba?",
+              "options": [
+                "<body>",
+                "<head>",
+                "<main>",
+                "<footer>"
               ],
-              correct: 0,
-              explanation: 'JavaScript é a linguagem que traz comportamento dinâmico, lógica e resposta a eventos no navegador.'
+              "correct": 1,
+              "explanation": "A tag <head> armazena configurações técnicas e metadados que não aparecem diretamente no corpo da página."
             }
           },
           {
-            title: 'Manipulação do DOM (Document Object Model) 🌳',
-            imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=900&auto=format&fit=crop&q=80',
-            content: 'O <b>DOM</b> é a representação em árvore que o navegador cria para cada elemento HTML da página. Com JavaScript, podemos capturar, alterar, criar ou remover qualquer elemento em tempo real!<br><br>Exemplo prático:<br><code>document.getElementById("meu-titulo").innerText = "Olá, Mundo!";</code><br><br>Isso altera o texto na tela instantaneamente sem precisar recarregar a página.',
-            miniGame: {
-              question: 'Qual método JavaScript é comumente usado para capturar um elemento HTML pelo seu ID?',
-              options: [
-                'document.getElementById("idDoElemento")',
-                'document.captureTagName()',
-                'browser.findElement()',
-                'window.grab()'
+            "title": "2. Tags Semânticas Modernas: Código com Propósito 🏷️",
+            "imageUrl": "https://images.unsplash.com/photo-1542838132-92c53300491e?w=900&auto=format&fit=crop&q=80",
+            "content": "Evite a chamada <i>\"Divite\"</i> (o vício de usar apenas <code>&lt;div&gt;</code> para tudo). O HTML5 introduziu tags com alto valor semântico:<br><br>• <code>&lt;header&gt;</code>: Cabeçalho com logo, busca e navegação.<br>• <code>&lt;nav&gt;</code>: Barra de navegação principal.<br>• <code>&lt;main&gt;</code>: Conteúdo principal exclusivo da página (apenas 1 por página).<br>• <code>&lt;article&gt;</code>: Conteúdo autocontido que faz sentido isolado (ex: post, notícia).<br>• <code>&lt;section&gt;</code>: Seção temática de um assunto.<br>• <code>&lt;aside&gt;</code>: Conteúdo lateral relacionado (sidebar, banners).<br>• <code>&lt;footer&gt;</code>: Rodapé com copyright e links institucionais.",
+            "miniGame": {
+              "question": "Qual tag semântica deve conter o artigo principal ou publicação independente em um blog?",
+              "options": [
+                "<article>",
+                "<aside>",
+                "<nav>",
+                "<span>"
               ],
-              correct: 0,
-              explanation: 'document.getElementById() é o método clássico e performático para selecionar elementos pelo seu identificador único.'
+              "correct": 0,
+              "explanation": "<article> é projetado para conteúdos independentes e reutilizáveis como posts e reportagens."
+            }
+          },
+          {
+            "title": "3. Formulários Modernos, Inputs & Validação Nativa 📝",
+            "imageUrl": "https://images.unsplash.com/photo-1555421689-491a97ff2040?w=900&auto=format&fit=crop&q=80",
+            "content": "Formulários <code>&lt;form&gt;</code> coletam dados do usuário com alta segurança.<br><br>• <b>Tipos de Input:</b> <code>text, email, password, number, date, range, checkbox, radio, file</code>.<br>• <b>Atributos de Validação Nativa:</b><br>&nbsp;&nbsp;- <code>required</code>: Torna o preenchimento obrigatório antes do envio.<br>&nbsp;&nbsp;- <code>placeholder</code>: Texto de dica exibido dentro do campo vazio.<br>&nbsp;&nbsp;- <code>min</code> / <code>max</code> e <code>pattern</code> (expressões regulares para CEP/CPF).<br>• Sempre associe <code>&lt;label for=\"idCampo\"&gt;</code> para acessibilidade de leitores de tela e usabilidade.",
+            "miniGame": {
+              "question": "Qual atributo torna o preenchimento de um campo de formulário obrigatório pelo navegador?",
+              "options": [
+                "mandatory",
+                "required",
+                "validate=\"true\"",
+                "locked"
+              ],
+              "correct": 1,
+              "explanation": "O atributo booleano required impede o envio do formulário se o campo estiver vazio."
+            }
+          },
+          {
+            "title": "4. Tabelas, Mídia Rica & Acessibilidade Web (a11y) ♿",
+            "imageUrl": "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=900&auto=format&fit=crop&q=80",
+            "content": "A Web precisa ser inclusiva e acessível para todos os seres humanos:<br><br>• <b>Mídia Nativa:</b> <code>&lt;audio controls&gt;</code>, <code>&lt;video controls poster=\"...\"&gt;</code> e <code>&lt;iframe&gt;</code> para embutir mapas ou vídeos externos.<br>• <b>Tabelas Estruturadas:</b> <code>&lt;table&gt;</code> com <code>&lt;thead&gt;, &lt;tbody&gt;, &lt;tr&gt;, &lt;th&gt;</code> (cabeçalho) e <code>&lt;td&gt;</code> (dado).<br>• <b>Acessibilidade (ARIA):</b> Toda imagem <code>&lt;img&gt;</code> DEVE possuir o atributo <code>alt=\"descrição detalhada\"</code> para pessoas cegas usando leitores de tela (NVDA/TalkBack).",
+            "miniGame": {
+              "question": "Por que o atributo \"alt\" em tags <img> é fundamental na web moderna?",
+              "options": [
+                "Para acelerar a conexão de internet.",
+                "Para permitir que softwares de leitura de tela descrevam a imagem para deficientes visuais e melhorar SEO.",
+                "Para mudar a cor da imagem automaticamente.",
+                "Para impedir que a imagem seja copiada."
+              ],
+              "correct": 1,
+              "explanation": "O atributo alt descreve o conteúdo visual para leitores de tela e motores de busca."
+            }
+          }
+        ]
+      },
+      {
+        "id": "css_estilizacao",
+        "name": "Módulo 2: Estilização & Box Model (CSS3)",
+        "description": "Cascata, especificidade, seletores e o modelo de caixas retangulares.",
+        "sources": "W3C CSS Working Group, MDN Web Docs.",
+        "chapters": [
+          {
+            "title": "5. Seletores, Especificidade, Cascata & Box Model 📦",
+            "imageUrl": "https://images.unsplash.com/photo-1523437113738-bbd3cc89fb19?w=900&auto=format&fit=crop&q=80",
+            "content": "No CSS, tudo é uma caixa retangular regida pelo <b>Box Model</b>:<br><br>• <b>Content:</b> A área real do texto/imagem.<br>• <b>Padding:</b> Espaço interno entre o conteúdo e a borda.<br>• <b>Border:</b> A linha de contorno da caixa.<br>• <b>Margin:</b> O afastamento externo entre esta caixa e os elementos vizinhos.<br>• <b>Box-Sizing:</b> Use sempre <code>box-sizing: border-box;</code> para que o padding e a borda não aumentem a largura total do elemento!",
+            "miniGame": {
+              "question": "Qual declaração CSS garante que o padding e as bordas fiquem dentro da largura total calculada do elemento?",
+              "options": [
+                "box-sizing: border-box;",
+                "display: block;",
+                "padding: inside;",
+                "width: auto-fix;"
+              ],
+              "correct": 0,
+              "explanation": "box-sizing: border-box inclui padding e borda no cálculo total da largura/altura."
+            }
+          },
+          {
+            "title": "6. Tipografia, Cores, Gradientes & Unidades de Medida 📏",
+            "imageUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=900&auto=format&fit=crop&q=80",
+            "content": "Desenvolvedores modernos dominam unidades relativas para layouts flexíveis:<br><br>• <b>Unidades Absolutas:</b> <code>px</code> (pixels fixos).<br>• <b>Unidades Relativas:</b><br>&nbsp;&nbsp;- <code>rem</code>: Relativo ao tamanho da fonte da raiz <code>&lt;html&gt;</code> (1rem = 16px padrão). Altamente recomendado para acessibilidade!<br>&nbsp;&nbsp;- <code>%</code>: Percentual da largura do elemento pai.<br>&nbsp;&nbsp;- <code>vw / vh</code>: Percentual da largura (Viewport Width) e altura (Viewport Height) visível da tela do usuário.<br>• <b>Cores:</b> Hexadecimal (<code>#0ea5e9</code>), RGB/RGBA com transparência e gradientes com <code>linear-gradient()</code>.",
+            "miniGame": {
+              "question": "Qual unidade CSS representa exatamente 50% da altura total visível da janela do navegador?",
+              "options": [
+                "50px",
+                "50rem",
+                "50vh",
+                "50em"
+              ],
+              "correct": 2,
+              "explanation": "vh significa Viewport Height; 50vh corresponde a 50% da altura da tela visível."
+            }
+          }
+        ]
+      },
+      {
+        "id": "css_layouts",
+        "name": "Módulo 3: Layouts Modernos & Responsividade",
+        "description": "Flexbox definitivo, CSS Grid Layout e Media Queries mobile-first.",
+        "sources": "CSS Flexible Box Layout Module, CSS Grid Layout Module Level 1.",
+        "chapters": [
+          {
+            "title": "7. Flexbox Definitivo: Alinhamento Unidimensional 📐",
+            "imageUrl": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=900&auto=format&fit=crop&q=80",
+            "content": "O <b>Flexbox</b> gerencia elementos em um único eixo (linha ou coluna):<br><br>• <code>display: flex;</code>: Ativa o container flexível.<br>• <code>flex-direction: row | column;</code>: Define se os itens fluem em linha horizontal ou coluna vertical.<br>• <code>justify-content: center | space-between | space-around;</code>: Alinhamento ao longo do eixo principal.<br>• <code>align-items: center | flex-start | stretch;</code>: Alinhamento no eixo transversal cruzado.<br>• <code>gap: 1rem;</code>: Define espaçamento uniforme entre os itens sem gambiarras de margens!",
+            "miniGame": {
+              "question": "Qual propriedade Flexbox alinha os elementos horizontalmente ao longo do eixo principal quando flex-direction é row?",
+              "options": [
+                "align-items",
+                "justify-content",
+                "float",
+                "text-align"
+              ],
+              "correct": 1,
+              "explanation": "justify-content controla o alinhamento e distribuição no eixo principal (main axis)."
+            }
+          },
+          {
+            "title": "8. CSS Grid Layout: O Poder Bidimensional ▦",
+            "imageUrl": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=900&auto=format&fit=crop&q=80",
+            "content": "Enquanto o Flexbox é 1D, o <b>CSS Grid</b> é um sistema completo <b>bidimensional</b> (linhas e colunas simultâneas):<br><br>• <code>display: grid;</code>: Ativa o grid container.<br>• <code>grid-template-columns: repeat(3, 1fr);</code>: Cria 3 colunas de largura proporcional idêntica usando a unidade fracional <code>fr</code>.<br>• <code>grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));</code>: O famoso grid mágico responsivo que se auto-ajusta a qualquer tela sem precisar de media queries!",
+            "miniGame": {
+              "question": "O que representa a unidade \"1fr\" no CSS Grid Layout?",
+              "options": [
+                "1 pixel fixo",
+                "1 frame por segundo",
+                "Uma fração proporcional do espaço livre disponível",
+                "1 centímetro na tela"
+              ],
+              "correct": 2,
+              "explanation": "fr (fractional unit) distribui frações proporcionais do espaço disponível no grid."
+            }
+          },
+          {
+            "title": "9. Design Responsivo Mobile-First & Media Queries 📱",
+            "imageUrl": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=900&auto=format&fit=crop&q=80",
+            "content": "Mais de 65% do tráfego da internet mundial vem de smartphones. Por isso usamos a filosofia <b>Mobile-First</b> (projetar primeiro para telas pequenas e depois expandir para desktop).<br><br>Com as <b>Media Queries</b>, aplicamos regras CSS com base na largura da janela:<br><pre class=\"bg-slate-950 p-2 rounded text-sky-300 font-code text-xs\">/* Celular por padrão */\n.card { width: 100%; }\n\n/* Desktop a partir de 768px */\n@media (min-width: 768px) {\n  .card { width: 50%; }\n}</pre>",
+            "miniGame": {
+              "question": "Qual regra CSS permite aplicar estilos condicionais dependendo da largura da tela do dispositivo?",
+              "options": [
+                "@media",
+                "@viewport",
+                "@responsive",
+                "@screen"
+              ],
+              "correct": 0,
+              "explanation": "@media rules permitem criar breakpoints adaptando a interface para celulares, tablets e desktops."
+            }
+          }
+        ]
+      },
+      {
+        "id": "css_avancado",
+        "name": "Módulo 4: Animações & Variáveis CSS",
+        "description": "Transições suaves, keyframes e variáveis nativas do CSS.",
+        "sources": "CSS Animations Level 1, CSS Custom Properties.",
+        "chapters": [
+          {
+            "title": "10. Transições, Keyframes & Variáveis CSS (Custom Properties) ✨",
+            "imageUrl": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=900&auto=format&fit=crop&q=80",
+            "content": "Transforme páginas estáticas em experiências fluidas e profissionais:<br><br>• <b>Variáveis CSS:</b> Permitem criar temas (Dark/Light mode) reutilizando valores em todo o site:<br><code>:root { --cor-primaria: #38bdf8; }</code> e aplicadas com <code>color: var(--cor-primaria);</code>.<br>• <b>Transições:</b> Suavizam mudanças de estado (ex: hover em botões):<br><code>transition: background-color 0.3s ease, transform 0.2s;</code>.<br>• <b>Keyframes:</b> Criam animações completas com linha do tempo definida por porcentagens (<code>@keyframes pulsar { 0% { scale: 1; } 100% { scale: 1.1; } }</code>).",
+            "miniGame": {
+              "question": "Como declaramos e lemos uma variável CSS nativa no padrão moderno?",
+              "options": [
+                "Declaramos com --nome e lemos com var(--nome)",
+                "Declaramos com $nome e lemos com $nome",
+                "Declaramos com @nome e lemos com get(@nome)",
+                "Declaramos com &nome e lemos com eval(&nome)"
+              ],
+              "correct": 0,
+              "explanation": "Variáveis CSS nativas iniciam com dois hífens (--nome) e são consumidas com a função var(--nome)."
             }
           }
         ]
       }
     ],
-    questions: [
-      { category: 'js_fundamentos', text: 'Qual palavra-chave moderna do JavaScript declara uma variável cujo valor NÃO pode ser reatribuído?', options: ['const', 'let', 'var', 'immutable'], correct: 0, explanation: 'A declaração const cria uma constante de escopo de bloco.' },
-      { category: 'js_fundamentos', text: 'Como escutamos o clique de um botão no JavaScript?', options: ['botao.addEventListener("click", minhaFuncao)', 'botao.onClickDoIt()', 'document.listen("click")', 'window.detectTap()'], correct: 0, explanation: 'addEventListener("click", ...) é o método padrão da W3C para registrar ouvintes de eventos.' }
+    "questions": [
+      {
+        "category": "html_semantico",
+        "text": "Qual tag semântica representa a área de cabeçalho com logo e menu?",
+        "options": [
+          "<header>",
+          "<head>",
+          "<top>",
+          "<heading>"
+        ],
+        "correct": 0,
+        "explanation": "<header> é o contêiner semântico para cabeçalhos."
+      },
+      {
+        "category": "html_semantico",
+        "text": "Qual atributo da tag <form> define para qual URL os dados devem ser enviados?",
+        "options": [
+          "action",
+          "method",
+          "target_url",
+          "href"
+        ],
+        "correct": 0,
+        "explanation": "action define a rota de destino do envio do formulário."
+      },
+      {
+        "category": "css_estilizacao",
+        "text": "No Box Model, o que é o \"Padding\"?",
+        "options": [
+          "O espaço interno entre o conteúdo e a borda da caixa.",
+          "A margem externa que afasta outros elementos.",
+          "A espessura da linha de contorno.",
+          "A cor de fundo do texto."
+        ],
+        "correct": 0,
+        "explanation": "Padding é o preenchimento interno da caixa."
+      },
+      {
+        "category": "css_estilizacao",
+        "text": "Qual seletor CSS seleciona um elemento com o atributo id=\"login-box\"?",
+        "options": [
+          "#login-box",
+          ".login-box",
+          "id(login-box)",
+          "*login-box"
+        ],
+        "correct": 0,
+        "explanation": "O caractere cerquilha (#) é o seletor de ID no CSS."
+      },
+      {
+        "category": "css_layouts",
+        "text": "Qual propriedade Flexbox permite que os itens quebrem para a linha seguinte se faltar espaço na tela?",
+        "options": [
+          "flex-wrap: wrap;",
+          "display: multi-row;",
+          "flex-flow: break;",
+          "overflow: wrap;"
+        ],
+        "correct": 0,
+        "explanation": "flex-wrap: wrap permite que os elementos quebrem para novas linhas."
+      },
+      {
+        "category": "css_layouts",
+        "text": "O que significa a abordagem \"Mobile-First\" no desenvolvimento web?",
+        "options": [
+          "Escrever o CSS pensando inicialmente nas telas de celulares e depois adicionar Media Queries para telas maiores.",
+          "Criar aplicativos exclusivos que não rodam em computadores.",
+          "Vender celulares na internet.",
+          "Testar o site apenas em navegadores antigos."
+        ],
+        "correct": 0,
+        "explanation": "Mobile-First prioriza a experiência em dispositivos móveis como base do design."
+      },
+      {
+        "category": "css_avancado",
+        "text": "Qual propriedade CSS é utilizada para criar animações com aceleração gráfica de hardware sem travar a interface?",
+        "options": [
+          "transform e opacity",
+          "margin-left e top",
+          "width e height",
+          "font-size e padding"
+        ],
+        "correct": 0,
+        "explanation": "transform e opacity são renderizados diretamente pela GPU (placa de vídeo), garantindo 60 FPS."
+      }
     ]
   },
-  python: {
-    id: 'python',
-    name: '4. Python & Automação',
-    icon: '🐍',
-    badge: 'Avançado',
-    color: 'from-emerald-500 to-teal-700',
-    description: 'Sintaxe elegante, estruturas de dados ricas, automação, IA e análise de dados.',
-    categories: [
+  "javascript": {
+    "id": "javascript",
+    "name": "3. JavaScript Moderno (ES6+)",
+    "icon": "⚡",
+    "badge": "Intermediário",
+    "color": "from-yellow-500 to-amber-600",
+    "description": "Interatividade no navegador, ES6+, métodos funcionais, manipulação do DOM, eventos, assincronismo e APIs REST.",
+    "categories": [
       {
-        id: 'python_essencial',
-        name: 'Módulo 1: O Poder da Sintaxe Limpa',
-        description: 'Indentação, listas, dicionários e funções.',
-        sources: 'Python Software Foundation (Python.org), PEP 8.',
-        chapters: [
+        "id": "js_fundamentos_modernos",
+        "name": "Módulo 1: Fundamentos do JavaScript Moderno (ES6+)",
+        "description": "Escopo de variáveis, template literals, destructuring e arrow functions.",
+        "sources": "ECMAScript (TC39) Standard, MDN Web Docs.",
+        "chapters": [
           {
-            title: 'Por que Python Conquistou o Mundo? 🐍',
-            imageUrl: 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=900&auto=format&fit=crop&q=80',
-            content: 'Criado por Guido van Rossum em 1991, o <b>Python</b> foi projetado com uma filosofia central: <i>legibilidade acima de tudo</i>.<br><br>Diferente de linguagens como C ou Java que usam muitas chaves <code>{}</code> e pontos e vírgulas <code>;</code>, o Python usa a <b>indentação</b> (espaços no início da linha) para definir blocos de código. Isso torna os programas muito fáceis de ler e escrever, sendo a linguagem favorita para Inteligência Artificial, Ciência de Dados e Automação de Tarefas.',
-            miniGame: {
-              question: 'Como o Python define os blocos de código dentro de funções e condicionais?',
-              options: [
-                'Através de indentação obrigatória (espaços no início da linha).',
-                'Usando chaves { } no início e no fim.',
-                'Escrevendo em letras maiúsculas.',
-                'Colocando pontos finais após cada comando.'
+            "title": "1. JavaScript Moderno: let & const vs var e Hoisting ⚡",
+            "imageUrl": "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=900&auto=format&fit=crop&q=80",
+            "content": "O JavaScript evoluiu drasticamente com o padrão <b>ES6 (ECMAScript 2015)</b>.<br><br>• <b>`var` (Legado):</b> Possui escopo de função e sofre <i>hoisting</i> (içamento), gerando bugs inesperados.<br>• <b>`let`:</b> Possui <b>escopo de bloco</b> (respeita <code>{}</code> de IFs e FORs) e permite reatribuição de valor.<br>• <b>`const`:</b> Também tem escopo de bloco, mas <b>impede a reatribuição</b> direta de valor, garantindo imutabilidade e previsibilidade no código.<br><br><i>Regra de ouro moderna:</i> Use <code>const</code> por padrão; use <code>let</code> apenas se a variável precisar mudar de valor; nunca use <code>var</code>!",
+            "miniGame": {
+              "question": "Qual palavra-chave deve ser usada por padrão em JS para declarar uma variável cujo valor não deve ser reatribuído?",
+              "options": [
+                "const",
+                "let",
+                "var",
+                "static"
               ],
-              correct: 0,
-              explanation: 'Em Python a indentação não é apenas estética: ela define a hierarquia e o escopo dos blocos de código.'
+              "correct": 0,
+              "explanation": "const cria referências constantes de escopo de bloco."
             }
           },
           {
-            title: 'Listas e Dicionários: Estruturas Poderosas 📚',
-            imageUrl: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=900&auto=format&fit=crop&q=80',
-            content: 'Em Python temos estruturas de dados de alto nível prontas para uso:<br><br>• <b>Listas (List):</b> Coleções ordenadas e mutáveis: <code>frutas = ["Maçã", "Banana", "Uva"]</code><br>• <b>Dicionários (Dict):</b> Pares de chave e valor (como uma ficha cadastral):<br><code>aluno = {"nome": "Lucas", "nota": 9.5, "aprovado": True}</code><br><br>Com essas duas estruturas conseguimos representar quase qualquer modelo de dados do mundo real!',
-            miniGame: {
-              question: 'Em um dicionário Python aluno = {"nome": "Ana", "idade": 16}, como acessamos o nome da aluna?',
-              options: [
-                'aluno["nome"]',
-                'aluno.get_item(0)',
-                'aluno->nome',
-                'aluno(1)'
+            "title": "2. Template Literals, Operadores & Destructuring 🧩",
+            "imageUrl": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=900&auto=format&fit=crop&q=80",
+            "content": "Escreva código muito mais limpo e conciso com os recursos modernos:<br><br>• <b>Template Literals:</b> Interpolação de variáveis usando crases <code>`Olá, ${nome}! Você tem ${idade} anos.`</code> sem ficar somando aspas e sinais de mais.<br>• <b>Destructuring (Desestruturação):</b> Extrair propriedades de objetos ou itens de arrays diretamente em variáveis:<br><code>const usuario = { nome: \"Ana\", cargo: \"Dev\" };<br>const { nome, cargo } = usuario;</code><br>• <b>Operador Nullish Coalescing (`??`):</b> Define valor padrão apenas se for <code>null</code> ou <code>undefined</code>.",
+            "miniGame": {
+              "question": "Qual caractere é usado para delimitar Template Literals com suporte a interpolação ${variavel} em JavaScript?",
+              "options": [
+                "Crase (`)",
+                "Aspas duplas (\")",
+                "Aspas simples (')",
+                "Parênteses ()"
               ],
-              correct: 0,
-              explanation: 'Acessamos os valores de um dicionário informando a chave entre colchetes aluno["nome"].'
+              "correct": 0,
+              "explanation": "Template Literals são criados com o acento grave (crase `)."
+            }
+          },
+          {
+            "title": "3. Funções: Tradicionais vs Arrow Functions & Spread/Rest 🏹",
+            "imageUrl": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=900&auto=format&fit=crop&q=80",
+            "content": "As <b>Arrow Functions (`=&gt;`)</b> trouxeram sintaxe ultra-compacta e tratamento léxico do ponteiro <code>this</code>:<br><pre class=\"bg-slate-950 p-2 rounded text-amber-300 font-code text-xs\">// Função tradicional\nfunction somar(a, b) { return a + b; }\n\n// Arrow Function com retorno implícito\nconst somar = (a, b) => a + b;</pre><br>• <b>Operador Spread/Rest (`...`):</b><br>&nbsp;&nbsp;- <i>Spread:</i> Espalha elementos de um array ou objeto (<code>const copia = [...arrayOriginal, novoItem];</code>).<br>&nbsp;&nbsp;- <i>Rest:</i> Agrupa múltiplos parâmetros passados para uma função em um único array.",
+            "miniGame": {
+              "question": "O que faz o operador Spread (...) quando usado em const novo = [...lista1, ...lista2]?",
+              "options": [
+                "Funde os itens das duas listas em um novo array sem modificar os originais.",
+                "Apaga todos os itens das duas listas.",
+                "Multiplica todos os números por 3.",
+                "Gera um erro de sintaxe."
+              ],
+              "correct": 0,
+              "explanation": "Spread expande os elementos dos arrays existentes criando uma cópia combinada."
+            }
+          }
+        ]
+      },
+      {
+        "id": "js_arrays_objetos",
+        "name": "Módulo 2: Manipulação de Dados & Coleções",
+        "description": "Métodos funcionais de array, objetos literais, JSON e LocalStorage.",
+        "sources": "MDN JavaScript Reference, Clean JavaScript.",
+        "chapters": [
+          {
+            "title": "4. Métodos Funcionais de Array: map, filter, reduce & find 🔄",
+            "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop&q=80",
+            "content": "Abandone os loops <code>for</code> tradicionais em coleções. Em JavaScript moderno usamos programação funcional:<br><br>• <b>`map()`:</b> Transforma cada elemento e retorna um novo array do mesmo tamanho (ex: dobrar preços).<br>• <b>`filter()`:</b> Filtra os elementos mantendo apenas os que atendem a uma condição booleana (ex: alunos com nota &gt;= 7).<br>• <b>`find()`:</b> Retorna o <i>primeiro</i> elemento que satisfaz a busca.<br>• <b>`reduce()`:</b> Acumula todos os valores do array em um único resultado final (ex: somar o total de um carrinho de compras).",
+            "miniGame": {
+              "question": "Qual método de array é ideal para filtrar uma lista de produtos mantendo apenas os que estão em promoção?",
+              "options": [
+                "filter()",
+                "map()",
+                "push()",
+                "reduce()"
+              ],
+              "correct": 0,
+              "explanation": "filter() avalia cada item e retorna um novo array contendo apenas os aprovados no teste."
+            }
+          },
+          {
+            "title": "5. Objetos, JSON & Persistência com LocalStorage 💾",
+            "imageUrl": "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=900&auto=format&fit=crop&q=80",
+            "content": "Tudo na web troca dados no formato <b>JSON (JavaScript Object Notation)</b>:<br><br>• <code>JSON.stringify(objeto)</code>: Converte um objeto JavaScript em texto JSON para envio em rede ou gravação.<br>• <code>JSON.parse(textoJson)</code>: Converte um texto JSON de volta em objeto manipulável.<br>• <b>`localStorage`:</b> Banco de dados chave-valor embutido no navegador que guarda dados mesmo após fechar a aba:<br><code>localStorage.setItem(\"usuario\", JSON.stringify(dados));<br>const dados = JSON.parse(localStorage.getItem(\"usuario\"));</code>",
+            "miniGame": {
+              "question": "Qual método converte um objeto JavaScript em uma string formatada em JSON?",
+              "options": [
+                "JSON.stringify()",
+                "JSON.parse()",
+                "Object.toString()",
+                "JSON.encode()"
+              ],
+              "correct": 0,
+              "explanation": "JSON.stringify() serializa objetos em strings JSON prontas para transmissão ou armazenamento."
+            }
+          }
+        ]
+      },
+      {
+        "id": "js_dom_eventos",
+        "name": "Módulo 3: Interatividade & Manipulação do DOM",
+        "description": "Seleção de elementos, manipulação de classes, estilos e captura de eventos.",
+        "sources": "W3C DOM Level 4, MDN Web Docs.",
+        "chapters": [
+          {
+            "title": "6. Seleção & Manipulação Dinâmica do DOM 🌳",
+            "imageUrl": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=900&auto=format&fit=crop&q=80",
+            "content": "O <b>DOM (Document Object Model)</b> é a árvore de objetos que representa o HTML no navegador.<br><br>• <b>Seletores Modernos:</b><br>&nbsp;&nbsp;- <code>document.querySelector(\".minha-classe\")</code>: Seleciona o primeiro elemento que casa com a regra CSS.<br>&nbsp;&nbsp;- <code>document.querySelectorAll(\"button\")</code>: Seleciona todos os elementos em uma NodeList.<br>• <b>Manipulação:</b><br>&nbsp;&nbsp;- <code>elemento.textContent = \"Novo Texto\"</code> (seguro contra injeção XSS).<br>&nbsp;&nbsp;- <code>elemento.classList.add(\"ativo\")</code>, <code>remove()</code> e <code>toggle(\"dark\")</code>.<br>&nbsp;&nbsp;- <code>document.createElement(\"div\")</code> e <code>elementoPai.appendChild(novoFilho)</code>.",
+            "miniGame": {
+              "question": "Qual método é o mais recomendado para alternar uma classe CSS (adicionar se não existir, remover se existir) em um elemento?",
+              "options": [
+                "elemento.classList.toggle(\"classe\")",
+                "elemento.className.switch()",
+                "elemento.changeClass()",
+                "elemento.style.toggle()"
+              ],
+              "correct": 0,
+              "explanation": "classList.toggle() adiciona a classe caso ela esteja ausente e a remove caso esteja presente."
+            }
+          },
+          {
+            "title": "7. O Sistema de Eventos: Listeners, Bubbling & Delegation 🖱️",
+            "imageUrl": "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=900&auto=format&fit=crop&q=80",
+            "content": "As páginas reagem a ações através de <b>Event Listeners</b>:<br><pre class=\"bg-slate-950 p-2 rounded text-yellow-300 font-code text-xs\">const form = document.querySelector(\"#meu-form\");\nform.addEventListener(\"submit\", (event) => {\n  event.preventDefault(); // Impede o recarregamento padrão da página!\n  console.log(\"Formulário validado com sucesso!\");\n});</pre><br>• <b>Event Bubbling:</b> Eventos disparam no elemento clicado e sobem a árvore até a raiz (o que permite <i>Event Delegation</i>, ouvindo cliques em múltiplos botões com um único listener no pai).",
+            "miniGame": {
+              "question": "Por que usamos event.preventDefault() dentro do listener de envio de um formulário?",
+              "options": [
+                "Para impedir que a página recarregue e permitir envio dinâmico via JavaScript (AJAX/Fetch).",
+                "Para apagar todos os dados digitados.",
+                "Para fechar a janela do navegador.",
+                "Para reiniciar o roteador."
+              ],
+              "correct": 0,
+              "explanation": "event.preventDefault() cancela o comportamento nativo de reload do formulário no navegador."
+            }
+          }
+        ]
+      },
+      {
+        "id": "js_assincrono",
+        "name": "Módulo 4: JavaScript Assíncrono & Consumo de APIs",
+        "description": "Event Loop, Promises, Async/Await e requisições HTTP com Fetch API.",
+        "sources": "JavaScript Async Guidelines, WHATWG Fetch Standard.",
+        "chapters": [
+          {
+            "title": "8. O Event Loop, Callbacks & Promises ⏳",
+            "imageUrl": "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=900&auto=format&fit=crop&q=80",
+            "content": "O JavaScript é <i>Single-Threaded</i> (executa uma instrução por vez). Para não travar a tela enquanto espera o download de uma imagem ou resposta do servidor, ele usa o <b>Event Loop</b> assíncrono.<br><br>Uma <b>Promise</b> representa um valor que estará disponível no futuro e possui 3 estados:<br>1. <b>Pending (Pendente):</b> Operação em andamento.<br>2. <b>Fulfilled (Resolvida):</b> Sucesso! Valor retornado com <code>.then()</code>.<br>3. <b>Rejected (Rejeitada):</b> Ocorreu uma falha tratada com <code>.catch()</code>.",
+            "miniGame": {
+              "question": "Quais são os 3 estados possíveis de uma Promise em JavaScript?",
+              "options": [
+                "Pending, Fulfilled e Rejected",
+                "Início, Meio e Fim",
+                "True, False e Null",
+                "Input, Output e Error"
+              ],
+              "correct": 0,
+              "explanation": "Uma Promise inicia em Pending e é finalizada como Fulfilled (sucesso) ou Rejected (falha)."
+            }
+          },
+          {
+            "title": "9. Async / Await & Tratamento Robusto de Erros (Try/Catch) 🛡️",
+            "imageUrl": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=900&auto=format&fit=crop&q=80",
+            "content": "A sintaxe <b>async / await</b> permite escrever código assíncrono com a mesma elegância e legibilidade de código síncrono, eliminando o antigo \"Callback Hell\":<br><pre class=\"bg-slate-950 p-2 rounded text-amber-300 font-code text-xs\">async function carregarDados() {\n  try {\n    const resposta = await fetch(\"https://api.exemplo.com/usuarios\");\n    const dados = await resposta.json();\n    console.log(dados);\n  } catch (erro) {\n    console.error(\"Falha na conexão com o servidor:\", erro);\n  } finally {\n    console.log(\"Processo concluído.\");\n  }\n}</pre>",
+            "miniGame": {
+              "question": "Qual bloco é utilizado para capturar e tratar falhas que ocorrem dentro de funções assíncronas com await?",
+              "options": [
+                "try { ... } catch (erro) { ... }",
+                "if / else",
+                "switch / case",
+                "while (error)"
+              ],
+              "correct": 0,
+              "explanation": "try/catch é o bloco padrão de tratamento de exceções em JavaScript síncrono e assíncrono."
+            }
+          },
+          {
+            "title": "10. Consumindo APIs REST com Fetch API & HTTP Methods 🌐",
+            "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&auto=format&fit=crop&q=80",
+            "content": "Quase todo sistema moderno consome <b>APIs RESTful</b> através de verbos HTTP padronizados:<br><br>• <b>GET:</b> Buscar dados (ex: listar produtos).<br>• <b>POST:</b> Criar novo recurso (ex: cadastrar usuário com dados no corpo da requisição).<br>• <b>PUT / PATCH:</b> Atualizar registros existentes.<br>• <b>DELETE:</b> Remover registros.<br>• <b>Códigos de Status HTTP Essenciais:</b><br>&nbsp;&nbsp;- <code>200 OK / 201 Created</code>: Sucesso!<br>&nbsp;&nbsp;- <code>400 Bad Request / 404 Not Found</code>: Erro no cliente.<br>&nbsp;&nbsp;- <code>500 Internal Server Error</code>: Falha no servidor.",
+            "miniGame": {
+              "question": "Qual método HTTP é utilizado para enviar dados com a finalidade de cadastrar um novo registro em uma API?",
+              "options": [
+                "POST",
+                "GET",
+                "FETCH",
+                "RETRIEVE"
+              ],
+              "correct": 0,
+              "explanation": "O método POST é a convenção REST para submissão e criação de novos registros no servidor."
             }
           }
         ]
       }
     ],
-    questions: [
-      { category: 'python_essencial', text: 'Qual função em Python exibe mensagens no terminal/console?', options: ['print()', 'console.log()', 'echo()', 'System.out.println()'], correct: 0, explanation: 'print() é a função nativa em Python para exibir saídas na tela.' },
-      { category: 'python_essencial', text: 'Como definimos uma função personalizada em Python?', options: ['def minha_funcao():', 'function minha_funcao()', 'fn minha_funcao()', 'create minha_funcao()'], correct: 0, explanation: 'A palavra-chave def (de define) declara funções em Python.' }
+    "questions": [
+      {
+        "category": "js_fundamentos_modernos",
+        "text": "O que diferencia a declaração \"const\" de \"let\" em JavaScript?",
+        "options": [
+          "const impede a reatribuição do identificador de variável.",
+          "const é mais lenta que let.",
+          "const não funciona dentro de funções.",
+          "const é apenas para números."
+        ],
+        "correct": 0,
+        "explanation": "const declara constantes de escopo de bloco."
+      },
+      {
+        "category": "js_fundamentos_modernos",
+        "text": "Qual das opções é um exemplo correto de Arrow Function com retorno implícito?",
+        "options": [
+          "const dobro = (x) => x * 2;",
+          "function dobro(x) { x * 2 }",
+          "const dobro = x -> x * 2;",
+          "arrow dobro(x) { return x * 2; }"
+        ],
+        "correct": 0,
+        "explanation": "Arrow functions com expressão direta na mesma linha possuem retorno implícito."
+      },
+      {
+        "category": "js_arrays_objetos",
+        "text": "O que o método array.map() retorna?",
+        "options": [
+          "Um novo array contendo o resultado da função aplicada a cada elemento do array original.",
+          "Apenas o primeiro elemento do array.",
+          "O tamanho do array em bytes.",
+          "Um número booleano."
+        ],
+        "correct": 0,
+        "explanation": "map() gera um novo array transformado de mesmo tamanho."
+      },
+      {
+        "category": "js_arrays_objetos",
+        "text": "Qual método converte uma string de texto JSON de volta para um objeto manipulável em JavaScript?",
+        "options": [
+          "JSON.parse()",
+          "JSON.stringify()",
+          "JSON.toObject()",
+          "JSON.decode()"
+        ],
+        "correct": 0,
+        "explanation": "JSON.parse() desserializa strings JSON em estruturas JavaScript."
+      },
+      {
+        "category": "js_dom_eventos",
+        "text": "Qual método do DOM seleciona o PRIMEIRO elemento que coincide com um seletor CSS específico?",
+        "options": [
+          "document.querySelector()",
+          "document.getElementById()",
+          "document.findAll()",
+          "document.select()"
+        ],
+        "correct": 0,
+        "explanation": "document.querySelector() usa qualquer seletor CSS e retorna o primeiro elemento coincidente."
+      },
+      {
+        "category": "js_assincrono",
+        "text": "O que a palavra-chave \"await\" faz dentro de uma função assíncrona?",
+        "options": [
+          "Pausa a execução da função até que a Promise seja resolvida, retornando o valor final.",
+          "Desliga a conexão com o servidor.",
+          "Cria um loop infinito.",
+          "Reinicia o navegador."
+        ],
+        "correct": 0,
+        "explanation": "await aguarda a conclusão da Promise de forma limpa e não bloqueante."
+      },
+      {
+        "category": "js_assincrono",
+        "text": "Qual código de status HTTP indica que o recurso solicitado não foi encontrado no servidor?",
+        "options": [
+          "404 Not Found",
+          "200 OK",
+          "500 Server Error",
+          "201 Created"
+        ],
+        "correct": 0,
+        "explanation": "404 é o código universal de recurso não encontrado."
+      }
     ]
   },
-  poo: {
-    id: 'poo',
-    name: '5. POO & Engenharia de Software',
-    icon: '🏗️',
-    badge: 'Avançado',
-    color: 'from-purple-600 to-indigo-800',
-    description: 'Classes, Objetos, Encapsulamento, Herança, Polimorfismo e Padrões de Projeto.',
-    categories: [
+  "python": {
+    "id": "python",
+    "name": "4. Python & Automação",
+    "icon": "🐍",
+    "badge": "Intermediário / Avançado",
+    "color": "from-emerald-500 to-teal-700",
+    "description": "Sintaxe limpa, listas, tuplas, dicionários, funções, list comprehensions, manipulação de arquivos e automação.",
+    "categories": [
       {
-        id: 'poo_pilares',
-        name: 'Módulo 1: Os 4 Pilares da Orientação a Objetos',
-        description: 'Classes, instâncias e modelagem de software corporativo.',
-        sources: 'Design Patterns (Gang of Four), Object-Oriented Software Engineering.',
-        chapters: [
+        "id": "python_fundamentos",
+        "name": "Módulo 1: Fundamentos & Sintaxe Python",
+        "description": "Zen of Python, indentação obrigatória, tipos dinâmicos e operadores.",
+        "sources": "Python Software Foundation (Python.org), PEP 8 Style Guide.",
+        "chapters": [
           {
-            title: 'O que é Programação Orientada a Objetos? 🏗️',
-            imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=900&auto=format&fit=crop&q=80',
-            content: 'A <b>Programação Orientada a Objetos (POO)</b> é um paradigma que modela o software com base em conceitos do mundo real.<br><br>• <b>Classe:</b> É a planta baixa ou molde (ex: a planta de um Carro).<br>• <b>Objeto (Instância):</b> É o carro real construído a partir da planta, com seus próprios valores (cor azul, placa ABC-1234).<br>• <b>Atributos:</b> As características do objeto (marca, ano, velocidade).<br>• <b>Métodos:</b> As ações que o objeto pode realizar (acelerar(), frear(), buzinar()).',
-            miniGame: {
-              question: 'Qual é a diferença entre uma Classe e um Objeto na POO?',
-              options: [
-                'A Classe é o molde/planta baixa conceitual, enquanto o Objeto é a instância real criada na memória.',
-                'Classe é para jogos 3D e Objeto é para sites.',
-                'Não há diferença, são sinônimos perfeitos.',
-                'Objetos são criados antes das Classes.'
+            "title": "1. A Filosofia Python & Entrada/Saída com print e input 🐍",
+            "imageUrl": "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=900&auto=format&fit=crop&q=80",
+            "content": "Criado por Guido van Rossum em 1991, o <b>Python</b> é a linguagem número 1 para Inteligência Artificial, Ciência de Dados e Automação de Infraestrutura.<br><br>• <b>The Zen of Python (PEP 20):</b> <i>\"Simples é melhor que complexo. Legibilidade conta.\"</i><br>• <b>Indentação Obrigatória:</b> Em Python não existem chaves <code>{}</code> para abrir blocos: o alinhamento de 4 espaços dita a hierarquia.<br>• <b>Entrada e Saída:</b><br>&nbsp;&nbsp;- <code>print(f\"Olá, {nome}!\")</code>: Exibe texto formatado usando f-strings.<br>&nbsp;&nbsp;- <code>idade = int(input(\"Digite sua idade: \"))</code>: Captura texto digitado pelo usuário e converte para número inteiro.",
+            "miniGame": {
+              "question": "Como o Python delimita os blocos de código em funções e estruturas de controle?",
+              "options": [
+                "Através de indentação (espaços no início da linha).",
+                "Usando chaves { } no início e fim.",
+                "Escrevendo comandos em maiúsculas.",
+                "Colocando tags <block> e </block>."
               ],
-              correct: 0,
-              explanation: 'A Classe define as propriedades e comportamentos, enquanto o Objeto é a concretização real instanciada.'
+              "correct": 0,
+              "explanation": "Em Python a indentação é parte da gramática e sintaxe obrigatória da linguagem."
             }
           },
           {
-            title: 'Os 4 Grandes Pilares da POO 🏛️',
-            imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&auto=format&fit=crop&q=80',
-            content: 'Para criar sistemas modulares e reutilizáveis, a POO se apoia em 4 pilares:<br><br>1. <b>Abstração:</b> Focar apenas no que é essencial para o sistema.<br>2. <b>Encapsulamento:</b> Proteger os dados internos de acessos indevidos (usando métodos getters/setters e atributos privados).<br>3. <b>Herança:</b> Uma classe filha pode herdar atributos e métodos de uma classe pai (ex: <i>CarroEletrico</i> herda de <i>Veiculo</i>).<br>4. <b>Polimorfismo:</b> A capacidade de diferentes classes responderem à mesma mensagem de formas específicas (ex: tanto <i>Cachorro</i> quanto <i>Gato</i> têm o método <code>fazerSom()</code>, mas um late e o outro mia).',
-            miniGame: {
-              question: 'Qual pilar da POO permite que uma classe filha reutilize o código e a estrutura de uma classe pai?',
-              options: ['Herança', 'Encapsulamento', 'Compilação', 'Polimorfismo inverso'],
-              correct: 0,
-              explanation: 'A Herança permite estender e reaproveitar comportamentos de uma classe base.'
+            "title": "2. Variáveis, Tipagem Dinâmica Forte & Operadores 🧮",
+            "imageUrl": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=900&auto=format&fit=crop&q=80",
+            "content": "Python possui <b>Tipagem Dinâmica e Forte</b>:<br><br>• <i>Dinâmica:</i> Você não precisa declarar o tipo (<code>x = 10</code> já cria um inteiro automaticamente).<br>• <i>Forte:</i> Python nunca converte tipos de forma mágica ou insegura (tentar somar <code>\"5\" + 2</code> gera um <code>TypeError</code> explicativo).<br>• <b>Operadores Exclusivos do Python:</b><br>&nbsp;&nbsp;- <code>**</code>: Exponenciação (ex: <code>2 ** 3 = 8</code>).<br>&nbsp;&nbsp;- <code>//</code>: Divisão inteira descartando as casas decimais (ex: <code>7 // 2 = 3</code>).<br>&nbsp;&nbsp;- <code>is</code> e <code>in</code>: Verificação de identidade e pertinência em coleções.",
+            "miniGame": {
+              "question": "Qual operador em Python calcula a potência / exponenciação (ex: 3 elevado ao quadrado)?",
+              "options": [
+                "**",
+                "^",
+                "^^",
+                "pow_operator"
+              ],
+              "correct": 0,
+              "explanation": "Em Python o operador de exponenciação é o asterisco duplo (**)."
+            }
+          },
+          {
+            "title": "3. Estruturas Condicionais: if, elif e else 🔀",
+            "imageUrl": "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=900&auto=format&fit=crop&q=80",
+            "content": "Em Python, o encadeamento de condições é extremamente limpo através do <code>elif</code> (abreviação de else if):<br><pre class=\"bg-slate-950 p-2 rounded text-emerald-300 font-code text-xs\">nota = 8.5\n\nif nota >= 9.0:\n    print(\"Excelente! Conceito A\")\nelif nota >= 7.0:\n    print(\"Aprovado! Conceito B\")\nelif nota >= 5.0:\n    print(\"Recuperação! Conceito C\")\nelse:\n    print(\"Reprovado.\")</pre><br>• <b>Operador Ternário em Python:</b> <code>status = \"Aprovado\" if nota >= 7 else \"Reprovado\"</code>.",
+            "miniGame": {
+              "question": "Qual palavra-chave em Python representa o \"else if\" para testar condições adicionais em sequência?",
+              "options": [
+                "elif",
+                "elseif",
+                "else_if",
+                "then_if"
+              ],
+              "correct": 0,
+              "explanation": "elif é a palavra-chave oficial do Python para encadeamento condicional."
+            }
+          }
+        ]
+      },
+      {
+        "id": "python_colecoes",
+        "name": "Módulo 2: Repetições & Estruturas de Dados Ricas",
+        "description": "Loops for/while, listas, tuplas, fatiamento, dicionários e conjuntos.",
+        "sources": "Fluent Python - Luciano Ramalho, Python Official Docs.",
+        "chapters": [
+          {
+            "title": "4. Laços for com range, enumerate & while 🔁",
+            "imageUrl": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=900&auto=format&fit=crop&q=80",
+            "content": "O laço <code>for</code> em Python é um iterador poderoso:<br><br>• <code>for i in range(1, 6):</code>: Itera de 1 até 5 (o limite final é exclusivo).<br>• <code>for indice, valor in enumerate(frutas):</code>: Devolve simultaneamente a posição numérica e o item!<br>• <b>while com else:</b> Em Python, laços de repetição podem ter uma cláusula <code>else</code> que é executada caso o loop termine naturalmente sem atingir um <code>break</code>.",
+            "miniGame": {
+              "question": "Qual função gera uma sequência de números inteiros para repetição em um loop for em Python?",
+              "options": [
+                "range()",
+                "sequence()",
+                "count_to()",
+                "numbers()"
+              ],
+              "correct": 0,
+              "explanation": "range(inicio, fim, passo) gera a sequência numérica iterável no Python."
+            }
+          },
+          {
+            "title": "5. Listas, Tuplas & Fatiamento Avançado (Slicing) 📊",
+            "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&auto=format&fit=crop&q=80",
+            "content": "As duas estruturas de sequência fundamentais:<br><br>• <b>Listas `[]`:</b> Mutáveis (podem crescer e alterar). Métodos: <code>append(), pop(), sort(), reverse()</code>.<br>• <b>Tuplas `()`:</b> <b>Imutáveis</b> (uma vez criadas, nunca podem ser alteradas), garantindo segurança e menor consumo de memória.<br>• <b>Fatiamento (Slicing `[inicio:fim:passo]`):</b><br>&nbsp;&nbsp;- <code>letras[1:4]</code>: Pega do índice 1 ao 3.<br>&nbsp;&nbsp;- <code>letras[::-1]</code>: Inverte a lista inteira de forma mágica em 1 linha!",
+            "miniGame": {
+              "question": "Qual é a principal diferença entre uma Lista e uma Tupla em Python?",
+              "options": [
+                "Listas são mutáveis e Tuplas são imutáveis (não podem ser alteradas após a criação).",
+                "Tuplas só aceitam números e Listas só aceitam textos.",
+                "Listas não funcionam com loops for.",
+                "Tuplas são apagadas pelo sistema operacional."
+              ],
+              "correct": 0,
+              "explanation": "Tuplas são estruturas de dados imutáveis protegidas contra alterações acidentais."
+            }
+          },
+          {
+            "title": "6. Dicionários e Conjuntos (Sets): Busca em Tempo O(1) 📚",
+            "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&auto=format&fit=crop&q=80",
+            "content": "Coleções baseadas em tabelas Hash com busca ultra-rápida:<br><br>• <b>Dicionários `{ chave: valor }`:</b> Ideais para cadastros complexos:<br><pre class=\"bg-slate-950 p-2 rounded text-teal-300 font-code text-xs\">aluno = {\"nome\": \"Beatriz\", \"curso\": \"Python\", \"nota\": 10}\nprint(aluno.get(\"nome\", \"Não encontrado\"))</pre><br>• <b>Conjuntos (Sets `{ 1, 2, 3 }`):</b> Coleções não ordenadas que <b>eliminam duplicatas automaticamente</b> e suportam operações matemáticas de união (<code>|</code>) e interseção (<code>&amp;</code>).",
+            "miniGame": {
+              "question": "Qual estrutura de dados em Python é ideal para remover valores duplicados de uma coleção automaticamente?",
+              "options": [
+                "Set (Conjunto)",
+                "List",
+                "Tuple",
+                "String"
+              ],
+              "correct": 0,
+              "explanation": "Sets garantem por definição matemática que todos os seus elementos sejam únicos e sem duplicatas."
+            }
+          }
+        ]
+      },
+      {
+        "id": "python_funcoes_avancadas",
+        "name": "Módulo 3: Funções, Módulos & List Comprehensions",
+        "description": "Funções avançadas, parâmetros dinâmicos, lambdas e compreenção de listas.",
+        "sources": "Clean Code in Python, PEP 484 Type Hints.",
+        "chapters": [
+          {
+            "title": "7. Funções: Parâmetros Nomeados, *args, **kwargs & Lambda 🧩",
+            "imageUrl": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=900&auto=format&fit=crop&q=80",
+            "content": "Crie funções altamente flexíveis:<br><br>• <code>def somar(*args):</code>: Recebe qualquer quantidade de números posicionais agrupados em uma tupla.<br>• <code>def cadastrar(**kwargs):</code>: Recebe múltiplos parâmetros nomeados como um dicionário.<br>• <b>Funções Lambda (Anônimas):</b> Funções simples de uma única linha:<br><code>quadrado = lambda x: x ** 2</code>.",
+            "miniGame": {
+              "question": "Em uma função Python def teste(*args), o que a variável args recebe?",
+              "options": [
+                "Uma tupla contendo todos os argumentos posicionais excedentes passados para a função.",
+                "Um arquivo de texto do disco.",
+                "Um único número inteiro.",
+                "O endereço de IP da máquina."
+              ],
+              "correct": 0,
+              "explanation": "*args empacota múltiplos argumentos posicionais em uma tupla iterável."
+            }
+          },
+          {
+            "title": "8. List Comprehensions: O Jeito Pythônico de Transformar Dados ⚡",
+            "imageUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=900&auto=format&fit=crop&q=80",
+            "content": "<b>List Comprehension</b> é uma das marcas registradas do Python, permitindo criar novas listas com filtragem e mapeamento em uma linha concisa e legível:<br><pre class=\"bg-slate-950 p-2 rounded text-emerald-300 font-code text-xs\"># Forma tradicional (4 linhas)\npares = []\nfor x in range(10):\n    if x % 2 == 0:\n        pares.append(x * 2)\n\n# Forma Pythônica com List Comprehension (1 linha!)\npares = [x * 2 for x in range(10) if x % 2 == 0]</pre>",
+            "miniGame": {
+              "question": "Qual é a principal vantagem de usar List Comprehensions em Python?",
+              "options": [
+                "Escrever transformações e filtros de listas de forma mais concisa, legível e rápida.",
+                "Fazer o computador consumir menos memória RAM que uma placa de vídeo.",
+                "Evitar a necessidade de instalar o Python.",
+                "Impedir que o programa seja fechado."
+              ],
+              "correct": 0,
+              "explanation": "List Comprehensions tornam o código expressivo, conciso e performático em Python."
+            }
+          }
+        ]
+      },
+      {
+        "id": "python_automacao",
+        "name": "Módulo 4: Automação, Arquivos & Tratamento de Exceções",
+        "description": "Manipulação de arquivos com context managers e módulos do sistema operacional.",
+        "sources": "Automate the Boring Stuff with Python - Al Sweigart.",
+        "chapters": [
+          {
+            "title": "9. Manipulação de Arquivos de Texto, CSV & Context Managers 📁",
+            "imageUrl": "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=900&auto=format&fit=crop&q=80",
+            "content": "Para ler e salvar relatórios automaticamente, usamos o gerenciador de contexto <code>with open()</code>, que <b>fecha o arquivo automaticamente</b> mesmo em caso de erro no programa:<br><pre class=\"bg-slate-950 p-2 rounded text-teal-300 font-code text-xs\"># Gravando dados em um arquivo\nwith open(\"relatorio.txt\", \"w\", encoding=\"utf-8\") as arquivo:\n    arquivo.write(\"CodeLogic Pro - Relatório de Vendas 2026\\n\")\n\n# Lendo linha por linha\nwith open(\"relatorio.txt\", \"r\", encoding=\"utf-8\") as arquivo:\n    for linha in arquivo:\n        print(linha.strip())</pre>",
+            "miniGame": {
+              "question": "Por que é uma boa prática usar o bloco \"with open(...) as arquivo:\" ao manipular arquivos em Python?",
+              "options": [
+                "Porque ele garante o fechamento correto e seguro do arquivo na memória mesmo que ocorram erros.",
+                "Porque ele compacta o arquivo em formato ZIP.",
+                "Porque ele envia o arquivo para a lixeira.",
+                "Porque é o único jeito de ligar o computador."
+              ],
+              "correct": 0,
+              "explanation": "O gerenciador de contexto with fecha o descritor de arquivo automaticamente ao sair do bloco."
+            }
+          },
+          {
+            "title": "10. Tratamento de Erros com try/except & Módulos Nativos 🛡️",
+            "imageUrl": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=900&auto=format&fit=crop&q=80",
+            "content": "Softwares profissionais nunca travam na cara do usuário. Tratamos exceções com <code>try / except / else / finally</code>:<br><pre class=\"bg-slate-950 p-2 rounded text-emerald-300 font-code text-xs\">try:\n    divisor = int(input(\"Digite o divisor: \"))\n    resultado = 100 / divisor\nexcept ZeroDivisionError:\n    print(\"Erro: Não é possível dividir por zero!\")\nexcept ValueError:\n    print(\"Erro: Digite apenas números válidos!\")\nelse:\n    print(f\"Resultado: {resultado}\")\nfinally:\n    print(\"Operação finalizada.\")</pre><br>• <b>Módulos Nativos Poderosos:</b> <code>os</code> (cria pastas, remove arquivos), <code>sys</code>, <code>json</code>, <code>datetime</code> e <code>math</code>.",
+            "miniGame": {
+              "question": "Qual bloco do try/except é executado SEMPRE, independentemente de ter ocorrido erro ou não?",
+              "options": [
+                "finally",
+                "except",
+                "else",
+                "catch"
+              ],
+              "correct": 0,
+              "explanation": "O bloco finally é garantido de ser executado ao término de todo o fluxo try/except."
             }
           }
         ]
       }
     ],
-    questions: [
-      { category: 'poo_pilares', text: 'O que representa o "Encapsulamento" em orientação a objetos?', options: ['Blindar o estado interno de um objeto e permitir modificações apenas por métodos autorizados.', 'Colocar o código dentro de uma pasta ZIP.', 'Escrever código sem comentários.', 'Duplicar classes para rodar mais rápido.'], correct: 0, explanation: 'Encapsulamento protege a integridade dos dados internos contra manipulações externas indevidas.' },
-      { category: 'poo_pilares', text: 'O que é um "Construtor" em uma classe?', options: ['Um método especial executado automaticamente no momento em que um novo objeto é instanciado.', 'Um operário que monta o computador.', 'Uma variável que nunca pode ser lida.', 'O programa que instala o sistema.'], correct: 0, explanation: 'O construtor (como __init__ em Python ou constructor() em JS) inicializa o objeto com os valores iniciais.' }
+    "questions": [
+      {
+        "category": "python_fundamentos",
+        "text": "Qual função do Python converte uma string digitada no terminal para um número inteiro?",
+        "options": [
+          "int()",
+          "to_integer()",
+          "parse_int()",
+          "number()"
+        ],
+        "correct": 0,
+        "explanation": "int() realiza o casting explícito de strings para inteiros."
+      },
+      {
+        "category": "python_fundamentos",
+        "text": "O que o operador // realiza em uma divisão entre números em Python?",
+        "options": [
+          "Divisão inteira descartando as casas decimais.",
+          "Divisão por zero.",
+          "Multiplicação dupla.",
+          "Comentário de código."
+        ],
+        "correct": 0,
+        "explanation": "// calcula a divisão inteira (floor division)."
+      },
+      {
+        "category": "python_colecoes",
+        "text": "Como adicionamos um novo elemento ao final de uma lista em Python?",
+        "options": [
+          "lista.append(elemento)",
+          "lista.push(elemento)",
+          "lista.add(elemento)",
+          "lista.insert_end(elemento)"
+        ],
+        "correct": 0,
+        "explanation": "append() insere o item no final da lista."
+      },
+      {
+        "category": "python_colecoes",
+        "text": "Como acessamos o valor associado à chave \"email\" em um dicionário usuario = {\"email\": \"dev@codelogic.pro\"}?",
+        "options": [
+          "usuario[\"email\"] ou usuario.get(\"email\")",
+          "usuario->email",
+          "usuario.email()",
+          "usuario(0)"
+        ],
+        "correct": 0,
+        "explanation": "Chaves de dicionário são acessadas por colchetes ou pelo método seguro get()."
+      },
+      {
+        "category": "python_funcoes_avancadas",
+        "text": "Qual é a sintaxe de uma função anônima lambda que calcula o triplo de um número?",
+        "options": [
+          "lambda x: x * 3",
+          "def lambda(x) { return x * 3 }",
+          "fn(x) -> x * 3",
+          "arrow(x) => x * 3"
+        ],
+        "correct": 0,
+        "explanation": "lambda x: x * 3 define uma função anônima inline."
+      },
+      {
+        "category": "python_automacao",
+        "text": "Qual modo de abertura de arquivo com open(\"dados.txt\", \"a\") deve ser usado para adicionar conteúdo sem apagar o que já existia?",
+        "options": [
+          "\"a\" (append)",
+          "\"w\" (write)",
+          "\"r\" (read)",
+          "\"x\" (exclusive)"
+        ],
+        "correct": 0,
+        "explanation": "O modo \"a\" (append) anexa novos dados no fim do arquivo preservando os anteriores."
+      }
     ]
   },
-  banco_dados: {
-    id: 'banco_dados',
-    name: '6. Banco de Dados & SQL',
-    icon: '🗄️',
-    badge: 'Avançado',
-    color: 'from-rose-600 to-red-800',
-    description: 'Armazenamento persistente, tabelas relacionais, consultas SQL e integridade de dados.',
-    categories: [
+  "poo": {
+    "id": "poo",
+    "name": "5. POO & Engenharia de Software",
+    "icon": "🏗️",
+    "badge": "Avançado",
+    "color": "from-purple-600 to-indigo-800",
+    "description": "Classes, objetos, encapsulamento, herança, polimorfismo, interfaces, princípios SOLID e padrões de projeto.",
+    "categories": [
       {
-        id: 'sql_fundamentos',
-        name: 'Módulo 1: O Coração dos Dados (SQL Relacional)',
-        description: 'Tabelas, chaves primárias, SELECT, INSERT e JOINs.',
-        sources: 'ANSI SQL Standard, PostgreSQL Documentation.',
-        chapters: [
+        "id": "poo_fundamentos",
+        "name": "Módulo 1: Fundamentos da Orientação a Objetos",
+        "description": "Classes, instâncias, atributos, métodos, construtores e encapsulamento.",
+        "sources": "Design Patterns (Gang of Four), Object-Oriented Software Engineering.",
+        "chapters": [
           {
-            title: 'Por que Precisamos de Bancos de Dados? 🗄️',
-            imageUrl: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=900&auto=format&fit=crop&q=80',
-            content: 'A memória RAM perde tudo quando o computador é desligado. Para armazenar milhões de clientes, pedidos e contas bancárias com segurança e velocidade, usamos um <b>SGBD (Sistema de Gerenciamento de Banco de Dados)</b>.<br><br>Nos bancos relacionais (como PostgreSQL e MySQL), os dados são guardados em <b>Tabelas</b> com linhas (registros) e colunas (campos), garantindo que nada se perca mesmo em caso de falha de energia.',
-            miniGame: {
-              question: 'Qual é o papel de um Banco de Dados Relacional?',
-              options: [
-                'Armazenar, organizar e consultar grandes volumes de dados estruturados com segurança e persistência.',
-                'Apenas acelerar jogos de videogame.',
-                'Substituir o processador do computador.',
-                'Aumentar o volume do áudio.'
+            "title": "1. O Paradigma OO vs Procedural: Classes, Instâncias & Métodos 🏗️",
+            "imageUrl": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=900&auto=format&fit=crop&q=80",
+            "content": "Na programação procedural, dados e funções ficam soltos e desorganizados. A <b>Programação Orientada a Objetos (POO)</b> agrupa dados (<b>Atributos</b>) e comportamentos (<b>Métodos</b>) em uma única entidade coerente:<br><br>• <b>Classe:</b> É o molde, planta baixa ou receita (ex: Classe <code>ContaBancaria</code>).<br>• <b>Objeto (Instância):</b> É o objeto real criado na memória com seus próprios dados (ex: a conta do João com R$ 5.000,00 e a conta da Maria com R$ 12.000,00).",
+            "miniGame": {
+              "question": "Qual é a relação entre uma Classe e um Objeto na POO?",
+              "options": [
+                "A Classe é o molde/modelo conceitual e o Objeto é a instância real criada na memória.",
+                "São exatamente a mesma coisa sem nenhuma diferença.",
+                "O Objeto é o arquivo no disco e a Classe é a placa-mãe.",
+                "Classes só funcionam em computadores antigos."
               ],
-              correct: 0,
-              explanation: 'Bancos de dados relacionais garantem persistência duradoura, integridade e consultas ultra-rápidas para os dados do sistema.'
+              "correct": 0,
+              "explanation": "A Classe define o tipo e estrutura; o Objeto é a instanciação concreta dessa definição."
             }
           },
           {
-            title: 'A Linguagem SQL (Structured Query Language) 🔍',
-            imageUrl: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=900&auto=format&fit=crop&q=80',
-            content: '<b>SQL</b> é a linguagem universal declarativa para conversar com bancos de dados. Os comandos essenciais do padrão CRUD são:<br><br>• <b>SELECT:</b> Consulta dados (ex: <code>SELECT nome, email FROM alunos WHERE nota >= 7;</code>)<br>• <b>INSERT:</b> Cadastra novos registros (ex: <code>INSERT INTO alunos (nome) VALUES ("Carlos");</code>)<br>• <b>UPDATE:</b> Atualiza registros existentes.<br>• <b>DELETE:</b> Remove registros.<br><br>Com o comando <code>JOIN</code>, podemos cruzar dados de duas tabelas diferentes (como cruzar <i>Alunos</i> com <i>Turmas</i>) em uma fração de segundo.',
-            miniGame: {
-              question: 'Qual comando SQL é utilizado para buscar e filtrar informações em uma tabela?',
-              options: ['SELECT', 'FIND_ALL', 'SEARCH', 'GRAB'],
-              correct: 0,
-              explanation: 'O comando SELECT é a instrução padrão da linguagem SQL para consultar e recuperar dados das tabelas.'
+            "title": "2. Construtores & A Referência à Própria Instância (this / self) 🔑",
+            "imageUrl": "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=900&auto=format&fit=crop&q=80",
+            "content": "Quando um objeto nasce com o operador <code>new</code> ou chamada da classe, um método especial é disparado: o <b>Construtor</b> (<code>constructor()</code> em JS, <code>__init__()</code> em Python).<br><br>• <b>O Ponteiro `this` / `self`:</b> Representa a instância exata que está executando o método no momento:<br><pre class=\"bg-slate-950 p-2 rounded text-purple-300 font-code text-xs\">// Em JavaScript\nclass Personagem {\n  constructor(nome, poder) {\n    this.nome = nome;\n    this.poder = poder;\n  }\n}</pre>",
+            "miniGame": {
+              "question": "Qual é o papel do método Construtor em uma classe?",
+              "options": [
+                "Inicializar os atributos e o estado do novo objeto no momento em que ele é instanciado.",
+                "Destruir o objeto da memória.",
+                "Compilar o código em linguagem de máquina.",
+                "Criar uma página HTML."
+              ],
+              "correct": 0,
+              "explanation": "O construtor é o método de inicialização executado na criação de cada objeto."
+            }
+          },
+          {
+            "title": "3. Encapsulamento, Modificadores de Acesso & Getters/Setters 🛡️",
+            "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&auto=format&fit=crop&q=80",
+            "content": "Ninguém pode ter permissão de alterar o saldo de uma conta bancária diretamente (ex: <code>conta.saldo = 1000000;</code>). O <b>Encapsulamento</b> esconde o estado interno e permite alterações apenas através de métodos validados:<br><br>• <b>Campos Privados (`#campo` ou `_campo`):</b> Acessíveis apenas pela própria classe.<br>• <b>Getters e Setters:</b> Métodos de leitura e escrita com regras de negócio (ex: o setter de <code>sacar(valor)</code> valida se há saldo suficiente antes de subtrair).",
+            "miniGame": {
+              "question": "Por que o Encapsulamento é fundamental em sistemas corporativos?",
+              "options": [
+                "Para proteger a integridade dos dados internos contra alterações diretas e indevidas fora da classe.",
+                "Para fazer o código rodar em computadores sem internet.",
+                "Para duplicar o tamanho do arquivo.",
+                "Para proibir o uso de funções."
+              ],
+              "correct": 0,
+              "explanation": "Encapsulamento blinda o estado interno, garantindo que todas as modificações passem por validações."
+            }
+          }
+        ]
+      },
+      {
+        "id": "poo_pilares_avancados",
+        "name": "Módulo 2: Os Pilares Avançados da POO",
+        "description": "Herança, Polimorfismo, Abstração e Interfaces de Contrato.",
+        "sources": "Clean Architecture - Robert C. Martin.",
+        "chapters": [
+          {
+            "title": "4. Herança de Classes & Reutilização com extends e super 🧬",
+            "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&auto=format&fit=crop&q=80",
+            "content": "A <b>Herança</b> cria uma hierarquia do tipo <i>\"É um\"</i> (ex: <i>Carro</i> é um <i>Veículo</i>, <i>Gerente</i> é um <i>Funcionário</i>):<br><br>• <b>Classe Base (Superclasse/Pai):</b> Contém atributos e métodos comuns a todos (nome, cpf, salário).<br>• <b>Classe Derivada (Subclasse/Filho):</b> Usa <code>extends</code> para herdar tudo da classe pai e adiciona suas especializações.<br>• <code>super(...)</code>: Invoca o construtor e métodos da classe pai.",
+            "miniGame": {
+              "question": "Qual palavra-chave em JavaScript e Java indica que uma classe está herdando de outra classe base?",
+              "options": [
+                "extends",
+                "inherits",
+                "implements",
+                "subclass_of"
+              ],
+              "correct": 0,
+              "explanation": "extends é a instrução padrão para estender uma superclasse."
+            }
+          },
+          {
+            "title": "5. Polimorfismo & Sobrescrita de Métodos (Method Overriding) 🎭",
+            "imageUrl": "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=900&auto=format&fit=crop&q=80",
+            "content": "<b>Polimorfismo</b> significa <i>\"muitas formas\"</i>. É a habilidade de diferentes classes filhas responderem à mesma chamada de método com comportamentos especializados:<br><br>• A classe base <code>FormaGeometrica</code> define o método <code>calcularArea()</code>.<br>• A classe filha <code>Quadrado</code> implementa <code>lado * lado</code>.<br>• A classe filha <code>Circulo</code> implementa <code>PI * raio²</code>.<br>O sistema pode iterar sobre uma lista de 100 formas diferentes chamando <code>forma.calcularArea()</code> sem precisar saber qual é qual!",
+            "miniGame": {
+              "question": "Qual pilar da POO permite tratar diferentes classes filhas de forma homogênea chamando o mesmo método com respostas especializadas?",
+              "options": [
+                "Polimorfismo",
+                "Compilação",
+                "Recursão",
+                "Minificação"
+              ],
+              "correct": 0,
+              "explanation": "Polimorfismo permite que objetos diferentes respondam à mesma mensagem com sua própria implementação."
+            }
+          },
+          {
+            "title": "6. Abstração, Classes Abstratas & Interfaces de Contrato 📜",
+            "imageUrl": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=900&auto=format&fit=crop&q=80",
+            "content": "Para sistemas de larga escala, criamos <b>Contratos</b> rígidos:<br><br>• <b>Classe Abstrata:</b> Uma classe conceitual que <i>não pode ser instanciada diretamente</i> com <code>new</code> (serve apenas como modelo pai para ser herdada).<br>• <b>Interface:</b> Define um contrato estrito contendo a assinatura dos métodos que qualquer classe implementadora DEVE obrigatoriamente construir (ex: a interface <code>Autenticavel</code> exige o método <code>login(senha)</code>).",
+            "miniGame": {
+              "question": "O que caracteriza uma Classe Abstrata na orientação a objetos?",
+              "options": [
+                "Ela não pode ser instanciada diretamente, servindo apenas como molde base para subclasses.",
+                "Ela roda sem precisar de memória RAM.",
+                "Ela só pode ter uma linha de código.",
+                "Ela é apagada após a compilação."
+              ],
+              "correct": 0,
+              "explanation": "Classes abstratas definem contratos estruturais que só podem ser utilizados através de classes filhas concretas."
+            }
+          }
+        ]
+      },
+      {
+        "id": "poo_arquitetura",
+        "name": "Módulo 3: Boas Práticas, SOLID & Design Patterns",
+        "description": "Princípios SOLID e padrões de projeto essenciais para código limpo e escalável.",
+        "sources": "Clean Architecture, Head First Design Patterns.",
+        "chapters": [
+          {
+            "title": "7. Os 5 Princípios SOLID para Engenharia de Software 🏛️",
+            "imageUrl": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=900&auto=format&fit=crop&q=80",
+            "content": "Os princípios **S.O.L.I.D.** (formulados por Robert C. Martin - Uncle Bob) são o padrão-ouro de código limpo:<br><br>• <b>S - Single Responsibility:</b> Cada classe deve ter uma única razão para mudar.<br>• <b>O - Open/Closed:</b> Classes abertas para extensão, fechadas para modificação.<br>• <b>L - Liskov Substitution:</b> Subclasses devem poder substituir suas classes base sem quebrar o sistema.<br>• <b>I - Interface Segregation:</b> Interfaces pequenas e específicas são melhores que uma interface gigante.<br>• <b>D - Dependency Inversion:</b> Dependa de abstrações/interfaces, nunca de implementações concretas acopladas.",
+            "miniGame": {
+              "question": "Qual princípio do SOLID afirma que uma classe deve ter apenas uma única responsabilidade e motivo para mudar?",
+              "options": [
+                "Single Responsibility Principle (S)",
+                "Open/Closed Principle (O)",
+                "Liskov Substitution (L)",
+                "Dependency Inversion (D)"
+              ],
+              "correct": 0,
+              "explanation": "O Princípio da Responsabilidade Única (SRP) prega coesão máxima com um único propósito por classe."
+            }
+          },
+          {
+            "title": "8. Padrões de Projeto (Design Patterns): Singleton, Factory & Observer 🎯",
+            "imageUrl": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=900&auto=format&fit=crop&q=80",
+            "content": "Soluções consolidadas para problemas clássicos da arquitetura de software:<br><br>• <b>Singleton:</b> Garante que uma classe tenha <i>uma única instância em todo o ciclo de vida da aplicação</i> (ex: conexão com banco de dados ou gerenciador de áudio).<br>• <b>Factory Method:</b> Cria objetos sem expor a lógica exata de instanciação ao cliente.<br>• <b>Observer:</b> Padrão de eventos onde objetos (inscritos) são notificados automaticamente sempre que o estado do sujeito muda.",
+            "miniGame": {
+              "question": "Qual padrão de projeto garante a existência de apenas UMA ÚNICA instância de uma classe em todo o sistema?",
+              "options": [
+                "Singleton",
+                "Factory",
+                "Prototype",
+                "Decorator"
+              ],
+              "correct": 0,
+              "explanation": "O padrão Singleton restringe a instanciação de uma classe a um único objeto global compartilhado."
             }
           }
         ]
       }
     ],
-    questions: [
-      { category: 'sql_fundamentos', text: 'O que é uma Chave Primária (Primary Key - PK) em uma tabela de banco de dados?', options: ['Um campo com valor exclusivo que identifica unicamente cada linha da tabela (ex: ID ou CPF).', 'A senha do administrador do servidor.', 'A primeira coluna do arquivo Excel.', 'O nome do banco de dados.'], correct: 0, explanation: 'A Chave Primária garante que nenhum registro seja duplicado ou confundido.' },
-      { category: 'sql_fundamentos', text: 'Qual comando SQL adiciona um novo registro a uma tabela?', options: ['INSERT INTO', 'ADD RECORD', 'CREATE ITEM', 'PUSH DATA'], correct: 0, explanation: 'INSERT INTO é a sintaxe oficial para inclusão de novos dados.' }
+    "questions": [
+      {
+        "category": "poo_fundamentos",
+        "text": "O que representa uma \"Instância\" no paradigma de Orientação a Objetos?",
+        "options": [
+          "Um objeto real construído na memória a partir do molde de uma classe.",
+          "O código fonte salvo no GitHub.",
+          "A velocidade do processador.",
+          "Uma variável nula."
+        ],
+        "correct": 0,
+        "explanation": "Instância é o objeto materializado na memória."
+      },
+      {
+        "category": "poo_fundamentos",
+        "text": "Qual é o modificador de acesso que restringe o uso de um atributo apenas para o código da própria classe?",
+        "options": [
+          "Private (Privado)",
+          "Public (Público)",
+          "Global",
+          "Shared"
+        ],
+        "correct": 0,
+        "explanation": "Membros privados são encapsulados e inacessíveis diretamente de fora da classe."
+      },
+      {
+        "category": "poo_pilares_avancados",
+        "text": "Como uma subclasse pode chamar o construtor da sua superclasse pai em linguagens modernas?",
+        "options": [
+          "super()",
+          "parent.init()",
+          "base()",
+          "this.father()"
+        ],
+        "correct": 0,
+        "explanation": "super() executa o construtor da superclasse."
+      },
+      {
+        "category": "poo_pilares_avancados",
+        "text": "O que é a Sobrescrita de Método (Method Overriding)?",
+        "options": [
+          "Quando uma classe filha redefine a implementação de um método herdado da classe pai com seu próprio comportamento.",
+          "Quando o computador apaga o método.",
+          "Quando dois métodos têm nomes diferentes.",
+          "Um erro fatal no sistema operacional."
+        ],
+        "correct": 0,
+        "explanation": "Sobrescrita permite personalizar o comportamento herdado."
+      },
+      {
+        "category": "poo_arquitetura",
+        "text": "O que recomenda o princípio da Inversão de Dependência (D do SOLID)?",
+        "options": [
+          "Módulos de alto nível não devem depender de módulos de baixo nível, mas sim de interfaces/abstrações.",
+          "Escrever o código de trás para frente.",
+          "Não usar classes.",
+          "Usar variáveis globais para tudo."
+        ],
+        "correct": 0,
+        "explanation": "Inversão de Dependência desacopla o sistema utilizando contratos e interfaces."
+      }
+    ]
+  },
+  "banco_dados": {
+    "id": "banco_dados",
+    "name": "6. Banco de Dados & SQL",
+    "icon": "🗄️",
+    "badge": "Avançado",
+    "color": "from-rose-600 to-red-800",
+    "description": "Armazenamento relacional, modelagem MER, integridade, DDL, DML, consultas avançadas, JOINs e agregações.",
+    "categories": [
+      {
+        "id": "sql_modelagem",
+        "name": "Módulo 1: Modelagem de Dados & Arquitetura Relacional",
+        "description": "SGBDs, modelo relacional, tabelas, tipos e integridade referencial.",
+        "sources": "ANSI SQL Standard, PostgreSQL Official Docs, Database System Concepts - Silberschatz.",
+        "chapters": [
+          {
+            "title": "1. O que é um SGBD & Modelagem Entidade-Relacionamento (MER) 🗄️",
+            "imageUrl": "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=900&auto=format&fit=crop&q=80",
+            "content": "A memória RAM perde tudo ao desligar o computador. Um <b>SGBD (Sistema de Gerenciamento de Banco de Dados)</b> garante persistência, transações seguras (padrão ACID) e consultas ultra-rápidas.<br><br>• <b>Modelagem Entidade-Relacionamento (MER):</b><br>&nbsp;&nbsp;- <b>Entidade:</b> Algo do mundo real que queremos registrar (ex: <i>Cliente</i>, <i>Produto</i>, <i>Pedido</i>).<br>&nbsp;&nbsp;- <b>Atributos:</b> As características da entidade (nome, email, preço).<br>&nbsp;&nbsp;- <b>Relacionamentos:</b> Como as entidades se conectam (1:1, 1:N - um cliente tem muitos pedidos, N:N - muitos alunos cursam muitas disciplinas).",
+            "miniGame": {
+              "question": "Qual é o tipo de relacionamento entre um Cliente e seus Pedidos em um e-commerce?",
+              "options": [
+                "1 para N (Um cliente pode ter múltiplos pedidos)",
+                "1 para 1",
+                "N para N direto sem tabela associativa",
+                "Nenhum relacionamento"
+              ],
+              "correct": 0,
+              "explanation": "Um único cliente (1) pode realizar várias compras ao longo do tempo (N)."
+            }
+          },
+          {
+            "title": "2. Tabelas, Colunas, Tipos de Dados & Restrições (Constraints) 📋",
+            "imageUrl": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=900&auto=format&fit=crop&q=80",
+            "content": "Bancos relacionais estruturam informações em <b>Tabelas (Relações)</b>:<br><br>• <b>Linhas (Tuplas/Registros):</b> Cada item individual cadastrado.<br>• <b>Colunas (Campos):</b> Atributos tipificados (<code>INTEGER, VARCHAR(100), NUMERIC(10,2), DATE, BOOLEAN</code>).<br>• <b>Restrições (Constraints) Essenciais:</b><br>&nbsp;&nbsp;- <code>NOT NULL</code>: Proíbe que a coluna fique vazia.<br>&nbsp;&nbsp;- <code>UNIQUE</code>: Garante que nenhum registro repita o mesmo valor (ex: CPF ou E-mail).<br>&nbsp;&nbsp;- <code>DEFAULT</code>: Define um valor padrão caso nada seja informado.",
+            "miniGame": {
+              "question": "Qual restrição (Constraint) em SQL impede que dois usuários tenham o mesmo endereço de e-mail cadastrado?",
+              "options": [
+                "UNIQUE",
+                "NOT NULL",
+                "CHECK",
+                "DEFAULT"
+              ],
+              "correct": 0,
+              "explanation": "UNIQUE garante a unicidade do valor em toda a tabela."
+            }
+          },
+          {
+            "title": "3. Chaves Primárias (PK) & Chaves Estrangeiras (FK): Integridade 🔑",
+            "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&auto=format&fit=crop&q=80",
+            "content": "As chaves conectam os dados garantindo a <b>Integridade Referencial</b>:<br><br>• <b>Chave Primária (Primary Key - PK):</b> Um identificador único, imutável e obrigatório para cada linha da tabela (ex: <code>id_aluno</code>).<br>• <b>Chave Estrangeira (Foreign Key - FK):</b> Uma coluna que faz referência direta à Chave Primária de outra tabela (ex: a coluna <code>cliente_id</code> na tabela de <i>Pedidos</i> garante que o pedido pertença a um cliente real existente, impedindo pedidos fantasmas).",
+            "miniGame": {
+              "question": "Qual é o papel da Chave Estrangeira (Foreign Key) em um banco de dados relacional?",
+              "options": [
+                "Estabelecer um elo de integridade referencial com a chave primária de outra tabela.",
+                "Acelerar a velocidade da conexão de internet.",
+                "Criptografar o disco rígido.",
+                "Excluir o banco de dados automaticamente."
+              ],
+              "correct": 0,
+              "explanation": "A Chave Estrangeira cria e valida a relação estrutural entre duas tabelas."
+            }
+          }
+        ]
+      },
+      {
+        "id": "sql_comandos",
+        "name": "Módulo 2: Comandos DDL & DML (O Ciclo CRUD)",
+        "description": "Criação de esquemas e manipulação de registros com segurança.",
+        "sources": "PostgreSQL SQL Commands, MySQL Reference Manual.",
+        "chapters": [
+          {
+            "title": "4. DDL: Estruturando o Banco com CREATE, ALTER e DROP 🏗️",
+            "imageUrl": "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=900&auto=format&fit=crop&q=80",
+            "content": "<b>Data Definition Language (DDL)</b> cria e altera a estrutura das tabelas:<br><pre class=\"bg-slate-950 p-2 rounded text-rose-300 font-code text-xs\">CREATE TABLE alunos (\n  id SERIAL PRIMARY KEY,\n  nome VARCHAR(100) NOT NULL,\n  email VARCHAR(120) UNIQUE NOT NULL,\n  data_matricula DATE DEFAULT CURRENT_DATE\n);\n\nALTER TABLE alunos ADD COLUMN telefone VARCHAR(20);\nDROP TABLE IF EXISTS tabela_antiga;</pre>",
+            "miniGame": {
+              "question": "Qual comando DDL é utilizado para adicionar uma nova coluna em uma tabela já existente?",
+              "options": [
+                "ALTER TABLE nome_tabela ADD COLUMN ...",
+                "CREATE COLUMN ...",
+                "UPDATE TABLE ADD ...",
+                "INSERT COLUMN ..."
+              ],
+              "correct": 0,
+              "explanation": "ALTER TABLE é o comando para modificar a estrutura e esquema de uma tabela."
+            }
+          },
+          {
+            "title": "5. DML: Manipulação de Dados com INSERT, UPDATE & DELETE ✍️",
+            "imageUrl": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=900&auto=format&fit=crop&q=80",
+            "content": "<b>Data Manipulation Language (DML)</b> manipula as linhas das tabelas:<br><br>• <b>`INSERT INTO`</b>: Cadastra novos registros:<br><code>INSERT INTO alunos (nome, email) VALUES ('Carlos', 'carlos@email.com');</code><br>• <b>`UPDATE`</b>: Atualiza valores existentes:<br><code>UPDATE alunos SET telefone = '11999998888' WHERE id = 1;</code><br>• <b>`DELETE`</b>: Remove registros:<br><code>DELETE FROM alunos WHERE id = 1;</code><br><br>⚠️ <i>CUIDADO EXTREMO:</i> Nunca execute <code>UPDATE</code> ou <code>DELETE</code> sem a cláusula <code>WHERE</code>, caso contrário alterará/apagará TODAS as linhas da tabela!",
+            "miniGame": {
+              "question": "O que acontece se executarmos o comando DELETE FROM clientes; sem especificar a cláusula WHERE?",
+              "options": [
+                "TODOS os registros da tabela clientes serão apagados permanentemente.",
+                "O banco de dados apaga apenas o primeiro cliente.",
+                "O comando não executa e nada acontece.",
+                "A tabela inteira é renomeada."
+              ],
+              "correct": 0,
+              "explanation": "Sem a cláusula WHERE para filtrar, o DELETE remove todas as linhas da tabela!"
+            }
+          }
+        ]
+      },
+      {
+        "id": "sql_consultas",
+        "name": "Módulo 3: Consultas Avançadas, JOINs & Agregações",
+        "description": "Filtragem avançada, ordenação, junções relacionais e funções agregadas.",
+        "sources": "Modern SQL - Markus Winand, PostgreSQL Query Engine.",
+        "chapters": [
+          {
+            "title": "6. Consultas com SELECT, WHERE, ORDER BY, LIKE & LIMIT 🔍",
+            "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop&q=80",
+            "content": "O comando <b>`SELECT`</b> recupera e filtra dados com precisão cirúrgica:<br><pre class=\"bg-slate-950 p-2 rounded text-rose-300 font-code text-xs\">SELECT nome, email, nota \nFROM alunos \nWHERE nota >= 7.0 AND nome LIKE 'A%' \nORDER BY nota DESC \nLIMIT 10;</pre><br>• <code>LIKE 'A%'</code>: Filtra nomes que começam com a letra A.<br>• <code>ORDER BY nota DESC</code>: Ordena do maior para o menor.<br>• <code>LIMIT 10</code>: Retorna apenas os 10 primeiros registros (ideal para paginação).",
+            "miniGame": {
+              "question": "Qual cláusula SQL organiza os registros retornados do maior para o menor valor (ordem decrescente)?",
+              "options": [
+                "ORDER BY coluna DESC",
+                "ORDER BY coluna ASC",
+                "SORT DOWN",
+                "GROUP BY DESC"
+              ],
+              "correct": 0,
+              "explanation": "ORDER BY com a palavra-chave DESC ordena de forma decrescente."
+            }
+          },
+          {
+            "title": "7. Junções Relacionais: INNER JOIN, LEFT JOIN & RIGHT JOIN 🔗",
+            "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&auto=format&fit=crop&q=80",
+            "content": "O verdadeiro poder dos bancos relacionais está em <b>cruzar dados de tabelas diferentes</b> em uma única consulta:<br><br>• <b>`INNER JOIN`</b>: Retorna apenas as linhas onde há correspondência em <i>ambas</i> as tabelas.<br>• <b>`LEFT JOIN`</b>: Retorna <i>todos</i> os registros da tabela da esquerda, mesmo que não haja correspondência na tabela da direita (completando com <code>NULL</code>).<br><pre class=\"bg-slate-950 p-2 rounded text-rose-300 font-code text-xs\">SELECT pedidos.id, clientes.nome, pedidos.total\nFROM pedidos\nINNER JOIN clientes ON pedidos.cliente_id = clientes.id;</pre>",
+            "miniGame": {
+              "question": "Qual tipo de JOIN retorna apenas os registros que possuem correspondência mútua em ambas as tabelas conectadas?",
+              "options": [
+                "INNER JOIN",
+                "FULL OUTER JOIN",
+                "CROSS JOIN",
+                "LEFT JOIN com NULL"
+              ],
+              "correct": 0,
+              "explanation": "O INNER JOIN retorna a interseção estrita entre as duas tabelas relacionadas."
+            }
+          },
+          {
+            "title": "8. Funções de Agregação, GROUP BY & HAVING 📈",
+            "imageUrl": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=900&auto=format&fit=crop&q=80",
+            "content": "Para gerar relatórios e inteligência de negócios (BI), usamos funções de agrupamento:<br><br>• <b>Funções Agregadas:</b> <code>COUNT()</code> (contar), <code>SUM()</code> (somar), <code>AVG()</code> (média), <code>MAX()</code> (maior) e <code>MIN()</code> (menor).<br>• <b>`GROUP BY`:</b> Agrupa as linhas por uma categoria (ex: total de vendas por cidade).<br>• <b>`HAVING`:</b> Filtra os grupos <i>após</i> a agregação (ex: mostrar apenas cidades com faturamento &gt; 100.000).",
+            "miniGame": {
+              "question": "Qual função SQL calcula a média aritmética dos valores de uma coluna numérica?",
+              "options": [
+                "AVG()",
+                "SUM()",
+                "COUNT()",
+                "MEDIAN()"
+              ],
+              "correct": 0,
+              "explanation": "AVG() (Average) é a função padrão SQL para cálculo de média."
+            }
+          }
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "category": "sql_modelagem",
+        "text": "Qual é o papel de uma Chave Primária (Primary Key) em uma tabela relacional?",
+        "options": [
+          "Identificar unicamente e exclusivamente cada registro da tabela sem permitir nulos nem duplicatas.",
+          "Guardar a senha do usuário.",
+          "Definir o nome do banco de dados.",
+          "Conectar a impressora."
+        ],
+        "correct": 0,
+        "explanation": "A Primary Key garante a unicidade absoluta de cada registro."
+      },
+      {
+        "category": "sql_comandos",
+        "text": "Qual comando SQL deve ser utilizado para modificar o preço de um produto existente?",
+        "options": [
+          "UPDATE produtos SET preco = 50.00 WHERE id = 1;",
+          "MODIFY produtos PRECO = 50.00;",
+          "ALTER produtos SET preco = 50.00;",
+          "CHANGE produtos preco = 50.00;"
+        ],
+        "correct": 0,
+        "explanation": "UPDATE com SET e WHERE atualiza dados das linhas."
+      },
+      {
+        "category": "sql_consultas",
+        "text": "Qual operador SQL é utilizado para buscar registros com valores dentro de um intervalo (ex: salários entre 2000 e 5000)?",
+        "options": [
+          "BETWEEN",
+          "IN_RANGE",
+          "INSIDE",
+          "MIDDLE"
+        ],
+        "correct": 0,
+        "explanation": "BETWEEN valor1 AND valor2 filtra intervalos inclusivos."
+      },
+      {
+        "category": "sql_consultas",
+        "text": "Qual cláusula filtra os resultados de um agrupamento GROUP BY em SQL?",
+        "options": [
+          "HAVING",
+          "WHERE",
+          "AFTER",
+          "FILTER_GROUP"
+        ],
+        "correct": 0,
+        "explanation": "HAVING filtra dados após a aplicação do GROUP BY."
+      }
     ]
   }
 };
