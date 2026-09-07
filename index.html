@@ -2398,6 +2398,11 @@
             selectedCategoryId = catId;
             currentChapterIndex = 0;
             window.changeState('MODULE_VIEW');
+            setTimeout(() => {
+                if (typeof window.runSandboxCode === 'function') {
+                    window.runSandboxCode();
+                }
+            }, 100);
         };
 
         
@@ -2412,29 +2417,128 @@
             ]
         };
 
+        
+        window.getChapterMissionGuide = function(subjectId) {
+            switch (subjectId) {
+                case 'historia':
+                    return '📜 <b>O que fazer aqui:</b> Esta aula aborda as origens da computação e Ada Lovelace (criadora do 1º algoritmo em 1843). O código abaixo simula a Linha do Tempo e calcula termos matemáticos. Clique no botão azul <b>▶️ Executar</b> acima para rodar a simulação! <i>Dica: você pode alterar o número <code>8</code> na última linha para <code>12</code> e clicar em Executar novamente para ver mais termos calculados!</i>';
+                case 'logica':
+                    return '⚡ <b>O que fazer aqui:</b> O código calcula a soma de duas variáveis (<code>numeroA</code> e <code>numeroB</code>). Altere os números no editor e clique em <b>▶️ Executar</b> para ver o algoritmo calcular o novo resultado no console!';
+                case 'html_css':
+                    return '🌐 <b>O que fazer aqui:</b> Edite as tags HTML ou estilos CSS no editor acima e veja a alteração acontecer instantaneamente no quadro de visualização ao vivo abaixo!';
+                case 'javascript':
+                    return '✨ <b>O que fazer aqui:</b> O código formata uma lista de desenvolvedores usando <code>.map()</code>. Clique em <b>▶️ Executar</b> ou adicione seu próprio nome no array de programadores!';
+                case 'python':
+                    return '🐍 <b>O que fazer aqui:</b> O script simula um verificador de permissões de usuários. Clique em <b>▶️ Executar</b> ou adicione um novo nome na lista <code>usuarios</code>!';
+                case 'poo':
+                    return '🏗️ <b>O que fazer aqui:</b> O código instancia uma classe <code>Personagem</code> e executa o método <code>.atacar()</code>. Clique em <b>▶️ Executar</b> para ver a orientação a objetos em ação!';
+                case 'banco_dados':
+                    return '🗄️ <b>O que fazer aqui:</b> O comando SQL consulta a tabela de alunos. Clique em <b>▶️ Executar</b> ou altere <code>WHERE nota >= 7.0</code> para <code>WHERE nota >= 9.0</code> para filtrar os alunos com notas máximas!';
+                default:
+                    return '💻 <b>O que fazer aqui:</b> Leia o código acima e clique em <b>▶️ Executar</b> para rodar as instruções no console em tempo real!';
+            }
+        };
+
         window.getChapterSandboxCode = function(subjectId) {
             if (subjectId === 'historia') {
-                return '// 📜 Simulador Histórico: A Máquina Universal & Algoritmo de Fibonacci\n// Primeiro Algoritmo da História (Ada Lovelace, 1843)\n\nfunction gerarFibonacci(n) {\n  let seq = [0, 1];\n  for (let i = 2; i < n; i++) {\n    seq.push(seq[i - 1] + seq[i - 2]);\n  }\n  return seq;\n}\n\nconsole.log("=== LINHA DO TEMPO DA COMPUTAÇÃO ===");\nconsole.log("🏛️ 1843: Ada Lovelace cria o 1º algoritmo.");\nconsole.log("⚙️ 1936: Alan Turing define a Máquina Universal.");\nconsole.log("⚡ 1945: ENIAC entra em operação (30 toneladas).");\nconsole.log("🔬 1947: Invenção do Transistor nos Bell Labs.");\nconsole.log("🌐 1989: Tim Berners-Lee inventa a Web (WWW).");\nconsole.log("\nCalculando termos de Fibonacci:");\nconsole.log(gerarFibonacci(8).join(" -> "));';
-            }
-            if (subjectId === 'historia') {
-                return '// 📜 Simulador Histórico: A Máquina de Turing & Sequência de Fibonacci\n// O primeiro algoritmo da história (Ada Lovelace, 1843)\n\nfunction gerarFibonacci(termos) {\n  let sequencia = [0, 1];\n  for (let i = 2; i < termos; i++) {\n    sequencia.push(sequencia[i - 1] + sequencia[i - 2]);\n  }\n  return sequencia;\n}\n\nconsole.log("=== LINHA DO TEMPO DA COMPUTAÇÃO ===");\nconsole.log("1843: Ada Lovelace cria o primeiro algoritmo.");\nconsole.log("1936: Alan Turing publica a Máquina Universal.");\nconsole.log("1945: ENIAC entra em operação (30 toneladas).");\nconsole.log("1989: Tim Berners-Lee inventa a Web (WWW).");\nconsole.log("\nCalculando Fibonacci de 8 termos:");\nconsole.log(gerarFibonacci(8).join(" -> "));';
+                return `// 📜 O Primeiro Algoritmo da História (Ada Lovelace, 1843)
+// Ada Lovelace percebeu que máquinas podiam calcular padrões matemáticos complexos!
+
+function gerarFibonacci(termos) {
+  let seq = [0, 1];
+  for (let i = 2; i < termos; i++) {
+    seq.push(seq[i - 1] + seq[i - 2]);
+  }
+  return seq;
+}
+
+console.log("=== 🏛️ LINHA DO TEMPO DA COMPUTAÇÃO ===");
+console.log("1. Ábaco (2400 a.C.) -> Invenção da contagem mecânica");
+console.log("2. Pascalina (1642) -> Primeira calculadora de engrenagens");
+console.log("3. Ada Lovelace (1843) -> O 1º algoritmo da história");
+console.log("4. Alan Turing (1936) -> Teoria matemática do computador universal");
+console.log("5. ENIAC (1945) -> Primeiro computador eletrônico de grande porte");
+console.log("6. Transistor (1947) -> Invenção que miniaturizou os computadores");
+console.log("7. World Wide Web (1989) -> Tim Berners-Lee inventa a Web");
+console.log("");
+console.log("▶️ Executando o Algoritmo de Ada Lovelace:");
+console.log("Sequência gerada (8 termos): " + gerarFibonacci(8).join(" -> "));`;
             }
             if (subjectId === 'html_css') {
-                return '<div style="background: linear-gradient(135deg, #0f172a, #1e293b); padding: 24px; border-radius: 16px; border: 2px solid #38bdf8; text-align: center; color: white; font-family: sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">\n  <h2 style="color: #38bdf8; margin: 0 0 8px 0; font-size: 20px;">🚀 Meu Componente Web Interativo</h2>\n  <p style="font-size: 13px; color: #94a3b8; margin-bottom: 16px;">Edite este código HTML/CSS no editor acima e veja o resultado mudar ao vivo!</p>\n  <button style="background: #38bdf8; color: #020617; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer;">\n    Executar Ação ⚡\n  </button>\n</div>';
+                return `<div style="background: linear-gradient(135deg, #0f172a, #1e293b); padding: 24px; border-radius: 16px; border: 2px solid #38bdf8; text-align: center; color: white; font-family: sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+  <h2 style="color: #38bdf8; margin: 0 0 8px 0; font-size: 20px;">🚀 Meu Componente Web Interativo</h2>
+  <p style="font-size: 13px; color: #94a3b8; margin-bottom: 16px;">Edite este código HTML/CSS no editor acima e veja o resultado mudar ao vivo!</p>
+  <button style="background: #38bdf8; color: #020617; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer;">
+    Executar Ação ⚡
+  </button>
+</div>`;
             }
             if (subjectId === 'python') {
-                return '# 🐍 Simulador de Script Python\nusuarios = ["admin", "murilo_dev", "aluno_code", "suporte"]\n\nprint("=== VERIFICAÇÃO DE PERMISSÕES ===")\nfor user in usuarios:\n    if "admin" in user:\n        print("🔒 [ROOT]: Acesso total concedido para " + user)\n    else:\n        print("👤 [USER]: Acesso padrão para " + user)';
+                return `# 🐍 Simulador de Script Python
+usuarios = ["admin", "murilo_dev", "aluno_code", "suporte"]
+
+print("=== VERIFICAÇÃO DE PERMISSÕES ===")
+for user in usuarios:
+    if "admin" in user:
+        print("🔒 [ROOT]: Acesso total concedido para " + user)
+    else:
+        print("👤 [USER]: Acesso padrão para " + user)`;
             }
             if (subjectId === 'banco_dados') {
-                return '-- 🗄️ Consulta SQL Interativa\nSELECT id, nome, email, nota \nFROM alunos \nWHERE nota >= 7.0 \nORDER BY nota DESC;';
+                return `-- 🗄️ Consulta SQL Interativa
+SELECT id, nome, email, nota, turma 
+FROM alunos 
+WHERE nota >= 7.0 
+ORDER BY nota DESC;`;
             }
             if (subjectId === 'poo') {
-                return '// 🏗️ Modelagem Orientada a Objetos\nclass Personagem {\n  constructor(nome, classe, vida = 100) {\n    this.nome = nome;\n    this.classe = classe;\n    this.vida = vida;\n  }\n\n  atacar(dano = 25) {\n    return "⚔️ " + this.nome + " (" + this.classe + ") atacou causando " + dano + " de dano!";\n  }\n}\n\nconst heroi = new Personagem("Arthur", "Guerreiro");\nconsole.log(heroi.atacar(35));\nconsole.log(heroi.atacar(40));';
+                return `// 🏗️ Modelagem Orientada a Objetos
+class Personagem {
+  constructor(nome, classe, vida = 100) {
+    this.nome = nome;
+    this.classe = classe;
+    this.vida = vida;
+  }
+
+  atacar(dano = 25) {
+    return "⚔️ " + this.nome + " (" + this.classe + ") atacou causando " + dano + " de dano!";
+  }
+}
+
+const heroi = new Personagem("Arthur", "Guerreiro");
+console.log(heroi.atacar(35));
+console.log(heroi.atacar(40));`;
             }
             if (subjectId === 'javascript') {
-                return '// ⚡ Terminal JavaScript Moderno (ES6+)\nconst desenvolvedores = [\n  { nome: "Lucas", nivel: "Júnior", xp: 1200 },\n  { nome: "Beatriz", nivel: "Pleno", xp: 3400 },\n  { nome: "Carlos", nivel: "Sênior", xp: 7800 }\n];\n\nconsole.log("=== LISTA DE DESENVOLVEDORES ===");\nconst devFormatados = desenvolvedores.map(dev => {\n  return "🧑‍💻 " + dev.nome + " (" + dev.nivel + ") - " + dev.xp + " XP";\n});\n\ndevFormatados.forEach(msg => console.log(msg));';
+                return `// ⚡ Terminal JavaScript Moderno (ES6+)
+const desenvolvedores = [
+  { nome: "Lucas", nivel: "Júnior", xp: 1200 },
+  { nome: "Beatriz", nivel: "Pleno", xp: 3400 },
+  { nome: "Carlos", nivel: "Sênior", xp: 7800 }
+];
+
+console.log("=== LISTA DE DESENVOLVEDORES ===");
+const devFormatados = desenvolvedores.map(dev => {
+  return "🧑‍💻 " + dev.nome + " (" + dev.nivel + ") - " + dev.xp + " XP";
+});
+
+devFormatados.forEach(msg => console.log(msg));`;
             }
-            return '// ⚡ Terminal de Lógica & Algoritmos\nlet numeroA = 15;\nlet numeroB = 30;\nlet soma = numeroA + numeroB;\n\nconsole.log("Calculando algoritmo...");\nconsole.log("Número A:", numeroA);\nconsole.log("Número B:", numeroB);\nconsole.log("Soma total:", soma);\n\nif (soma >= 40) {\n  console.log("Resultado: ✅ Condição satisfeita (Maior ou igual a 40)");\n} else {\n  console.log("Resultado: ❌ Condição não satisfeita");\n}';
+            return `// ⚡ Terminal de Lógica & Algoritmos
+let numeroA = 15;
+let numeroB = 30;
+let soma = numeroA + numeroB;
+
+console.log("Calculando algoritmo...");
+console.log("Número A:", numeroA);
+console.log("Número B:", numeroB);
+console.log("Soma total:", soma);
+
+if (soma >= 40) {
+  console.log("Resultado: ✅ Condição satisfeita (Maior ou igual a 40)");
+} else {
+  console.log("Resultado: ❌ Condição não satisfeita");
+}`;
         };
 
         window.runSandboxCode = function() {
@@ -2640,6 +2744,13 @@
                                             <p class="text-[11px] text-slate-400">Edite, teste variações e execute o código da aula em tempo real:</p>
                                         </div>
                                     </div>
+                                    
+                                </div>
+
+                                <!-- Guia de Missão Prática -->
+                                <div class="bg-sky-950/50 border border-sky-500/30 rounded-xl p-3 mb-3 text-xs text-sky-200 leading-relaxed flex items-start gap-2.5 shadow-sm">
+                                    <span class="text-lg shrink-0">💡</span>
+                                    <div class="leading-relaxed">${window.getChapterMissionGuide(currentSubjectId)}</div>
 
                                     <div class="flex items-center gap-1.5">
                                         <button onclick="window.resetSandboxCode()" title="Restaurar código original" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 text-xs font-bold transition flex items-center gap-1 font-code">
