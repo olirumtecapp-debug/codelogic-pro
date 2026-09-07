@@ -193,6 +193,7 @@
 
         // --- LISTA DE TRILHAS DO CODELOGIC PRO ---
         window.PORTAL_TRACKS = [
+            { id: 'historia', name: '0. Origem & História Tech', icon: '📜', color: 'from-amber-600 to-yellow-700', badge: 'Origens' },
             { id: 'logica', name: '1. Lógica & Algoritmos', icon: '⚡', color: 'from-amber-500 to-orange-600', badge: 'Fundamentos' },
             { id: 'html_css', name: '2. Web Frontend (HTML5/CSS3)', icon: '🌐', color: 'from-sky-500 to-blue-600', badge: 'Intermediário' },
             { id: 'javascript', name: '3. JavaScript Moderno', icon: '✨', color: 'from-yellow-500 to-amber-600', badge: 'Intermediário' },
@@ -203,6 +204,210 @@
 
         // --- BANCO DE DADOS DE CURSOS INICIAL ---
         const initialCoursesDatabase = {
+  "historia": {
+    "id": "historia",
+    "name": "0. Origem & História da Computação",
+    "icon": "📜",
+    "badge": "Fundamentos",
+    "color": "from-amber-600 to-yellow-700",
+    "description": "Do ábaco e Ada Lovelace aos primeiros computadores eletrônicos (ENIAC), Alan Turing, transistores e a invenção da Internet.",
+    "categories": [
+      {
+        "id": "historia_primordios",
+        "name": "Módulo 1: Os Primórdios do Cálculo & Máquinas Mecânicas",
+        "description": "A evolução milenar da contagem mecânica e os primeiros passos dos algoritmos.",
+        "sources": "Computer History Museum (CHM), IEEE Annals of the History of Computing.",
+        "chapters": [
+          {
+            "title": "1. Do Ábaco à Máquina Analítica & Ada Lovelace 🏛️",
+            "imageUrl": "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=900&auto=format&fit=crop&q=80",
+            "content": "A história da computação começou com a necessidade humana de contar e calcular.<br><br>• <b>O Ábaco (c. 2400 a.C.):</b> O primeiro instrumento mecânico de cálculo da humanidade, usado na Mesopotâmia e na Ásia.<br>• <b>A Pascalina (1642):</b> Criada por Blaise Pascal, foi a primeira calculadora mecânica de engrenagens capaz de somar e subtrair.<br>• <b>Charles Babbage & A Máquina Analítica (1837):</b> O conceito pioneiro do primeiro computador de uso geral com memória e processamento mecânico.<br>• <b>Ada Lovelace (1815-1852):</b> Filha do poeta Lord Byron e brilhante matemática, Ada escreveu o <b>primeiro algoritmo para ser processado por uma máquina</b> (cálculo dos números de Bernoulli) e previu que computadores poderiam manipular música e arte, tornando-se a <b>Primeira Programadora da História</b>.",
+            "miniGame": {
+              "question": "Quem é historicamente reconhecida como a primeira pessoa a escrever um algoritmo para uma máquina (primeira programadora do mundo)?",
+              "options": [
+                "Ada Lovelace",
+                "Marie Curie",
+                "Grace Hopper",
+                "Margaret Hamilton"
+              ],
+              "correct": 0,
+              "explanation": "Ada Lovelace escreveu em 1843 o primeiro algoritmo para a Máquina Analítica de Babbage, antecipando o conceito de software."
+            }
+          },
+          {
+            "title": "2. Alan Turing, a Máquina Enigma & A Teoria da Computação ⚙️",
+            "imageUrl": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=900&auto=format&fit=crop&q=80",
+            "content": "O britânico <b>Alan Turing (1912-1954)</b> é considerado o <b>Pai da Ciência da Computação Moderna e da Inteligência Artificial</b>.<br><br>• <b>A Máquina de Turing Universal (1936):</b> Modelo teórico matemático que definiu o que é um computador programável: uma máquina que lê e escreve símbolos em uma fita de acordo com uma tabela de regras.<br>• <b>A Quebra da Enigma (Segunda Guerra Mundial):</b> Em Bletchley Park, Turing projetou a máquina eletromecânica <i>Bombe</i>, capaz de quebrar as mensagens criptografadas nazistas, salvando milhões de vidas.<br>• <b>O Teste de Turing:</b> Teste pioneiro para avaliar se uma máquina exibe comportamento inteligente indistinguível de um ser humano.",
+            "miniGame": {
+              "question": "Qual é o papel fundamental do modelo teórico da Máquina de Turing na computação?",
+              "options": [
+                "Definiu as bases matemáticas universais de funcionamento de qualquer computador e algoritmo moderno.",
+                "Foi a primeira impressora colorida da história.",
+                "Criou a primeira linguagem de rede social.",
+                "Foi o primeiro videogame com gráficos 3D."
+              ],
+              "correct": 0,
+              "explanation": "O artigo de Alan Turing de 1936 fundamentou formalmente a ciência da computação e a teoria dos algoritmos."
+            }
+          }
+        ]
+      },
+      {
+        "id": "historia_eletronica",
+        "name": "Módulo 2: A Era Eletrônica, Válvulas & Transistores",
+        "description": "O nascimento dos computadores eletrônicos e a revolução dos semicondutores.",
+        "sources": "Smithsonian National Museum of American History, IEEE History Center.",
+        "chapters": [
+          {
+            "title": "3. O Gigante ENIAC & A Arquitetura de Von Neumann 💡",
+            "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&auto=format&fit=crop&q=80",
+            "content": "Em 1945 surgiu o <b>ENIAC (Electronic Numerical Integrator and Computer)</b>, o primeiro computador eletrônico digital de grande escala do mundo:<br><br>• <b>Gigante de Metal:</b> Pesava 30 toneladas, ocupava 167 m² e continha mais de 17.000 <b>Válvulas Termoiônicas</b> (que esquentavam tanto que atraíam insetos — onde Grace Hopper documentou um dos primeiros \"bugs\" literais).<br>• <b>A Arquitetura de Von Neumann (1945):</b> Criada pelo matemático John von Neumann, introduziu o conceito de <b>Programa Armazenado</b>: dados e instruções compartilham a mesma memória, com a clássica divisão entre <b>CPU (Unidade de Controle + ULA)</b>, <b>Memória Principal</b> e <b>Dispositivos de Entrada/Saída</b> que usamos até hoje em PCs e smartphones!",
+            "miniGame": {
+              "question": "O que a Arquitetura de Von Neumann introduziu como padrão universal até hoje nos computadores?",
+              "options": [
+                "O conceito de que o programa e os dados ficam armazenados na mesma memória, processados por uma CPU.",
+                "A proibição do uso de eletricidade.",
+                "Monitores sensíveis ao toque.",
+                "Sistemas de refrigeração líquida para celulares."
+              ],
+              "correct": 0,
+              "explanation": "A arquitetura Von Neumann organiza CPU, Memória e barramentos com instruções armazenadas, base de quase toda a computação atual."
+            }
+          },
+          {
+            "title": "4. A Invenção do Transistor, Microchips & Computadores Pessoais 🔬",
+            "imageUrl": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=900&auto=format&fit=crop&q=80",
+            "content": "As válvulas queimavam com facilidade e consumiam muita energia. Em 1947, nos laboratórios Bell, foi inventado o <b>Transistor</b> (Prêmio Nobel de Física), substituindo as válvulas por cristais semicondutores de silício.<br><br>• <b>Circuito Integrado / Microchip (1958):</b> Milhares de transistores miniaturizados em uma única pastilha de silício.<br>• <b>Microprocessador Intel 4004 (1971):</b> Uma CPU completa em um único chip!<br>• <b>Revolução do Computador Pessoal (Anos 70/80):</b> Apple II (Steve Jobs e Steve Wozniak) e o IBM PC (com o MS-DOS de Bill Gates) transformaram computadores de armários corporativos em ferramentas acessíveis em cada mesa de trabalho.",
+            "miniGame": {
+              "question": "Qual componente eletrônico miniaturizado substituiu as antigas válvulas, permitindo a criação de computadores pequenos e potentes?",
+              "options": [
+                "Transistor de Silício",
+                "Resistor de carvão",
+                "Bateria de chumbo",
+                "Lâmpada incandescente"
+              ],
+              "correct": 0,
+              "explanation": "O transistor revolucionou a tecnologia moderna, permitindo a miniaturização e a criação dos microprocessadores."
+            }
+          }
+        ]
+      },
+      {
+        "id": "historia_internet",
+        "name": "Módulo 3: A Rede Mundial & O Nascimento da Web",
+        "description": "Como computadores isolados se conectaram em uma rede global interplanetária.",
+        "sources": "Internet Society (ISOC), W3C History, CERN Document Server.",
+        "chapters": [
+          {
+            "title": "5. Da ARPANET ao Protocolo TCP/IP Global 🌐",
+            "imageUrl": "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=900&auto=format&fit=crop&q=80",
+            "content": "Antes dos anos 1960, cada computador funcionava como uma ilha isolada.<br><br>• <b>ARPANET (1969):</b> Criada pelo Departamento de Defesa dos EUA (DARPA), foi a primeira rede operacional de computadores a utilizar <b>Comutação de Pacotes</b> (enviando a primeira mensagem <i>\"LO\"</i> entre a UCLA e Stanford).<br>• <b>Protocolo TCP/IP (1983):</b> Projetado por <b>Vint Cerf e Bob Kahn</b>, estabeleceu as regras universais para que redes de diferentes fabricantes pudessem conversar fluentemente, dando origem oficial à <b>Internet</b>.",
+            "miniGame": {
+              "question": "Qual protocolo criado por Vint Cerf e Bob Kahn se tornou o idioma universal de comunicação da Internet global?",
+              "options": [
+                "TCP/IP",
+                "BLUETOOTH",
+                "USB 2.0",
+                "HDMI"
+              ],
+              "correct": 0,
+              "explanation": "O TCP/IP é a suíte fundamental de protocolos de rede que rege o tráfego de dados na Internet até hoje."
+            }
+          },
+          {
+            "title": "6. Tim Berners-Lee & A Invenção da World Wide Web (WWW) 🚀",
+            "imageUrl": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=900&auto=format&fit=crop&q=80",
+            "content": "A Internet já existia, mas era restrita a comandos de texto complexos para cientistas e militares. Em 1989, no laboratório de física <b>CERN</b> na Suíça, o cientista britânico <b>Tim Berners-Lee</b> mudou o planeta para sempre:<br><br>• <b>A Tríade da Web:</b> Ele criou simultaneamente a linguagem <b>HTML</b>, o protocolo <b>HTTP</b> e o sistema de endereçamento <b>URI/URL</b>.<br>• <b>O Primeiro Navegador (WorldWideWeb):</b> Rodando em um computador NeXT em 1990.<br>• <b>A Decisão Mais Generosa da História:</b> O CERN e Tim Berners-Lee decidiram disponibilizar a tecnologia da Web <b>100% gratuita, livre de royalties e aberta para toda a humanidade</b>, permitindo a explosão da economia digital que conhecemos hoje.",
+            "miniGame": {
+              "question": "Quem inventou a World Wide Web (WWW), o HTML e o protocolo HTTP no CERN em 1989?",
+              "options": [
+                "Tim Berners-Lee",
+                "Bill Gates",
+                "Steve Jobs",
+                "Mark Zuckerberg"
+              ],
+              "correct": 0,
+              "explanation": "Sir Tim Berners-Lee inventou a Web no CERN e a liberou gratuitamente para o mundo."
+            }
+          }
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "category": "historia_primordios",
+        "text": "Por que Ada Lovelace é considerada a primeira programadora da história?",
+        "options": [
+          "Porque escreveu o primeiro algoritmo para ser processado pela Máquina Analítica de Babbage.",
+          "Porque fundou a Microsoft.",
+          "Porque inventou a tela de cristal líquido.",
+          "Porque construiu o primeiro computador portátil."
+        ],
+        "correct": 0,
+        "explanation": "Ada Lovelace concebeu e documentou o primeiro algoritmo computacional da história."
+      },
+      {
+        "category": "historia_primordios",
+        "text": "Qual contribuição decisiva Alan Turing prestou durante a Segunda Guerra Mundial?",
+        "options": [
+          "Projetou a máquina Bombe que quebrou os códigos nazistas da máquina Enigma.",
+          "Criou o primeiro satélite espacial.",
+          "Inventou o radar a laser.",
+          "Construiu aviões a jato."
+        ],
+        "correct": 0,
+        "explanation": "A quebra do código Enigma por Turing foi um marco da computação e da história mundial."
+      },
+      {
+        "category": "historia_eletronica",
+        "text": "Qual foi o primeiro computador eletrônico digital de grande escala do mundo construído em 1945?",
+        "options": [
+          "ENIAC",
+          "Macintosh",
+          "Commodore 64",
+          "PlayStation"
+        ],
+        "correct": 0,
+        "explanation": "O ENIAC foi o pioneiro dos computadores digitais a válvulas."
+      },
+      {
+        "category": "historia_eletronica",
+        "text": "Qual é a principal vantagem dos transistores em relação às válvulas antigas?",
+        "options": [
+          "Menor tamanho, menor consumo de energia, maior velocidade e muito maior durabilidade.",
+          "Eles funcionavam com carvão.",
+          "Eles eram maiores que uma sala.",
+          "Eles só funcionavam no frio."
+        ],
+        "correct": 0,
+        "explanation": "Transistores viabilizaram a microeletrônica moderna."
+      },
+      {
+        "category": "historia_internet",
+        "text": "Qual foi a rede pioneira financiada pela DARPA em 1969 que deu origem à Internet?",
+        "options": [
+          "ARPANET",
+          "SKYNET",
+          "FACEBOOK",
+          "ETHERNET"
+        ],
+        "correct": 0,
+        "explanation": "A ARPANET foi o berço da comutação de pacotes e da Internet."
+      },
+      {
+        "category": "historia_internet",
+        "text": "O que Tim Berners-Lee fez com sua invenção da World Wide Web (WWW) no CERN?",
+        "options": [
+          "Disponibilizou gratuitamente e aberta a royalties para todo o planeta.",
+          "Vendeu por bilhões de dólares para uma empresa.",
+          "Guardou em segredo absoluto.",
+          "Destruiu os códigos originais."
+        ],
+        "correct": 0,
+        "explanation": "A liberação gratuita da Web permitiu que ela se tornasse a rede global acessível a toda a humanidade."
+      }
+    ]
+  },
   "logica": {
     "id": "logica",
     "name": "1. Lógica & Algoritmos",
@@ -2184,6 +2389,9 @@
         };
 
         window.getChapterSandboxCode = function(subjectId) {
+            if (subjectId === 'historia') {
+                return '// 📜 Simulador Histórico: A Máquina de Turing & Sequência de Fibonacci\n// O primeiro algoritmo da história (Ada Lovelace, 1843)\n\nfunction gerarFibonacci(termos) {\n  let sequencia = [0, 1];\n  for (let i = 2; i < termos; i++) {\n    sequencia.push(sequencia[i - 1] + sequencia[i - 2]);\n  }\n  return sequencia;\n}\n\nconsole.log("=== LINHA DO TEMPO DA COMPUTAÇÃO ===");\nconsole.log("1843: Ada Lovelace cria o primeiro algoritmo.");\nconsole.log("1936: Alan Turing publica a Máquina Universal.");\nconsole.log("1945: ENIAC entra em operação (30 toneladas).");\nconsole.log("1989: Tim Berners-Lee inventa a Web (WWW).");\nconsole.log("\nCalculando Fibonacci de 8 termos:");\nconsole.log(gerarFibonacci(8).join(" -> "));';
+            }
             if (subjectId === 'html_css') {
                 return '<div style="background: linear-gradient(135deg, #0f172a, #1e293b); padding: 24px; border-radius: 16px; border: 2px solid #38bdf8; text-align: center; color: white; font-family: sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">\n  <h2 style="color: #38bdf8; margin: 0 0 8px 0; font-size: 20px;">🚀 Meu Componente Web Interativo</h2>\n  <p style="font-size: 13px; color: #94a3b8; margin-bottom: 16px;">Edite este código HTML/CSS no editor acima e veja o resultado mudar ao vivo!</p>\n  <button style="background: #38bdf8; color: #020617; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer;">\n    Executar Ação ⚡\n  </button>\n</div>';
             }
@@ -3018,11 +3226,40 @@
             return html;
         };
 
-        window.copyAIPromptTemplate = function() {
-            const tmpl = `Crie uma aula educativa e técnica de programação para a plataforma CodeLogic Pro.
+        window.copyAIPromptTemplate = function(type = 'standard') {
+            let tmpl = '';
+            if (type === 'masterclass') {
+                tmpl = `Atue como um Engenheiro de Software Sênior e Educador Técnico Especialista.
+Crie uma aula completa, profunda e de alto nível técnico para a plataforma CodeLogic Pro.
 
 Tema da Aula: [DIGITE O TEMA AQUI]
-Trilha: [LÓGICA / HTML5 / CSS3 / JAVASCRIPT / PYTHON / POO / SQL]
+Trilha: [HISTÓRIA / LÓGICA / HTML5 / CSS3 / JAVASCRIPT / PYTHON / POO / SQL]
+Nível de Profundidade: Masterclass / Avançado
+
+Siga rigorosamente a estrutura abaixo para que o importador automático processe com perfeição:
+
+Título: [Título chamativo com emoji no final]
+
+Texto:
+[Escreva uma aula técnica densa e aprofundada contendo:
+1. Fundamentos Teóricos & Arquitetura detalhada.
+2. Exemplos de Código Práticos e Comentados (entre crases de código).
+3. Estudo de Caso do Mundo Real (como grandes empresas aplicam este conceito).
+4. Boas Práticas vs Anti-Patterns (como fazer certo vs armadilhas comuns).
+Destaque todos os termos fundamentais em **asteriscos duplos para negrito**].
+
+Desafio: [Uma questão técnica desafiadora baseada em um cenário real da aula]
+A) [Opção A]
+B) [Opção B]
+C) [Opção C]
+D) [Opção D]
+Gabarito: [Apenas a letra correta: A, B, C ou D]
+Explicação: [Explicação técnica detalhada justificando a alternativa correta e apontando por que as outras opções estão erradas].`;
+            } else {
+                tmpl = `Crie uma aula educativa e técnica de programação para a plataforma CodeLogic Pro.
+
+Tema da Aula: [DIGITE O TEMA AQUI]
+Trilha: [HISTÓRIA / LÓGICA / HTML5 / CSS3 / JAVASCRIPT / PYTHON / POO / SQL]
 
 Estrutura exata da resposta:
 Título: [Título chamativo com emoji no final]
@@ -3034,10 +3271,11 @@ C) [Opção C]
 D) [Opção D]
 Gabarito: [Apenas a letra correta: A, B, C ou D]
 Explicação: [Explicação curta e didática do porquê a alternativa está certa]`;
+            }
 
             navigator.clipboard.writeText(tmpl).then(() => {
                 window.soundCorrect();
-                window.customAlert("📋 <b>Prompt Modelo Copiado!</b><br>Cole no ChatGPT ou Gemini e copie o resultado para o editor.");
+                window.customAlert(`📋 <b>Prompt ${type === 'masterclass' ? 'Masterclass Aprofundado' : 'Padrão'} Copiado!</b><br>Cole no ChatGPT ou Gemini e cole o resultado gerado aqui!`);
             });
         };
 
@@ -3055,7 +3293,10 @@ Explicação: [Explicação curta e didática do porquê a alternativa está cer
                     <textarea id="ai-raw-text-input" rows="10" class="w-full p-3.5 rounded-2xl border border-slate-700 bg-slate-950 text-xs font-sans text-slate-200 focus:border-purple-500 focus:outline-none custom-scrollbar" placeholder="Cole aqui o texto gerado pela IA (Título: ..., Texto: ..., Desafio: ..., A) ..., B) ..., Gabarito: ...)..."></textarea>
 
                     <div class="flex justify-between items-center pt-2">
-                        <button onclick="window.copyAIPromptTemplate()" class="text-xs font-bold text-sky-400 hover:underline font-code">📋 Copiar Prompt Modelo</button>
+                        <div class="flex gap-2">
+                            <button onclick="window.copyAIPromptTemplate('standard')" class="text-[11px] font-bold text-sky-400 hover:text-sky-300 bg-slate-900 border border-slate-700 px-2.5 py-1.5 rounded-lg font-code transition">📋 Prompt Padrão</button>
+                            <button onclick="window.copyAIPromptTemplate('masterclass')" class="text-[11px] font-black text-amber-400 hover:text-amber-300 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1.5 rounded-lg font-code transition">🌟 Prompt Masterclass</button>
+                        </div>
                         <div class="flex gap-2">
                             <button onclick="window.hideModal()" class="px-4 py-2 text-xs font-bold text-slate-400 hover:bg-slate-800 rounded-xl">Cancelar</button>
                             <button onclick="window.applyAITextToChapter(${cIdx})" class="bg-purple-600 hover:bg-purple-500 text-white font-black px-5 py-2 rounded-xl text-xs font-code shadow">Processar Aula ✨</button>
