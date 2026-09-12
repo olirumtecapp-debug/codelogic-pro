@@ -28,19 +28,18 @@
         <!-- Header Global Tech -->
     <header class="bg-slate-900/95 border-b border-slate-800/80 backdrop-blur-md sticky top-0 z-40 shadow-xl">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <!-- Logo e Título -->
+            <!-- Logo e Título Limpo -->
             <div class="flex items-center gap-3 cursor-pointer select-none" onclick="window.soundClick(); window.changeState('PORTAL_HUB')">
                 <span class="text-2xl p-2 bg-sky-500/10 text-sky-400 rounded-2xl border border-sky-500/20 font-code font-bold glow-border">&lt;/&gt;</span>
                 <div>
                     <div class="flex items-center gap-2">
                         <h1 class="font-black text-lg md:text-xl tracking-wider font-code text-white">Code<span class="text-sky-400">Logic</span><span class="text-xs text-amber-400 ml-1 font-sans font-black bg-amber-400/10 border border-amber-400/30 px-1.5 py-0.5 rounded-full">PRO</span></h1>
-                        <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[9px] font-black uppercase px-2.5 py-0.5 rounded-full font-code inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>PLATAFORMA INTERATIVA</span>
                     </div>
-                    <p class="text-[10px] text-slate-400">Super Plataforma Aberta • Lógica, Web, Python, POO & SQL</p>
+                    <p class="text-[10px] text-slate-400 hidden sm:block">Plataforma Prática • Lógica, Web, Python & SQL</p>
                 </div>
             </div>
 
-            <!-- Botões de Ação do Header -->
+            <!-- Botões de Ação do Header (Essenciais) -->
             <div class="flex items-center gap-2">
                 <div id="user-info-display" class="hidden items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-2xl border border-slate-700">
                     <span id="current-user-avatar" class="text-lg">🧑‍💻</span>
@@ -53,15 +52,9 @@
                     </button>
                 </div>
 
-                
-                <!-- Botão de Suporte & Dúvidas -->
-                <button onclick="window.openFeedbackModal()" title="Enviar Dúvida Pedagógica ao Instrutor" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl border border-slate-700 text-xs font-bold transition flex items-center gap-1.5 font-code cursor-pointer">
-                    <span>💬</span> <span class="hidden md:inline">Dúvidas</span>
-                </button>
-
-                <!-- Botão Caixa Postal com Badge -->
-                <button onclick="window.openStudentInbox()" title="Minha Caixa Postal de Mensagens" class="bg-indigo-950/60 hover:bg-indigo-900/80 text-indigo-300 px-3 py-1.5 rounded-xl border border-indigo-500/40 text-xs font-bold transition flex items-center gap-1.5 font-code relative cursor-pointer">
-                    <span>📬</span> <span class="hidden md:inline">Caixa Postal</span>
+                <!-- Botão Caixa Postal com Badge (Unifica Dúvidas e Histórico) -->
+                <button onclick="window.openStudentInbox()" title="Minha Caixa Postal de Dúvidas & Mensagens" class="bg-indigo-950/60 hover:bg-indigo-900/80 text-indigo-300 px-3 py-1.5 rounded-xl border border-indigo-500/40 text-xs font-bold transition flex items-center gap-1.5 font-code relative cursor-pointer shadow-sm">
+                    <span>📬</span> <span class="hidden sm:inline">Caixa Postal</span>
                     <span id="nav-inbox-badge" class="hidden absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.2 rounded-full border-2 border-slate-900 shadow-sm leading-tight">0</span>
                 </button>
 
@@ -69,23 +62,16 @@
                 <div id="header-vip-container" class="flex items-center">
                     <button onclick="window.openVipModal()" id="btn-header-vip" class="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-xs font-code transition shadow flex items-center gap-1.5 cursor-pointer">
                         <span>⭐</span> <span>Seja VIP</span>
-                        <span class="bg-amber-950/30 text-amber-950 text-[9px] px-1.5 py-0.5 rounded-full font-black uppercase">Ativar</span>
+                        <span class="bg-amber-950/30 text-amber-950 text-[9px] px-1.5 py-0.5 rounded-full font-black uppercase hidden md:inline">Ativar</span>
                     </button>
                     <div onclick="window.openVipModal()" id="badge-header-vip" class="hidden bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-amber-950 font-black px-3 py-1.5 rounded-xl text-xs shadow-md border border-amber-400 items-center gap-1.5 font-code cursor-pointer animate-pulse" title="Membro VIP Vitalício CodeLogic PRO">
                         <span>👑</span> <span class="hidden sm:inline">VIP VITALÍCIO</span>
                     </div>
                 </div>
 
-                <button onclick="window.scrollToTracks()" title="Explorar as 10 Trilhas de Cursos" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
+                <!-- Atalho Direto para Trilhas -->
+                <button onclick="window.scrollToTracks()" title="Explorar as Trilhas de Cursos" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
                     💻 <span class="hidden sm:inline">Trilhas</span>
-                </button>
-
-                <button onclick="window.scrollToFooterInfo()" title="Ver links úteis, validador de certificados e proposta pedagógica" class="bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 px-3.5 py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
-                    <span>ℹ️</span> <span>Sobre & Links</span>
-                </button>
-                
-                <button id="admin-badge-btn" onclick="window.soundClick(); window.changeState('ADMIN_LOGIN')" class="text-xs bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 px-3.5 py-2 rounded-xl border border-indigo-500/30 font-bold transition flex items-center gap-1.5 cursor-pointer">
-                    👨‍🏫 <span class="hidden sm:inline">Instrutor</span>
                 </button>
             </div>
         </div>
@@ -115,6 +101,9 @@
 
                 <!-- Botões e Links Rápidos -->
                 <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="window.openFeedbackModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1 cursor-pointer shadow-sm" title="Enviar dúvida ou feedback ao instrutor">
+                        <span>💬</span> Fale com o Instrutor
+                    </button>
                     <button onclick="window.showValidatorModal()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 hover:text-emerald-300 px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1 cursor-pointer shadow-sm">
                         <span>🔍</span> Validar Certificado
                     </button>
@@ -126,6 +115,9 @@
                     </button>
                     <button onclick="window.showDeveloperModal()" class="bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 px-3 py-1.5 rounded-xl border border-indigo-500/30 font-bold text-xs transition flex items-center gap-1 cursor-pointer shadow-sm">
                         <span>👨‍💻</span> Desenvolvedor
+                    </button>
+                    <button id="admin-badge-btn" onclick="window.soundClick(); window.changeState('ADMIN_LOGIN')" class="bg-slate-800 hover:bg-slate-700 text-indigo-300 hover:text-indigo-200 px-3 py-1.5 rounded-xl border border-indigo-500/30 font-bold text-xs transition flex items-center gap-1 cursor-pointer shadow-sm" title="Acesso restrito ao Painel do Instrutor">
+                        <span>👨‍🏫</span> Acesso Instrutor
                     </button>
                 </div>
             </div>
