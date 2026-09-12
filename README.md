@@ -16,3 +16,7 @@ Plataforma Gamificada de Aprendizagem de Programação do Zero ao Avançado.
 - **Minigames Práticos Gamificados**: Simulações práticas para cada trilha.
 - **Certificação Oficial com Validação**: Emissão de certificados autorizados com código de autenticidade.
 - **Painel do Instrutor Completo**: Gestão de alunos, trilhas e módulos com persistência Cloud Firestore.
+
+
+## 🛡️ Arquitetura & Documentação Pedagógica:
+- **[Guia da Trava Pedagógica Anti-Fraude](./DOCS_TRAVA_PEDAGOGICA.md)**: Especificação completa de retenção de aprendizado, bloqueio de avanço sem leitura, estrutura JSON compatível e módulo universal reutilizável para futuros projetos EAD.

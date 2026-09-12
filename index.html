@@ -7034,6 +7034,9 @@ window.runSandboxCode = function() {
                             <button onclick="window.copyAIPromptTemplate()" class="w-full bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white py-2 px-3 rounded-xl transition text-[11px] font-black flex items-center justify-center gap-1.5 shadow-sm font-code cursor-pointer">
                                 <span>✨</span> Prompt ChatGPT/Gemini
                             </button>
+                            <button onclick="window.openPedagogicalDocsModal()" class="w-full bg-slate-900 hover:bg-slate-800 text-sky-300 border border-sky-500/30 py-2 px-3 rounded-xl transition text-[11px] font-bold flex items-center justify-center gap-1.5 font-code cursor-pointer">
+                                <span>🛡️</span> Guia Trava Pedagógica
+                            </button>
                             <button onclick="window.changeState('PORTAL_HUB')" class="w-full text-left px-4 py-2 hover:bg-slate-800 hover:text-white rounded-xl transition flex items-center gap-2 text-xs font-bold text-slate-400 font-code cursor-pointer">
                                 🚪 Sair do Painel
                             </button>
@@ -7189,6 +7192,76 @@ window.runSandboxCode = function() {
             html = html.replace(/\n/g, '<br>');
             return html;
         };
+
+        
+        window.openPedagogicalDocsModal = function() {
+            if (typeof window.soundClick === 'function') window.soundClick();
+
+            const modalHTML = `
+                <div class="space-y-4 text-left">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-2xl">🛡️</span>
+                            <div>
+                                <h3 class="font-black text-base text-white font-code">Guia da Trava Pedagógica Anti-Fraude</h3>
+                                <p class="text-xs text-slate-400">Padrão oficial de retenção de aprendizado e emissão de certificados</p>
+                            </div>
+                        </div>
+                        <button onclick="window.hideModal()" class="text-slate-400 hover:text-white p-1 rounded-lg text-lg cursor-pointer">✕</button>
+                    </div>
+
+                    <div class="space-y-3 text-xs text-slate-300 font-sans leading-relaxed">
+                        <div class="bg-slate-950 p-3.5 rounded-2xl border border-sky-500/30 space-y-2">
+                            <h4 class="font-black text-sky-300 font-code flex items-center gap-1.5">
+                                <span>🎯</span> Como a Trava Funciona:
+                            </h4>
+                            <p>
+                                1. O botão <b>Próxima Aula</b> inicia bloqueado com o texto <code>🔒 Responda o Desafio para Avançar</code>.<br>
+                                2. O aluno é obrigado a ler o conteúdo e responder ao <b>Desafio Prático de Código</b>.<br>
+                                3. Ao selecionar uma resposta, o botão desbloqueia imediatamente em verde e o avanço é liberado.<br>
+                                4. <b>Revisões são livres:</b> Alunos que já concluíram a aula anteriormente podem avançar e voltar sem bloqueios.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 space-y-2">
+                            <h4 class="font-black text-amber-300 font-code flex items-center gap-1.5">
+                                <span>📝</span> Formato para Criar Novas Aulas (ChatGPT / Gemini):
+                            </h4>
+                            <p class="text-[11px] text-slate-400">
+                                Para que novos módulos já nasçam com a trava funcionando automaticamente, inclua a seção de Desafio no prompt da IA:
+                            </p>
+                            <pre class="bg-slate-900 p-2.5 rounded-xl border border-slate-700 text-[10px] font-code text-amber-200 overflow-x-auto select-all">Desafio: [Pergunta prática de código]
+A) [Opção 1]
+B) [Opção 2]
+C) [Opção 3]
+D) [Opção 4]
+Gabarito: [Letra correta]
+Explicação: [Por que a resposta está certa]</pre>
+                        </div>
+
+                        <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 space-y-1.5">
+                            <h4 class="font-black text-emerald-300 font-code flex items-center gap-1.5">
+                                <span>📄</span> Documentação Completa no Repositório:
+                            </h4>
+                            <p class="text-[11px] text-slate-400">
+                                Um arquivo de especificação técnica universal reutilizável para futuros cursos foi criado em:
+                                <code class="text-white">DOCS_TRAVA_PEDAGOGICA.md</code>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-2 border-t border-slate-800 text-[11px] text-slate-500">
+                        <span>CodeLogic PRO • Padrão de Qualidade Pedagógica</span>
+                        <button onclick="window.hideModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-xl text-xs font-code font-bold cursor-pointer">
+                            Fechar
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            window.showModal(modalHTML, 'max-w-xl');
+        };
+
 
         window.copyAIPromptTemplate = function(type = 'standard') {
             let tmpl = '';
