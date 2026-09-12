@@ -4005,7 +4005,7 @@
                         resumeTrackId = trk.id;
                         resumeTrackName = trk.name;
                         resumeCatId = cat.id;
-                        resumeCatTitle = cat.title;
+                        resumeCatTitle = cat.name || cat.title || "Módulo de Estudos";
                         resumePercent = Math.round((readCount / chapsCount) * 100);
                     }
                 });
@@ -4023,7 +4023,7 @@
                         resumeTrackId = trk.id;
                         resumeTrackName = trk.name;
                         resumeCatId = foundCat.id;
-                        resumeCatTitle = foundCat.title;
+                        resumeCatTitle = foundCat.name || foundCat.title || "Módulo de Estudos";
                         const prog = studentsProgress[currentUser]?.[foundCat.id];
                         const count = prog?.chaptersRead || 0;
                         resumePercent = (foundCat.chapters?.length) ? Math.round((count / foundCat.chapters.length) * 100) : 0;
