@@ -53,7 +53,30 @@
                     </button>
                 </div>
 
-                <button onclick="window.scrollToTracks()" title="Explorar as 7 Trilhas de Cursos" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
+                
+                <!-- Botão de Suporte & Dúvidas -->
+                <button onclick="window.openFeedbackModal()" title="Enviar Dúvida Pedagógica ao Instrutor" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl border border-slate-700 text-xs font-bold transition flex items-center gap-1.5 font-code cursor-pointer">
+                    <span>💬</span> <span class="hidden md:inline">Dúvidas</span>
+                </button>
+
+                <!-- Botão Caixa Postal com Badge -->
+                <button onclick="window.openStudentInbox()" title="Minha Caixa Postal de Mensagens" class="bg-indigo-950/60 hover:bg-indigo-900/80 text-indigo-300 px-3 py-1.5 rounded-xl border border-indigo-500/40 text-xs font-bold transition flex items-center gap-1.5 font-code relative cursor-pointer">
+                    <span>📬</span> <span class="hidden md:inline">Caixa Postal</span>
+                    <span id="nav-inbox-badge" class="hidden absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.2 rounded-full border-2 border-slate-900 shadow-sm leading-tight">0</span>
+                </button>
+
+                <!-- Botão / Badge VIP -->
+                <div id="header-vip-container" class="flex items-center">
+                    <button onclick="window.openVipModal()" id="btn-header-vip" class="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-xs font-code transition shadow flex items-center gap-1.5 cursor-pointer">
+                        <span>⭐</span> <span>Seja VIP</span>
+                        <span class="bg-amber-950/30 text-amber-950 text-[9px] px-1.5 py-0.5 rounded-full font-black uppercase">Ativar</span>
+                    </button>
+                    <div onclick="window.openVipModal()" id="badge-header-vip" class="hidden bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-amber-950 font-black px-3 py-1.5 rounded-xl text-xs shadow-md border border-amber-400 items-center gap-1.5 font-code cursor-pointer animate-pulse" title="Membro VIP Vitalício CodeLogic PRO">
+                        <span>👑</span> <span class="hidden sm:inline">VIP VITALÍCIO</span>
+                    </div>
+                </div>
+
+                <button onclick="window.scrollToTracks()" title="Explorar as 10 Trilhas de Cursos" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
                     💻 <span class="hidden sm:inline">Trilhas</span>
                 </button>
 
@@ -243,7 +266,10 @@
             { id: 'javascript', name: '3. JavaScript Moderno', icon: '✨', color: 'from-yellow-500 to-amber-600', badge: 'NÍVEL 3: INTERMEDIÁRIO' },
             { id: 'python', name: '4. Python & Automação', icon: '🐍', color: 'from-emerald-500 to-teal-700', badge: 'NÍVEL 4: AUTOMAÇÃO' },
             { id: 'poo', name: '5. POO & Engenharia', icon: '🏗️', color: 'from-purple-600 to-indigo-800', badge: 'NÍVEL 5: ARQUITETURA' },
-            { id: 'banco_dados', name: '6. Banco de Dados & SQL', icon: '🗄️', color: 'from-rose-600 to-red-800', badge: 'NÍVEL 6: DADOS & SQL' }
+            { id: 'banco_dados', name: '6. Banco de Dados & SQL', icon: '🗄️', color: 'from-rose-600 to-red-800', badge: 'NÍVEL 6: DADOS & SQL' },
+            { id: 'git_devops', name: '7. Git, GitHub & DevOps', icon: '🐙', color: 'from-orange-500 to-amber-600', badge: 'NÍVEL 7: FERRAMENTAL' },
+            { id: 'estruturas_dados', name: '8. Estruturas de Dados', icon: '🧩', color: 'from-violet-600 to-indigo-700', badge: 'NÍVEL 8: COMPUTAÇÃO' },
+            { id: 'seguranca_web', name: '9. Segurança & Boas Práticas', icon: '🛡️', color: 'from-rose-600 to-red-700', badge: 'NÍVEL 9: SEGURANÇA' }
         ];
 
         // --- BANCO DE DADOS DE CURSOS INICIAL ---
@@ -294,7 +320,8 @@
               "explanation": "O artigo de Alan Turing de 1936 fundamentou formalmente a ciência da computação e a teoria dos algoritmos."
             }
           }
-        ]
+        ],
+        "isVip": false
       },
       {
         "id": "historia_eletronica",
@@ -334,7 +361,8 @@
               "explanation": "O transistor revolucionou a tecnologia moderna, permitindo a miniaturização e a criação dos microprocessadores."
             }
           }
-        ]
+        ],
+        "isVip": false
       },
       {
         "id": "historia_internet",
@@ -374,7 +402,8 @@
               "explanation": "Sir Tim Berners-Lee inventou a Web no CERN e a liberou gratuitamente para o mundo."
             }
           }
-        ]
+        ],
+        "isVip": false
       }
     ],
     "questions": [
@@ -514,7 +543,8 @@
               "explanation": "O cálculo matemático executado pela CPU sobre os dados recebidos é a etapa de Processamento."
             }
           }
-        ]
+        ],
+        "isVip": false
       },
       {
         "id": "logica_memoria",
@@ -570,7 +600,8 @@
               "explanation": "Na operação E (AND), se uma das proposições for Falsa (3 == 4 é falso), o resultado geral é False."
             }
           }
-        ]
+        ],
+        "isVip": true
       },
       {
         "id": "logica_controle",
@@ -610,7 +641,8 @@
               "explanation": "O comando break aborta imediatamente o laço de repetição, passando para a linha seguinte fora dele."
             }
           }
-        ]
+        ],
+        "isVip": true
       },
       {
         "id": "logica_estruturas",
@@ -650,7 +682,8 @@
               "explanation": "Variáveis locais existem apenas dentro do contexto onde foram criadas, protegendo a integridade do código."
             }
           }
-        ]
+        ],
+        "isVip": true
       }
     ],
     "questions": [
@@ -830,7 +863,8 @@
               "explanation": "O atributo alt descreve o conteúdo visual para leitores de tela e motores de busca."
             }
           }
-        ]
+        ],
+        "isVip": false
       },
       {
         "id": "css_estilizacao",
@@ -870,7 +904,8 @@
               "explanation": "vh significa Viewport Height; 50vh corresponde a 50% da altura da tela visível."
             }
           }
-        ]
+        ],
+        "isVip": true
       },
       {
         "id": "css_layouts",
@@ -926,7 +961,8 @@
               "explanation": "@media rules permitem criar breakpoints adaptando a interface para celulares, tablets e desktops."
             }
           }
-        ]
+        ],
+        "isVip": true
       },
       {
         "id": "css_avancado",
@@ -950,7 +986,8 @@
               "explanation": "Variáveis CSS nativas iniciam com dois hífens (--nome) e são consumidas com a função var(--nome)."
             }
           }
-        ]
+        ],
+        "isVip": true
       }
     ],
     "questions": [
@@ -1102,7 +1139,8 @@
               "explanation": "Spread expande os elementos dos arrays existentes criando uma cópia combinada."
             }
           }
-        ]
+        ],
+        "isVip": false
       },
       {
         "id": "js_arrays_objetos",
@@ -1142,7 +1180,8 @@
               "explanation": "JSON.stringify() serializa objetos em strings JSON prontas para transmissão ou armazenamento."
             }
           }
-        ]
+        ],
+        "isVip": true
       },
       {
         "id": "js_dom_eventos",
@@ -1182,7 +1221,8 @@
               "explanation": "event.preventDefault() cancela o comportamento nativo de reload do formulário no navegador."
             }
           }
-        ]
+        ],
+        "isVip": true
       },
       {
         "id": "js_assincrono",
@@ -1238,7 +1278,8 @@
               "explanation": "O método POST é a convenção REST para submissão e criação de novos registros no servidor."
             }
           }
-        ]
+        ],
+        "isVip": true
       }
     ],
     "questions": [
@@ -1390,7 +1431,8 @@
               "explanation": "elif é a palavra-chave oficial do Python para encadeamento condicional."
             }
           }
-        ]
+        ],
+        "isVip": false
       },
       {
         "id": "python_colecoes",
@@ -1446,7 +1488,8 @@
               "explanation": "Sets garantem por definição matemática que todos os seus elementos sejam únicos e sem duplicatas."
             }
           }
-        ]
+        ],
+        "isVip": true
       },
       {
         "id": "python_funcoes_avancadas",
@@ -1486,7 +1529,8 @@
               "explanation": "List Comprehensions tornam o código expressivo, conciso e performático em Python."
             }
           }
-        ]
+        ],
+        "isVip": true
       },
       {
         "id": "python_automacao",
@@ -1526,7 +1570,8 @@
               "explanation": "O bloco finally é garantido de ser executado ao término de todo o fluxo try/except."
             }
           }
-        ]
+        ],
+        "isVip": true
       }
     ],
     "questions": [
@@ -1666,7 +1711,8 @@
               "explanation": "Encapsulamento blinda o estado interno, garantindo que todas as modificações passem por validações."
             }
           }
-        ]
+        ],
+        "isVip": false
       },
       {
         "id": "poo_pilares_avancados",
@@ -1722,7 +1768,8 @@
               "explanation": "Classes abstratas definem contratos estruturais que só podem ser utilizados através de classes filhas concretas."
             }
           }
-        ]
+        ],
+        "isVip": true
       },
       {
         "id": "poo_arquitetura",
@@ -1762,7 +1809,8 @@
               "explanation": "O padrão Singleton restringe a instanciação de uma classe a um único objeto global compartilhado."
             }
           }
-        ]
+        ],
+        "isVip": true
       }
     ],
     "questions": [
@@ -1890,7 +1938,8 @@
               "explanation": "A Chave Estrangeira cria e valida a relação estrutural entre duas tabelas."
             }
           }
-        ]
+        ],
+        "isVip": false
       },
       {
         "id": "sql_comandos",
@@ -1930,7 +1979,8 @@
               "explanation": "Sem a cláusula WHERE para filtrar, o DELETE remove todas as linhas da tabela!"
             }
           }
-        ]
+        ],
+        "isVip": true
       },
       {
         "id": "sql_consultas",
@@ -1986,7 +2036,8 @@
               "explanation": "AVG() (Average) é a função padrão SQL para cálculo de média."
             }
           }
-        ]
+        ],
+        "isVip": true
       }
     ],
     "questions": [
@@ -2037,6 +2088,601 @@
         ],
         "correct": 0,
         "explanation": "HAVING filtra dados após a aplicação do GROUP BY."
+      }
+    ]
+  },
+  "git_devops": {
+    "id": "git_devops",
+    "name": "7. Git, GitHub & DevOps",
+    "title": "Git, GitHub & DevOps",
+    "icon": "🐙",
+    "color": "from-orange-500 to-amber-600",
+    "description": "Controle de versão com Git, colaboração no GitHub, branches, conflitos e deploy em nuvem.",
+    "badge": "Ferramental Essencial",
+    "categories": [
+      {
+        "id": "git_fundamentos",
+        "title": "Módulo 1: Fundamentos de Git & Terminal CLI",
+        "name": "Fundamentos de Git & Terminal CLI",
+        "description": "Domine os comandos fundamentais que todo desenvolvedor usa todos os dias para salvar e versionar seu código.",
+        "sources": "Documentação Oficial do Git (git-scm.com) & Linux Foundation.",
+        "isVip": false,
+        "chapters": [
+          {
+            "title": "1. O que é Versionamento e Git vs GitHub 🐙",
+            "imageUrl": "https://images.unsplash.com/photo-1618401471353-b98aedd04e11?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">A Máquina do Tempo do Desenvolvedor ⏳</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">No desenvolvimento de software profissional, salvar arquivos como \"final_v2.js\" causa desastres. O <strong>Git</strong> é um sistema distribuído de controle de versão criado em 2005 por Linus Torvalds que registra com precisão cirúrgica cada alteração, linha por linha, autor e momento exato.</p><div class=\"bg-slate-900 border border-slate-800 rounded-2xl p-4 mb-4\"><h4 class=\"font-bold text-sky-400 text-xs uppercase mb-2 font-code\">Diferença Crucial: Git vs GitHub</h4><ul class=\"text-xs text-slate-300 space-y-2 list-disc list-inside\"><li><strong>Git:</strong> O programa instalado localmente no seu computador para rastrear arquivos offline.</li><li><strong>GitHub:</strong> A plataforma na nuvem para hospedar repositórios Git, colaborar com times globais e construir seu portfólio profissional.</li></ul></div>",
+            "miniGame": {
+              "question": "Qual é a principal diferença entre Git e GitHub?",
+              "options": [
+                "Git é o sistema de versionamento local; GitHub é a plataforma em nuvem para hospedar e colaborar em repositórios.",
+                "Git é uma linguagem de programação como Python, enquanto GitHub é o navegador.",
+                "Git só funciona online, enquanto o GitHub é um programa offline.",
+                "Não há diferença, são apenas nomes comerciais diferentes da mesma empresa."
+              ],
+              "correct": 0,
+              "explanation": "Perfeito! Git é a ferramenta de linha de comando no seu computador, e o GitHub é o serviço na nuvem onde você compartilha e colabora."
+            }
+          },
+          {
+            "title": "2. O Ciclo do Git: init, status, add e commit ⚡",
+            "imageUrl": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Os 3 Estados de um Arquivo no Git 🔄</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Um projeto Git opera em 3 camadas fundamentais: o <strong>Working Directory</strong> (seus arquivos em edição), a <strong>Staging Area</strong> (a preparação dos arquivos que entrarão no próximo snapshot) e o <strong>Repository</strong> (o histórico permanente gravado com commit).</p><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4\"><div class=\"bg-slate-900 border border-slate-800 p-3 rounded-xl\"><span class=\"text-xs font-mono font-bold text-emerald-400\">git init</span><p class=\"text-[11px] text-slate-400 mt-1\">Inicia um repositório Git local na pasta atual.</p></div><div class=\"bg-slate-900 border border-slate-800 p-3 rounded-xl\"><span class=\"text-xs font-mono font-bold text-sky-400\">git status</span><p class=\"text-[11px] text-slate-400 mt-1\">Verifica o estado atual dos arquivos modificados.</p></div><div class=\"bg-slate-900 border border-slate-800 p-3 rounded-xl\"><span class=\"text-xs font-mono font-bold text-amber-400\">git add .</span><p class=\"text-[11px] text-slate-400 mt-1\">Prepara as alterações para a Staging Area.</p></div><div class=\"bg-slate-900 border border-slate-800 p-3 rounded-xl\"><span class=\"text-xs font-mono font-bold text-purple-400\">git commit -m \"msg\"</span><p class=\"text-[11px] text-slate-400 mt-1\">Grava o snapshot definitivo com mensagem descritiva.</p></div></div>",
+            "miniGame": {
+              "question": "Qual comando move os arquivos modificados para a área de preparação (Staging Area)?",
+              "options": [
+                "git add .",
+                "git commit",
+                "git clone",
+                "git reset"
+              ],
+              "correct": 0,
+              "explanation": "Correto! O \"git add .\" reúne todos os arquivos alterados na Staging Area antes do commit definitivo."
+            }
+          },
+          {
+            "title": "3. Histórico com git log e o arquivo .gitignore 📁",
+            "imageUrl": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Segurança e Higiene no Repositório 🚫</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Nunca envie ao repositório senhas, tokens de API ou pastas de dependências gigantescas (como <code>node_modules/</code> ou arquivos <code>.env</code>). O arquivo <code>.gitignore</code> instrui o Git a ignorar solenemente esses arquivos em qualquer commit.</p>",
+            "miniGame": {
+              "question": "Para que serve o arquivo especial .gitignore?",
+              "options": [
+                "Indicar ao Git quais arquivos e pastas não devem ser rastreados nem enviados ao repositório.",
+                "Apagar o histórico de commits anteriores.",
+                "Bloquear o acesso de outros usuários ao projeto.",
+                "Comprimir o tamanho das fotos da aplicação."
+              ],
+              "correct": 0,
+              "explanation": "Exato! O .gitignore mantém o repositório limpo, leve e livre de senhas ou segredos expostos."
+            }
+          },
+          {
+            "title": "4. O Terminal CLI & Comandos Essenciais 💻",
+            "imageUrl": "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">A Interface do Programador de Elite ⌨️</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">O Terminal (CLI - Command Line Interface) oferece velocidade, precisão e automação. Comandos universais como <code>cd</code> (navegar), <code>ls</code> ou <code>dir</code> (listar arquivos) e <code>mkdir</code> (criar diretórios) são dominados por todo desenvolvedor moderno.</p>",
+            "miniGame": {
+              "question": "Qual comando de terminal é usado para mudar de pasta ou diretório?",
+              "options": [
+                "cd (change directory)",
+                "mkdir",
+                "rmdir",
+                "ls"
+              ],
+              "correct": 0,
+              "explanation": "Perfeito! \"cd caminho_da_pasta\" é o comando padrão em Windows, Linux e macOS."
+            }
+          }
+        ]
+      },
+      {
+        "id": "git_colaboracao",
+        "title": "Módulo 2: Branches, GitHub & Deploy em Nuvem",
+        "name": "Branches, GitHub & Deploy em Nuvem",
+        "description": "Aprenda a trabalhar em paralelo com branches, criar Pull Requests e publicar seu site na web.",
+        "sources": "GitHub Flow Guide & Twelve-Factor App Principles.",
+        "isVip": true,
+        "chapters": [
+          {
+            "title": "5. Branches: Criando Recursos sem Riscos 🌿",
+            "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Linhas Paralelas de Desenvolvimento 🌌</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Uma <strong>Branch</strong> (ramo) permite desenvolver uma nova funcionalidade (ex: <code>feature/login</code>) sem mexer no código estável que está rodando em produção (branch <code>main</code>). Isso garante que o site nunca fique fora do ar por causa de testes incompletos.</p>",
+            "miniGame": {
+              "question": "Por que criar uma nova branch ao desenvolver um novo recurso?",
+              "options": [
+                "Para isolar o trabalho em andamento e manter a branch principal estável e segura.",
+                "Porque o Git não aceita mais de 5 commits na branch principal.",
+                "Para apagar os arquivos antigos do projeto.",
+                "Para mudar de linguagem de programação."
+              ],
+              "correct": 0,
+              "explanation": "Muito bem! Ramos isolados protegem o código de produção contra falhas inesperadas."
+            }
+          },
+          {
+            "title": "6. Fusão com git merge & Resolução de Conflitos ⚔️",
+            "imageUrl": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Unindo os Códigos da Equipe 🤝</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Após finalizar o recurso, o comando <code>git merge</code> junta as modificações da branch secundária de volta à <code>main</code>. Se dois desenvolvedores alteraram a mesma linha simultaneamente, o Git sinaliza um <strong>Conflito</strong> para que seja resolvido conscientemente.</p>",
+            "miniGame": {
+              "question": "O que é um Merge Conflict (Conflito de Fusão)?",
+              "options": [
+                "Ocorre quando duas edições concorrentes alteram a mesma linha de um arquivo e o Git solicita a decisão do desenvolvedor.",
+                "Um erro de falta de memória RAM no computador.",
+                "Quando o GitHub bloqueia o envio por falta de pagamento.",
+                "Quando o antivírus apaga o projeto."
+              ],
+              "correct": 0,
+              "explanation": "Exato! O conflito acontece na sobreposição de linhas e exige uma revisão humana para conciliar as versões."
+            }
+          },
+          {
+            "title": "7. Repositórios Remotos: push, pull & Pull Requests 🌐",
+            "imageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">O Coração da Colaboração Tech 🚀</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Com <code>git push</code> enviamos alterações ao GitHub; com <code>git pull</code> sincronizamos o que a equipe produziu. Através de um <strong>Pull Request (PR)</strong>, colegas revisam o código, comentam melhorias e aprovam antes que ele vá para o ar.</p>",
+            "miniGame": {
+              "question": "Qual a principal finalidade de abrir um Pull Request (PR)?",
+              "options": [
+                "Permitir a revisão por pares (Code Review) e aprovação coletiva antes de mesclar o código na branch principal.",
+                "Pedir suporte técnico para o suporte do GitHub.",
+                "Cancelar o projeto e retornar à versão inicial.",
+                "Trocar a senha da conta."
+              ],
+              "correct": 0,
+              "explanation": "Correto! O Pull Request é o padrão da indústria para garantir a qualidade de software antes do merge."
+            }
+          },
+          {
+            "title": "8. Deploy Contínuo: Publicando na Nuvem com Vercel ☁️",
+            "imageUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Seu Código Disponível para o Mundo Todo 🌍</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">A computação em nuvem moderna automatiza a entrega de software (CI/CD). Conectando seu repositório GitHub à <strong>Vercel</strong> ou <strong>GitHub Pages</strong>, cada novo commit aprovado gera automaticamente um deploy público em segundos com HTTPS seguro!</p>",
+            "miniGame": {
+              "question": "O que o Deploy Contínuo proporciona em um projeto de software?",
+              "options": [
+                "Automatiza a publicação e atualização do site na nuvem a cada alteração aprovada no repositório.",
+                "Obriga o programador a fazer o upload manual via pen drive.",
+                "Aumenta o custo dos servidores a cada segundo de execução.",
+                "Desconecta os usuários da internet."
+              ],
+              "correct": 0,
+              "explanation": "Excelente! CI/CD elimina processos manuais e mantém a aplicação sempre atualizada e confiável na nuvem."
+            }
+          }
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "category": "git_fundamentos",
+        "question": "Qual a principal função do Git em um projeto de software?",
+        "options": [
+          "Controlar e registrar versões do código-fonte de forma distribuída.",
+          "Compilar programas em código de máquina.",
+          "Substituir o uso de variáveis no código.",
+          "Gerenciar o hardware do computador."
+        ],
+        "correct": 0,
+        "explanation": "O Git é o sistema universal de controle de versão."
+      },
+      {
+        "category": "git_fundamentos",
+        "question": "O que faz o comando git add .?",
+        "options": [
+          "Prepara todos os arquivos modificados na Staging Area.",
+          "Cria uma nova pasta no disco rígido.",
+          "Apaga os arquivos temporários.",
+          "Envia o código para o GitHub imediatamente."
+        ],
+        "correct": 0,
+        "explanation": "O git add . move todas as alterações para o palco (staging)."
+      },
+      {
+        "category": "git_colaboracao",
+        "question": "Para que serve uma branch no Git?",
+        "options": [
+          "Para desenvolver funcionalidades isoladas sem comprometer a branch principal.",
+          "Para compactar o projeto em formato ZIP.",
+          "Para criptografar o banco de dados.",
+          "Para fechar o terminal."
+        ],
+        "correct": 0,
+        "explanation": "Branches permitem desenvolvimento paralelo e seguro."
+      },
+      {
+        "category": "git_colaboracao",
+        "question": "O que é um Pull Request no GitHub?",
+        "options": [
+          "Uma solicitação para que outros desenvolvedores revisem o código antes do merge.",
+          "Um pedido de suporte financeiro.",
+          "Uma falha de conexão.",
+          "Um tipo de vírus."
+        ],
+        "correct": 0,
+        "explanation": "Pull Requests são o padrão da indústria para Code Review."
+      }
+    ]
+  },
+  "estruturas_dados": {
+    "id": "estruturas_dados",
+    "name": "8. Estruturas de Dados",
+    "title": "Estruturas de Dados & Complexidade",
+    "icon": "🧩",
+    "color": "from-violet-600 to-indigo-700",
+    "description": "Organize dados de forma performática na memória com Pilhas, Filas, Busca Binária e Notação Big-O.",
+    "badge": "Ciência da Computação",
+    "categories": [
+      {
+        "id": "ed_fundamentos",
+        "title": "Módulo 1: Notação Big-O, Pilhas & Filas",
+        "name": "Notação Big-O, Pilhas & Filas",
+        "description": "Entenda como o consumo de tempo e memória varia conforme a quantidade de dados cresce.",
+        "sources": "Introdução aos Algoritmos (Cormen et al.) & Teoria da Computação.",
+        "isVip": false,
+        "chapters": [
+          {
+            "title": "1. Notação Big-O: Por que Performance Importa? 📈",
+            "imageUrl": "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Medindo a Eficiência de um Algoritmo ⏱️</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Um algoritmo que funciona rápido com 10 usuários pode travar um servidor com 1 milhão de usuários! A <strong>Notação Big-O</strong> descreve como o tempo de execução ou uso de memória cresce à medida que o tamanho da entrada (N) aumenta: O(1) é instantâneo, O(N) é linear e O(N²) cresce de forma quadrática.</p>",
+            "miniGame": {
+              "question": "O que significa um algoritmo ter complexidade de tempo O(1)?",
+              "options": [
+                "O tempo de execução é constante e imediato, independentemente do volume de dados.",
+                "O algoritmo demora exatamente um segundo para executar.",
+                "O algoritmo só pode processar um único dado por dia.",
+                "É o algoritmo mais lento possível na computação."
+              ],
+              "correct": 0,
+              "explanation": "Perfeito! O(1) representa tempo constante: acessar um item pelo índice leva sempre o mesmo tempo mínimo."
+            }
+          },
+          {
+            "title": "2. Pilhas (Stack - LIFO): O Botão Desfazer (Ctrl+Z) 📚",
+            "imageUrl": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Last In, First Out (LIFO) 🥞</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Pense em uma pilha de pratos: o último prato colocado em cima é o primeiro a ser retirado. As operações básicas são <code>push()</code> (empilhar) e <code>pop()</code> (desempilhar). Essa estrutura é a base do botão \"Desfazer\" e da pilha de chamadas de funções.</p>",
+            "miniGame": {
+              "question": "Qual princípio rege o funcionamento de uma Pilha (Stack)?",
+              "options": [
+                "LIFO: O último elemento a entrar é o primeiro a sair.",
+                "FIFO: O primeiro elemento a entrar é o primeiro a sair.",
+                "Aleatório: Qualquer elemento pode sair a qualquer momento.",
+                "Ordenado alfabeticamente sempre."
+              ],
+              "correct": 0,
+              "explanation": "Muito bem! LIFO (Last In, First Out) é a regra de ouro das pilhas."
+            }
+          },
+          {
+            "title": "3. Filas (Queue - FIFO): Processamento Justo 🎟️",
+            "imageUrl": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">First In, First Out (FIFO) 🚶‍♂️</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Em uma fila de banco ou de impressão, quem chega primeiro é atendido primeiro. Na computação, filas gerenciam envio de e-mails em lote, mensagens e requisições HTTP em servidores de alta demanda.</p>",
+            "miniGame": {
+              "question": "Qual é o princípio de funcionamento de uma Fila (Queue)?",
+              "options": [
+                "FIFO: O primeiro a entrar é o primeiro a sair (atendimento por ordem de chegada).",
+                "LIFO: O último a entrar é o primeiro a sair.",
+                "FILO: O primeiro a entrar nunca sai.",
+                "Inversão total da ordem original."
+              ],
+              "correct": 0,
+              "explanation": "Isso aí! FIFO (First In, First Out) garante ordem cronológica e justiça no processamento de tarefas."
+            }
+          },
+          {
+            "title": "4. Arrays na Memória vs Listas Encadeadas 🧠",
+            "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Como a Memória RAM Armazena Dados 💾</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Um Array aloca um bloco contíguo de memória física: acesso instantâneo via índice, mas difícil de redimensionar. Já uma Lista Encadeada armazena nós espalhados pela memória onde cada nó aponta para o próximo nó, facilitando inserções rápidas.</p>",
+            "miniGame": {
+              "question": "Qual a vantagem do Array sobre a Lista Encadeada no acesso aos elementos?",
+              "options": [
+                "Acesso direto e instantâneo a qualquer posição através do índice em tempo O(1).",
+                "Usa menos memória do que qualquer outra coisa.",
+                "Permite adicionar elementos infinitos sem limite de RAM.",
+                "Não precisa de memória para funcionar."
+              ],
+              "correct": 0,
+              "explanation": "Exato! Com o índice, a CPU calcula o endereço de memória imediatamente em tempo O(1)."
+            }
+          }
+        ]
+      },
+      {
+        "id": "ed_avancada",
+        "title": "Módulo 2: Busca Binária, Hash Tables & Árvores",
+        "name": "Busca Binária, Hash Tables & Árvores",
+        "description": "Acelere buscas de milhões de registros e compreenda estruturas hierárquicas em árvore.",
+        "sources": "Algoritmos: Teoria e Prática & Design Patterns.",
+        "isVip": true,
+        "chapters": [
+          {
+            "title": "5. Busca Linear vs Busca Binária: O(N) vs O(log N) 🔍",
+            "imageUrl": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Dividir para Conquistar 🎯</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Se uma lista de 1 bilhão de nomes estiver ordenada, a Busca Linear pode ter que checar 1 bilhão de vezes! A <strong>Busca Binária</strong> divide a lista ao meio a cada passo. Com isso, ela encontra qualquer nome em menos de <strong>30 tentativas</strong>! Isso é o poder da complexidade O(log N).</p>",
+            "miniGame": {
+              "question": "Qual é o pré-requisito obrigatório para podermos aplicar a Busca Binária em um array?",
+              "options": [
+                "O array precisa estar previamente ordenado.",
+                "O array só pode conter números pares.",
+                "O array deve ter no máximo 10 itens.",
+                "Não há nenhum pré-requisito."
+              ],
+              "correct": 0,
+              "explanation": "Perfeito! Para descartar metade dos dados a cada iteração, o array precisa obrigatoriamente estar em ordem crescente ou decrescente."
+            }
+          },
+          {
+            "title": "6. Tabelas Hash (Dicionários & Objetos): Busca em O(1) 🗝️",
+            "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">A Estrutura de Dados Mais Usada no Mundo 🗺️</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Dicionários em Python e Objetos em JavaScript são <strong>Tabelas Hash</strong>. Uma função matemática (Função Hash) converte o nome da chave (ex: \"usuario_123\") em um índice de memória direto, permitindo salvar e recuperar valores quase que instantaneamente.</p>",
+            "miniGame": {
+              "question": "Por que Tabelas Hash (Dicionários/Mapas) são tão populares?",
+              "options": [
+                "Permitem associar pares chave-valor e fazer buscas instantâneas em tempo médio O(1).",
+                "Porque são as únicas estruturas aceitas pelo JavaScript.",
+                "Elas nunca consomem memória RAM.",
+                "Garantem que o código rode offline."
+              ],
+              "correct": 0,
+              "explanation": "Excelente! A velocidade média O(1) para buscar por chave faz das hash tables a base dos sistemas web modernos."
+            }
+          },
+          {
+            "title": "7. Árvores Binárias (Trees): Hierarquias na Computação 🌳",
+            "imageUrl": "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Organização Não-Linear 🌿</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">O sistema de pastas do seu computador e o próprio HTML (DOM) são organizados como uma <strong>Árvore</strong>. Existe uma raiz (root), nós pais e nós filhos. Uma Árvore Binária de Busca permite buscas rápidas e estruturação hierárquica eficiente.</p>",
+            "miniGame": {
+              "question": "Qual elemento é um exemplo clássico de estrutura em Árvore na web?",
+              "options": [
+                "O DOM (Document Object Model) da página HTML.",
+                "O cabo de rede da internet.",
+                "O botão físico de ligar o monitor.",
+                "Um número float qualquer."
+              ],
+              "correct": 0,
+              "explanation": "Exato! A hierarquia de tags html -> head/body -> divs -> textos forma a clássica árvore do DOM."
+            }
+          },
+          {
+            "title": "8. Grafos: Redes Sociais & Rotas de GPS 🕸️",
+            "imageUrl": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Conexões entre Vértices e Arestas 🌐</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Um <strong>Grafo</strong> modela conexões entre entidades. Em uma rede social, as pessoas são vértices (nós) e as amizades são arestas. No Waze ou Google Maps, os cruzamentos são nós e as ruas são arestas ponderadas pela distância e trânsito!</p>",
+            "miniGame": {
+              "question": "Onde encontramos aplicações práticas de Grafos no cotidiano?",
+              "options": [
+                "Em aplicativos de mapas para calcular a rota mais curta e em conexões de redes sociais.",
+                "Apenas em calculadoras financeiras.",
+                "Em placas solares para produzir energia.",
+                "Em teclados mecânicos para digitar letras."
+              ],
+              "correct": 0,
+              "explanation": "Isso aí! Algoritmos de grafos (como Dijkstra) calculam o melhor trajeto em mapas e sugestões de amigos em redes."
+            }
+          }
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "category": "ed_fundamentos",
+        "question": "O que representa a Notação Big-O na computação?",
+        "options": [
+          "Como o consumo de tempo ou memória varia conforme a entrada de dados cresce.",
+          "A quantidade de linhas de código escritas.",
+          "A marca do processador do computador.",
+          "A velocidade do link de internet."
+        ],
+        "correct": 0,
+        "explanation": "A notação Big-O mede a eficiência assintótica de algoritmos."
+      },
+      {
+        "category": "ed_fundamentos",
+        "question": "Qual é o comportamento de uma Pilha (Stack)?",
+        "options": [
+          "LIFO (Last In, First Out).",
+          "FIFO (First In, First Out).",
+          "Aleatório.",
+          "Circular contínuo."
+        ],
+        "correct": 0,
+        "explanation": "Pilhas operam no padrão LIFO: o último a entrar é o primeiro a sair."
+      },
+      {
+        "category": "ed_avancada",
+        "question": "Qual a complexidade de tempo da Busca Binária?",
+        "options": [
+          "O(log N)",
+          "O(N²)",
+          "O(N!)",
+          "O(1)"
+        ],
+        "correct": 0,
+        "explanation": "A busca binária divide o espaço de busca pela metade a cada passo: O(log N)."
+      },
+      {
+        "category": "ed_avancada",
+        "question": "Em que estrutura o DOM do navegador é baseado?",
+        "options": [
+          "Árvore hierárquica (Tree).",
+          "Fila simples (Queue).",
+          "Pilha linear (Stack).",
+          "Tabela plana única."
+        ],
+        "correct": 0,
+        "explanation": "O DOM é estruturado como uma árvore de nós (tree)."
+      }
+    ]
+  },
+  "seguranca_web": {
+    "id": "seguranca_web",
+    "name": "9. Segurança & Boas Práticas",
+    "title": "Segurança Web & Boas Práticas",
+    "icon": "🛡️",
+    "color": "from-rose-600 to-red-700",
+    "description": "Proteja aplicações contra invasões, aprenda a prevenir SQL Injection, XSS e guardar senhas com segurança.",
+    "badge": "Proteção & Compliance",
+    "categories": [
+      {
+        "id": "sec_fundamentos",
+        "title": "Módulo 1: Fundamentos de Cibersegurança & HTTPS",
+        "name": "Fundamentos de Cibersegurança & HTTPS",
+        "description": "Compreenda a Tríade CIA, como a criptografia funciona e como senhas devem ser guardadas com segurança.",
+        "sources": "OWASP Top 10 Guidelines & NIST Cybersecurity Framework.",
+        "isVip": false,
+        "chapters": [
+          {
+            "title": "1. A Tríade CIA da Segurança da Informação 🏛️",
+            "imageUrl": "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Os Três Pilares da Segurança 🛡️</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Toda a segurança cibernética se apoia em 3 fundamentos: <strong>Confidencialidade</strong> (só quem deve ver os dados consegue acessá-los), <strong>Integridade</strong> (os dados não foram alterados ou corrompidos no caminho) e <strong>Disponibilidade</strong> (os serviços continuam funcionando mesmo sob ataque).</p>",
+            "miniGame": {
+              "question": "O que garante o pilar da Confidencialidade na Tríade CIA?",
+              "options": [
+                "Garante que dados confidenciais sejam acessados apenas por indivíduos e sistemas autorizados.",
+                "Garante que o servidor nunca fique sem energia.",
+                "Permite que qualquer pessoa leia as senhas do banco.",
+                "Acelera a velocidade do processador."
+              ],
+              "correct": 0,
+              "explanation": "Perfeito! Confidencialidade assegura privacidade e proteção contra vazamento de informações."
+            }
+          },
+          {
+            "title": "2. HTTPS & Criptografia em Trânsito 🔒",
+            "imageUrl": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">O Fim das Mensagens em Texto Puro 🔐</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">No HTTP antigo, se você estivesse em um Wi-Fi público e digitasse sua senha, qualquer pessoa na mesma rede poderia capturá-la. O <strong>HTTPS (com TLS/SSL)</strong> criptografa os dados entre seu navegador e o servidor. Mesmo interceptada, a mensagem parece um código indecifrável.</p>",
+            "miniGame": {
+              "question": "Por que o protocolo HTTPS é obrigatório em sites modernos?",
+              "options": [
+                "Porque criptografa a comunicação de ponta a ponta, impedindo espionagem e adulteração dos dados.",
+                "Para obrigar os computadores a reiniciarem à noite.",
+                "Porque o Google cobra uma taxa se o site usar HTTP simples.",
+                "Para reduzir o tamanho das fontes da página."
+              ],
+              "correct": 0,
+              "explanation": "Exato! O cadeado do HTTPS protege logins, dados bancários e qualquer tráfego contra interceptações."
+            }
+          },
+          {
+            "title": "3. Senhas Seguras: Hash e Salt (Nunca Texto Puro!) 🔑",
+            "imageUrl": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">A Regra Mais Sagrada do Backend ⚡</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">NUNCA guarde senhas em texto puro no banco de dados! Se o banco vazar, todas as contas são expostas. Usamos algoritmos de <strong>Hash Criptográfico de Mão Única</strong> (como bcrypt ou Argon2) com <strong>Salt</strong> (uma sequência aleatória única) para tornar as senhas matematicamente irreversíveis.</p>",
+            "miniGame": {
+              "question": "Como um sistema profissional deve armazenar senhas de usuários?",
+              "options": [
+                "Usando funções de Hash criptográfico com Salt (ex: bcrypt), nunca em texto legível.",
+                "Em um arquivo de texto simples no bloco de notas.",
+                "Em uma planilha do Excel compartilhada.",
+                "Em variáveis públicas de JavaScript no navegador."
+              ],
+              "correct": 0,
+              "explanation": "Correto! Com Hash e Salt, mesmo que o banco de dados seja roubado, as senhas originais não podem ser revertidas."
+            }
+          }
+        ]
+      },
+      {
+        "id": "sec_vulnerabilidades",
+        "title": "Módulo 2: Prevenção de Invasões & OWASP Top 10",
+        "name": "Prevenção de Invasões & OWASP Top 10",
+        "description": "Aprenda como invasores exploram SQL Injection e XSS e como blindar seu código.",
+        "sources": "OWASP Foundation & LGPD (Lei nº 13.709/18).",
+        "isVip": true,
+        "chapters": [
+          {
+            "title": "4. SQL Injection (SQLi): O Ataque que Deleta Bancos 💥",
+            "imageUrl": "https://images.unsplash.com/photo-1562813733-b31f71025d54?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Quando o Dado do Usuário Vira Comando SQL 🚨</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Se você concatenar texto de input direto no comando SQL: <code>\"SELECT * FROM users WHERE user = '\" + input + \"'\"</code>, um invasor pode digitar <code>' OR '1'='1</code> e acessar todas as contas! A defesa universal é usar <strong>Prepared Statements / Consultas Parametrizadas</strong>.</p>",
+            "miniGame": {
+              "question": "Como os programadores previnem com segurança o ataque de SQL Injection?",
+              "options": [
+                "Utilizando Consultas Parametrizadas (Prepared Statements) em vez de concatenar texto puro.",
+                "Proibindo os usuários de criarem senhas com letras.",
+                "Reiniciando o banco de dados a cada hora.",
+                "Não utilizando banco de dados no site."
+              ],
+              "correct": 0,
+              "explanation": "Perfeito! Prepared Statements separam estritamente o código SQL dos dados do usuário, neutralizando a injeção."
+            }
+          },
+          {
+            "title": "5. Cross-Site Scripting (XSS): Injeção de Scripts Maliciosos 🎭",
+            "imageUrl": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Defendendo o Navegador do Usuário 🛡️</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">O XSS acontece quando uma aplicação exibe dados enviados por um usuário sem higienização, permitindo que tags <code>&lt;script&gt;</code> maliciosas rodem no navegador de outras pessoas, roubando cookies de sessão. A defesa é sanitizar e escapar caracteres especiais HTML (usando <code>textContent</code> no lugar de <code>innerHTML</code> sem filtro).</p>",
+            "miniGame": {
+              "question": "Qual é a forma recomendada de evitar vulnerabilidades XSS ao renderizar texto?",
+              "options": [
+                "Higienizar as entradas e usar propriedades seguras como textContent para escapar tags HTML maliciosas.",
+                "Desativar o JavaScript em todos os computadores da empresa.",
+                "Pedir aos usuários que não digitem caracteres especiais.",
+                "Deixar as senhas em maiúsculas."
+              ],
+              "correct": 0,
+              "explanation": "Muito bem! Escapar e higienizar textos impede que scripts maliciosos sejam interpretados como código pelo browser."
+            }
+          },
+          {
+            "title": "6. Variáveis de Ambiente (.env) & Privacidade (LGPD) 📜",
+            "imageUrl": "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=600&auto=format&fit=crop&q=80",
+            "content": "<h3 class=\"text-lg font-black text-white font-code mb-3\">Boas Práticas de Engenharia e Lei de Privacidade 🏛️</h3><p class=\"text-sm text-slate-300 leading-relaxed mb-4\">Chaves de API (como Firebase, Stripe, Asaas) e senhas de banco devem sempre residir em variáveis de ambiente seguras (arquivos <code>.env</code> no servidor). Além disso, a <strong>LGPD</strong> exige consentimento explícito, finalidade clara para coleta de dados e descarte seguro após o uso.</p>",
+            "miniGame": {
+              "question": "Onde devem ser guardadas chaves secretas de APIs e senhas de banco?",
+              "options": [
+                "Em Variáveis de Ambiente seguras no servidor (.env), nunca hardcoded no código público.",
+                "No título da página HTML.",
+                "Em comentários dentro dos arquivos CSS.",
+                "No rodapé do site para fácil consulta."
+              ],
+              "correct": 0,
+              "explanation": "Excelente! Manter segredos isolados em variáveis de ambiente (.env) é o padrão universal de segurança de software."
+            }
+          }
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "category": "sec_fundamentos",
+        "question": "Quais são os 3 pilares da Tríade CIA da segurança da informação?",
+        "options": [
+          "Confidencialidade, Integridade e Disponibilidade.",
+          "Código, Internet e Algoritmo.",
+          "Computador, Interface e Arquivo.",
+          "Criptografia, Inteligência e Armazenamento."
+        ],
+        "correct": 0,
+        "explanation": "Confidencialidade, Integridade e Disponibilidade formam a Tríade CIA."
+      },
+      {
+        "category": "sec_fundamentos",
+        "question": "Qual a maneira correta de armazenar senhas no banco de dados?",
+        "options": [
+          "Utilizando funções de Hash criptográfico unidirecional com Salt (ex: bcrypt).",
+          "Em texto puro legível.",
+          "Comprimidas em formato ZIP.",
+          "Em código Morse."
+        ],
+        "correct": 0,
+        "explanation": "Senhas devem ser armazenadas exclusivamente com hashes fortes e salt."
+      },
+      {
+        "category": "sec_vulnerabilidades",
+        "question": "Como se previne ataques de SQL Injection em aplicações?",
+        "options": [
+          "Utilizando Prepared Statements (Consultas Parametrizadas).",
+          "Desativando o banco de dados.",
+          "Não permitindo que os usuários façam login.",
+          "Aumentando o brilho da tela."
+        ],
+        "correct": 0,
+        "explanation": "Prepared Statements separam o código SQL dos parâmetros de dados."
+      },
+      {
+        "category": "sec_vulnerabilidades",
+        "question": "Para que servem arquivos .env em projetos de software?",
+        "options": [
+          "Para armazenar chaves de API, senhas e configurações sensíveis de forma segura fora do repositório público.",
+          "Para desenhar os ícones da página.",
+          "Para traduzir o site para inglês.",
+          "Para salvar fotos dos usuários."
+        ],
+        "correct": 0,
+        "explanation": "Arquivos .env isolam variáveis de ambiente e segredos confidenciais."
       }
     ]
   }
@@ -2247,7 +2893,8 @@
             window.hideModal();
             window.soundFanfare();
             window.triggerConfetti();
-            window.changeState('PORTAL_HUB');
+            window.updateInboxBadges();
+        window.changeState('PORTAL_HUB');
         };
 
         // --- TELA 1: HUB PRINCIPAL DE TRILHAS ---
@@ -2533,6 +3180,29 @@
 
             mainContent.innerHTML = `
                 <div class="fade-in w-full max-w-6xl space-y-10 py-2">
+
+                    <!-- ⚖️ AVISO TAXATIVO DE TRANSPARÊNCIA LEGAL & PEDAGÓGICA (CURSOS LIVRES) -->
+                    <div class="bg-slate-900/90 border-2 border-sky-500/30 rounded-3xl p-4 sm:p-5 shadow-xl relative overflow-hidden">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3.5">
+                            <div class="w-10 h-10 rounded-2xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-xl shrink-0">
+                                ⚖️
+                            </div>
+                            <div class="flex-1 text-xs text-slate-300 leading-relaxed font-code">
+                                <div class="flex flex-wrap items-center gap-2 mb-1">
+                                    <h3 class="text-white font-black text-xs uppercase tracking-wide flex items-center gap-1">
+                                        <span>Transparência Pedagógica & Amparo Legal</span>
+                                    </h3>
+                                    <span class="bg-sky-500/20 text-sky-300 border border-sky-500/40 text-[9px] px-2 py-0.5 rounded-full font-bold">Lei Federal nº 9.394/96 (LDB - Art. 39 a 42)</span>
+                                    <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[9px] px-2 py-0.5 rounded-full font-bold">Decreto nº 5.154/04</span>
+                                </div>
+                                <p class="text-slate-300">
+                                    O <strong>CodeLogic PRO</strong> é uma plataforma aberta e interativa de <strong>Cursos Livres de Iniciação e Nivelamento Tecnológico</strong>. Os conteúdos práticos e certificados digitais destinam-se exclusivamente à <strong>capacitação introdutória, noções práticas de programação e comprovação de horas extracurriculares</strong>.
+                                    <span class="text-amber-300 font-bold block mt-1">⚠️ IMPORTANTE: Esta plataforma NÃO constitui formação de nível técnico profissionalizante nem curso de graduação superior ou universitária.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                     
                     <!-- HERO SECTION DE ALTA CONVERSÃO & PROPOSTA REALISTA -->
                     <div class="relative bg-gradient-to-br from-slate-900 via-[#0e1628] to-slate-900 border-2 border-slate-800/90 rounded-3xl p-6 sm:p-10 shadow-2xl overflow-hidden glow-border">
@@ -2880,9 +3550,15 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                         </div>
 
                         <div class="grid grid-cols-2 gap-2 mt-2">
-                            <button onclick="window.soundClick(); window.openModule('${cat.id}')" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-black py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-md text-xs font-code">
-                                <span>${isFinished ? '🔁 Revisar' : (percent > 0 ? '📖 Continuar' : '📖 Iniciar')}</span>
-                            </button>
+                            ${cat.isVip && !window.isStudentVip() ? `
+                                <button onclick="window.openVipModal('${cat.name}')" class="w-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-md text-xs font-code cursor-pointer">
+                                    <span>🔒 Desbloquear VIP</span>
+                                </button>
+                            ` : `
+                                <button onclick="window.soundClick(); window.openModule('${cat.id}')" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-black py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-md text-xs font-code cursor-pointer">
+                                    <span>${isFinished ? '🔁 Revisar' : (percent > 0 ? '📖 Continuar' : '📖 Iniciar')}</span>
+                                </button>
+                            `}
 
                             ${isFinished ? `
                                 <button onclick="window.soundClick(); window.startQuiz('${cat.id}')" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1 shadow-md text-xs font-code">
@@ -2923,6 +3599,15 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
         };
 
         window.openModule = function(catId) {
+            // Checagem de Módulo VIP
+            const course = window.coursesDatabase[currentSubjectId] || initialCoursesDatabase[currentSubjectId] || initialCoursesDatabase.logica;
+            const targetCat = (course.categories || []).find(c => c.id === catId);
+            if (targetCat && targetCat.isVip && !window.isStudentVip()) {
+                if (typeof window.soundWrong === 'function') window.soundWrong();
+                window.openVipModal(targetCat.name || targetCat.title);
+                return;
+            }
+
             selectedCategoryId = catId;
             currentChapterIndex = 0;
             window.changeState('MODULE_VIEW');
@@ -2945,7 +3630,460 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
             ]
         };
 
-        window.runSandboxCode = function() {
+        
+        // --- SISTEMA FREEMIUM & CUPOM VIP CODELOGIC PRO ---
+        window.isStudentVip = function() {
+            try {
+                const stored = localStorage.getItem('codelogic_vip');
+                return stored === 'true' || stored === '1' || localStorage.getItem('codelogic_is_vip') === 'true';
+            } catch(e) {
+                return false;
+            }
+        };
+
+        window.setStudentVip = function(status) {
+            try {
+                localStorage.setItem('codelogic_vip', status ? 'true' : 'false');
+                localStorage.setItem('codelogic_is_vip', status ? 'true' : 'false');
+            } catch(e) {}
+            window.renderApp();
+        };
+
+        window.openVipModal = function(reason) {
+            if (typeof window.soundClick === 'function') window.soundClick();
+            const reasonHtml = reason ? `<div class="bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs px-3.5 py-2 rounded-xl mb-4 font-code">🔒 Você tentou acessar um <b>módulo VIP</b> (${reason}). Desbloqueie abaixo com um cupom promocional!</div>` : '';
+            
+            const vipContent = `
+                <div class="space-y-4 text-left">
+                    <div class="flex items-center gap-3 pb-3 border-b border-slate-800">
+                        <span class="text-3xl">👑</span>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="font-black text-lg text-amber-400 font-code">Acesso VIP Vitalício CodeLogic PRO</h3>
+                                <span class="bg-amber-500/20 text-amber-300 text-[10px] font-black uppercase px-2 py-0.5 rounded-full border border-amber-500/30">Plano Pro</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-0.5">Desbloqueie todos os módulos avançados, certificações e suporte prioritário</p>
+                        </div>
+                    </div>
+
+                    ${reasonHtml}
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 flex items-start gap-2.5">
+                            <span class="text-lg">🔓</span>
+                            <div>
+                                <h4 class="font-black text-xs text-white font-code">100% dos Módulos Destravados</h4>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Acesso completo a Git, DevOps, Estruturas de Dados, Segurança e SQL Avançado.</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 flex items-start gap-2.5">
+                            <span class="text-lg">📜</span>
+                            <div>
+                                <h4 class="font-black text-xs text-white font-code">Certificados Digitais Oficiais</h4>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Emita certificados digitais de participação em cursos livres para horas complementares.</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 flex items-start gap-2.5">
+                            <span class="text-lg">📬</span>
+                            <div>
+                                <h4 class="font-black text-xs text-white font-code">Suporte Direto na Caixa Postal</h4>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Tire dúvidas pedagógicas diretamente com a equipe de instrução na plataforma.</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 flex items-start gap-2.5">
+                            <span class="text-lg">⚡</span>
+                            <div>
+                                <h4 class="font-black text-xs text-white font-code">Sandbox & IA Ilimitados</h4>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Pratique sem limites com o terminal interativo e a assistência didática da IA Dev.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulário de Ativação por Cupom VIP -->
+                    <div class="bg-slate-950 p-4 rounded-2xl border-2 border-amber-500/40 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <label class="text-xs font-black uppercase text-amber-300 font-code flex items-center gap-1.5">
+                                <span>🎟️</span> Possui um Cupom de Acesso VIP?
+                            </label>
+                            <span class="text-[10px] text-slate-400">Ativação instantânea</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="vip-coupon-input" placeholder="Ex: VIPPRO, DEV2026, CODEMASTER..." class="form-input flex-1 uppercase font-code text-xs px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-amber-200 placeholder-slate-500 focus:border-amber-400 focus:outline-none">
+                            <button onclick="window.activateVipCoupon()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-4 py-2 rounded-xl text-xs font-code transition shadow cursor-pointer">
+                                Ativar VIP
+                            </button>
+                        </div>
+                        <div id="vip-coupon-feedback" class="text-xs font-code hidden"></div>
+                        <p class="text-[10px] text-slate-500 leading-relaxed">
+                            💡 <i>Dica: Experimente o cupom promocional <code>VIPPRO</code> ou <code>DEV2026</code> para liberar o acesso VIP de avaliação imediatamente.</i>
+                        </p>
+                    </div>
+
+                    <div class="pt-1 flex justify-between items-center border-t border-slate-800">
+                        <span class="text-[10px] text-slate-500 font-code">CodeLogic PRO • Plataforma Aberta</span>
+                        <button onclick="window.hideModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-4 py-1.5 rounded-xl text-xs font-code transition cursor-pointer">
+                            Fechar
+                        </button>
+                    </div>
+                </div>
+            `;
+            window.showModal(vipContent, 'max-w-xl');
+        };
+
+        window.activateVipCoupon = function() {
+            const input = document.getElementById('vip-coupon-input');
+            const feedback = document.getElementById('vip-coupon-feedback');
+            if (!input || !feedback) return;
+
+            const code = (input.value || '').trim().toUpperCase();
+            const validCoupons = ['VIPPRO', 'DEV2026', 'CODEMASTER', 'ALUNOVIP', 'EADPRO', 'CONECTADEV'];
+
+            if (validCoupons.includes(code)) {
+                if (typeof window.soundCorrect === 'function') window.soundCorrect();
+                window.setStudentVip(true);
+                feedback.className = 'text-xs font-code text-emerald-400 font-bold block';
+                feedback.innerHTML = '✨ Parabéns! O cupom foi validado com sucesso. Seu Acesso VIP Vitalício está ativo!';
+                setTimeout(() => {
+                    window.hideModal();
+                    window.customAlert('👑 <b>Acesso VIP Vitalício Ativado!</b><br>Todos os módulos, trilhas e recursos de certificação do CodeLogic PRO foram desbloqueados com sucesso!');
+                }, 1200);
+            } else {
+                if (typeof window.soundWrong === 'function') window.soundWrong();
+                feedback.className = 'text-xs font-code text-rose-400 font-bold block';
+                feedback.innerHTML = '❌ Cupom inválido ou expirado. Verifique a digitação ou utilize o cupom promocional VIPPRO.';
+            }
+        };
+
+        // --- SISTEMA DE CAIXA POSTAL & SUPORTE DO ALUNO ---
+        window.getStoredFeedbacks = function() {
+            try {
+                const raw = localStorage.getItem('codelogic_student_inbox_messages');
+                return raw ? JSON.parse(raw) : [];
+            } catch(e) {
+                return [];
+            }
+        };
+
+        window.saveStoredFeedbacks = function(messages) {
+            try {
+                localStorage.setItem('codelogic_student_inbox_messages', JSON.stringify(messages));
+            } catch(e) {}
+            window.updateInboxBadges();
+        };
+
+        window.updateInboxBadges = function() {
+            // Atualizar status visual do VIP no Header
+            const isVip = window.isStudentVip();
+            const btnVip = document.getElementById('btn-header-vip');
+            const badgeVip = document.getElementById('badge-header-vip');
+            if (btnVip && badgeVip) {
+                if (isVip) {
+                    btnVip.classList.add('hidden');
+                    badgeVip.classList.remove('hidden');
+                    badgeVip.classList.add('flex');
+                } else {
+                    btnVip.classList.remove('hidden');
+                    badgeVip.classList.add('hidden');
+                    badgeVip.classList.remove('flex');
+                }
+            }
+
+            const messages = window.getStoredFeedbacks();
+            const unreadCount = messages.filter(m => m.adminReply && !m.readByStudent).length;
+            
+            const badges = [
+                document.getElementById('nav-inbox-badge'),
+                document.getElementById('hub-inbox-badge')
+            ];
+
+            badges.forEach(b => {
+                if (b) {
+                    if (unreadCount > 0) {
+                        b.textContent = unreadCount;
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                }
+            });
+        };
+
+        window.openFeedbackModal = function() {
+            if (typeof window.soundClick === 'function') window.soundClick();
+            const modalContent = `
+                <div class="space-y-4 text-left">
+                    <div class="flex items-center gap-2.5 pb-3 border-b border-slate-800">
+                        <span class="text-2xl">💬</span>
+                        <div>
+                            <h3 class="font-black text-sm text-sky-400 font-code">Enviar Mensagem / Dúvida Pedagógica</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Sua mensagem será recebida pelo instrutor e respondida na sua Caixa Postal</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-[11px] font-black uppercase tracking-wider text-slate-400 font-code block mb-1">Seu Nome / Identificação:</label>
+                            <input type="text" id="feedback-student-name" value="${typeof currentUser !== 'undefined' ? currentUser : 'Estudante Dev'}" class="form-input w-full text-xs py-2 px-3 bg-slate-900 border border-slate-700 rounded-xl text-slate-200">
+                        </div>
+
+                        <div>
+                            <label class="text-[11px] font-black uppercase tracking-wider text-slate-400 font-code block mb-1">Categoria:</label>
+                            <select id="feedback-category" class="form-input w-full text-xs py-2 px-3 bg-slate-900 border border-slate-700 rounded-xl text-slate-200 font-code">
+                                <option value="duvida">❓ Dúvida em Aula / Algoritmo</option>
+                                <option value="sugestao">💡 Sugestão de Conteúdo</option>
+                                <option value="bug">🐛 Reportar Erro no Sandbox / Quiz</option>
+                                <option value="suporte">🛠️ Suporte da Plataforma</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="text-[11px] font-black uppercase tracking-wider text-slate-400 font-code block mb-1">Sua Mensagem / Dúvida:</label>
+                            <textarea id="feedback-message-text" rows="4" placeholder="Descreva sua dúvida detalhadamente..." class="form-input w-full text-xs p-3 bg-slate-900 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 custom-scrollbar"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-2 border-t border-slate-800">
+                        <button onclick="window.openStudentInbox()" class="text-xs text-sky-400 hover:text-sky-300 font-code flex items-center gap-1 cursor-pointer">
+                            <span>📬</span> Ver Minha Caixa Postal
+                        </button>
+                        <div class="flex gap-2">
+                            <button onclick="window.hideModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-4 py-2 rounded-xl text-xs font-code transition cursor-pointer">
+                                Cancelar
+                            </button>
+                            <button onclick="window.sendStudentFeedback()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black px-5 py-2 rounded-xl text-xs font-code transition shadow cursor-pointer">
+                                Enviar Mensagem 🚀
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            window.showModal(modalContent, 'max-w-lg');
+        };
+
+        window.sendStudentFeedback = function() {
+            const name = (document.getElementById('feedback-student-name')?.value || 'Estudante Dev').trim();
+            const cat = document.getElementById('feedback-category')?.value || 'duvida';
+            const msg = (document.getElementById('feedback-message-text')?.value || '').trim();
+
+            if (!msg) {
+                alert('Por favor, digite a sua mensagem antes de enviar!');
+                return;
+            }
+
+            const messages = window.getStoredFeedbacks();
+            const newEntry = {
+                id: 'msg_' + Date.now(),
+                studentName: name,
+                category: cat,
+                message: msg,
+                date: new Date().toLocaleString('pt-BR'),
+                status: 'pending',
+                adminReply: null,
+                replyDate: null,
+                readByStudent: true
+            };
+
+            messages.unshift(newEntry);
+            window.saveStoredFeedbacks(messages);
+            if (typeof window.soundCorrect === 'function') window.soundCorrect();
+
+            window.hideModal();
+            window.customAlert('📬 <b>Mensagem Enviada com Sucesso!</b><br>O instrutor recebeu a sua solicitação. Assim que respondida, você receberá um alerta na sua <b>Caixa Postal</b>!');
+        };
+
+        window.openStudentInbox = function() {
+            if (typeof window.soundClick === 'function') window.soundClick();
+            const messages = window.getStoredFeedbacks();
+
+            // Mark admin replies as read by student
+            let hasUnread = false;
+            messages.forEach(m => {
+                if (m.adminReply && !m.readByStudent) {
+                    m.readByStudent = true;
+                    hasUnread = true;
+                }
+            });
+            if (hasUnread) {
+                window.saveStoredFeedbacks(messages);
+            }
+
+            const listHtml = messages.length === 0 ? `
+                <div class="text-center py-8 text-slate-500 font-code text-xs">
+                    <span class="text-3xl block mb-2">📭</span>
+                    Você ainda não enviou mensagens para a equipe pedagógica.<br>
+                    Clique em "Nova Mensagem" abaixo para tirar dúvidas!
+                </div>
+            ` : messages.map(m => {
+                const isReplied = !!m.adminReply;
+                return `
+                    <div class="bg-slate-950 p-3.5 rounded-2xl border ${isReplied ? 'border-sky-500/40' : 'border-slate-800'} space-y-2">
+                        <div class="flex justify-between items-center text-[11px] font-code">
+                            <span class="text-slate-400 font-bold">${m.date}</span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isReplied ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'}">
+                                ${isReplied ? '🟢 Respondida pelo Instrutor' : '🟡 Aguardando Resposta'}
+                            </span>
+                        </div>
+
+                        <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 text-xs text-slate-200 leading-relaxed font-code">
+                            ${m.message.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+                        </div>
+
+                        ${isReplied ? `
+                            <div class="bg-sky-950/40 border border-sky-500/30 p-3 rounded-xl space-y-1">
+                                <div class="flex items-center gap-1.5 text-sky-300 font-bold text-xs font-code">
+                                    <span>👨‍🏫 Resposta do Instrutor:</span>
+                                    <span class="text-[10px] text-slate-400 font-normal">(${m.replyDate || 'Recente'})</span>
+                                </div>
+                                <p class="text-xs text-slate-200 leading-relaxed font-code">
+                                    ${m.adminReply.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+                                </p>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            const modalContent = `
+                <div class="space-y-4 text-left">
+                    <div class="flex justify-between items-center pb-3 border-b border-slate-800">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">📬</span>
+                            <div>
+                                <h3 class="font-black text-sm text-sky-400 font-code">Minha Caixa Postal & Atendimento</h3>
+                                <p class="text-xs text-slate-400">Histórico de dúvidas pedagógicas e comunicados oficiais</p>
+                            </div>
+                        </div>
+                        <button onclick="window.openFeedbackModal()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs font-code transition shadow cursor-pointer">
+                            + Nova Mensagem
+                        </button>
+                    </div>
+
+                    <div class="space-y-3 max-h-80 overflow-y-auto custom-scrollbar pr-1">
+                        ${listHtml}
+                    </div>
+
+                    <div class="pt-2 flex justify-between items-center border-t border-slate-800">
+                        <span class="text-[10px] text-slate-500 font-code">Suporte CodeLogic PRO</span>
+                        <button onclick="window.hideModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-4 py-1.5 rounded-xl text-xs font-code transition cursor-pointer">
+                            Fechar
+                        </button>
+                    </div>
+                </div>
+            `;
+            window.showModal(modalContent, 'max-w-lg');
+        };
+
+        // --- PAINEL DO INSTRUTOR: RESPOSTA À CAIXA DE ENTRADA ---
+        
+        // --- FUNÇÃO DO ADM: CAIXA DE DÚVIDAS E SUPORTE AOS ALUNOS ---
+        window.openAdminInboxModal = function() {
+            if (typeof window.soundClick === 'function') window.soundClick();
+            const messages = typeof window.getStoredFeedbacks === 'function' ? window.getStoredFeedbacks() : [];
+            
+            let listHTML = '';
+            if (messages.length === 0) {
+                listHTML = `
+                    <div class="text-center py-12 text-slate-400">
+                        <div class="text-5xl mb-3">📬</div>
+                        <h4 class="font-bold text-slate-200">Nenhuma mensagem no momento</h4>
+                        <p class="text-xs text-slate-500 mt-1">As dúvidas e feedbacks pedagógicos enviados pelos alunos aparecerão aqui.</p>
+                    </div>
+                `;
+            } else {
+                listHTML = messages.map(m => {
+                    const isReplied = !!m.adminReply;
+                    return `
+                        <div class="bg-slate-900 border ${isReplied ? 'border-emerald-500/30' : 'border-amber-500/40'} rounded-2xl p-4 transition">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2 pb-2 border-b border-slate-800">
+                                <div>
+                                    <span class="font-bold text-white text-sm font-code flex items-center gap-2">
+                                        👤 ${m.studentName || 'Aluno(a)'}
+                                        <span class="text-[10px] text-slate-400 font-normal">(${m.studentEmail || 'Sem e-mail'})</span>
+                                    </span>
+                                    <span class="text-[11px] text-sky-400 font-code block mt-0.5">Trilha: ${m.trackId || 'Geral'}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isReplied ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}">
+                                        ${isReplied ? '🟢 Respondido' : '🟡 Aguardando Resposta'}
+                                    </span>
+                                    <span class="text-[10px] text-slate-500">${m.date || ''}</span>
+                                </div>
+                            </div>
+
+                            <div class="text-xs text-slate-300 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 mb-3 whitespace-pre-wrap font-sans">
+                                ${(m.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+                            </div>
+
+                            ${isReplied ? `
+                                <div class="bg-emerald-950/20 border border-emerald-500/20 rounded-xl p-3 mb-3">
+                                    <div class="flex items-center justify-between text-[11px] text-emerald-400 font-bold mb-1">
+                                        <span>👨‍🏫 Sua Resposta Oficial:</span>
+                                        <span class="text-[10px] text-emerald-500/70">${m.replyDate || ''}</span>
+                                    </div>
+                                    <p class="text-xs text-slate-300 font-sans">${(m.adminReply || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+                                </div>
+                            ` : ''}
+
+                            <div class="flex justify-end gap-2">
+                                <button onclick="window.replyStudentMessage('${m.id}')" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-3 py-1.5 rounded-xl text-xs font-code transition flex items-center gap-1.5 cursor-pointer">
+                                    ${isReplied ? '✏️ Editar Resposta' : '💬 Responder Aluno'}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            const modalHTML = `
+                <div class="p-6 max-h-[85vh] flex flex-col">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-800 shrink-0">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center text-xl">📬</div>
+                            <div>
+                                <h3 class="text-lg font-black text-white font-code">Caixa de Entrada & Dúvidas</h3>
+                                <p class="text-xs text-slate-400">Atendimento interno direto do Instrutor aos Alunos</p>
+                            </div>
+                        </div>
+                        <button onclick="window.closeModal()" class="text-slate-400 hover:text-white p-2 rounded-xl text-lg hover:bg-slate-800">✕</button>
+                    </div>
+
+                    <div class="flex-grow overflow-y-auto custom-scrollbar my-4 space-y-3 pr-1">
+                        ${listHTML}
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-800 flex justify-end shrink-0">
+                        <button onclick="window.closeModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-5 py-2 rounded-xl text-xs font-bold font-code">
+                            Fechar
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            if (typeof window.openModal === 'function') {
+                window.openModal(modalHTML, 'max-w-2xl');
+            }
+        };
+
+        window.replyStudentMessage = function(msgId) {
+            const messages = window.getStoredFeedbacks();
+            const msg = messages.find(m => m.id === msgId);
+            if (!msg) return;
+
+            const replyText = prompt('Digite a resposta oficial do Instrutor para ' + msg.studentName + ':', msg.adminReply || '');
+            if (replyText === null) return;
+
+            msg.adminReply = replyText.trim();
+            msg.replyDate = new Date().toLocaleString('pt-BR');
+            msg.status = msg.adminReply ? 'replied' : 'pending';
+            msg.readByStudent = false;
+
+            window.saveStoredFeedbacks(messages);
+            window.renderAdminEditor();
+            alert('Resposta salva com sucesso e notificação enviada para a Caixa Postal do aluno!');
+            window.openAdminInboxModal();
+        };
+
+window.runSandboxCode = function() {
             if (typeof window.soundClick === 'function') window.soundClick();
             const editor = document.getElementById('sandbox-code-editor');
             const consoleOutput = document.getElementById('sandbox-console-output');
@@ -3242,6 +4380,22 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                 return '🗄️ <b>O que fazer aqui:</b> O comando SQL consulta a tabela de alunos. Clique em <b>▶️ Executar</b> ou altere a cláusula <code>WHERE</code> para testar outros filtros!';
             }
 
+            
+            // 8. TRILHA: GIT, GITHUB & DEVOPS
+            if (subjectId === 'git_devops') {
+                return '🐙 <b>O que fazer aqui:</b> Experimente os comandos fundamentais do Git e do Terminal interativo no sandbox abaixo. Clique em <b>▶️ Executar</b> para simular a criação de commits, ramos e logs!';
+            }
+
+            // 9. TRILHA: ESTRUTURAS DE DADOS
+            if (subjectId === 'estruturas_dados') {
+                return '🧩 <b>O que fazer aqui:</b> Analise como as estruturas manipulam dados na memória (Pilhas, Filas e Busca Binária). Clique em <b>▶️ Executar</b> para ver os passos e complexidade!';
+            }
+
+            // 10. TRILHA: SEGURANÇA WEB
+            if (subjectId === 'seguranca_web') {
+                return '🛡️ <b>O que fazer aqui:</b> O código simula algoritmos de hash de senha, validação de inputs e blindagem contra injeção de SQL. Clique em <b>▶️ Executar</b> para testar a segurança!';
+            }
+
             return '💻 <b>O que fazer aqui:</b> Analise o código no editor e clique no botão azul <b>▶️ Executar</b> para rodar a simulação em tempo real!';
         };
 
@@ -3311,6 +4465,22 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
             // 7. TRILHA 6: BANCO DE DADOS & SQL
             if (subjectId === 'banco_dados') {
                 return '-- 🗄️ Consulta SQL Interativa\nSELECT id, nome, email, nota, turma \nFROM alunos \nWHERE nota >= 7.0 \nORDER BY nota DESC;';
+            }
+
+            
+            // 8. TRILHA: GIT, GITHUB & DEVOPS
+            if (subjectId === 'git_devops') {
+                return '// 🐙 Simulador de Ciclo Git & Terminal\nconst gitHistory = [];\n\nfunction gitCommit(msg) {\n  const hash = Math.random().toString(16).substring(2, 9);\n  const commit = { hash, msg, date: new Date().toLocaleTimeString() };\n  gitHistory.push(commit);\n  console.log("✅ [commit " + hash + "]: " + msg);\n}\n\nconsole.log("=== SIMULANDO WORKFLOW GIT NO TERMINAL ===");\ngitCommit("feat: inicializar projeto e arquitetura");\ngitCommit("feat(auth): implementar sistema seguro de login");\ngitCommit("docs: adicionar documentacao legal de curso livre");\n\nconsole.log("\n📜 git log --oneline:");\ngitHistory.forEach(c => console.log("* " + c.hash + " - " + c.msg + " (" + c.date + ")"));';
+            }
+
+            // 9. TRILHA: ESTRUTURAS DE DADOS
+            if (subjectId === 'estruturas_dados') {
+                return '// 🧩 Simulador de Busca Binária O(log N)\nconst listaOrdenada = [12, 24, 37, 45, 58, 69, 73, 85, 91, 104];\nconst alvo = 73;\n\nconsole.log("=== BUSCA BINÁRIA O(log N) ===");\nconsole.log("Lista ordenada:", listaOrdenada);\nconsole.log("Elemento procurado:", alvo);\n\nlet inicio = 0;\nlet fim = listaOrdenada.length - 1;\nlet tentativas = 0;\n\nwhile (inicio <= fim) {\n  tentativas++;\n  let meio = Math.floor((inicio + fim) / 2);\n  console.log("Tentativa #" + tentativas + ": checando índice " + meio + " (valor: " + listaOrdenada[meio] + ")");\n  \n  if (listaOrdenada[meio] === alvo) {\n    console.log("🎯 Elemento " + alvo + " encontrado na posição " + meio + " em apenas " + tentativas + " passos!");\n    break;\n  } else if (listaOrdenada[meio] < alvo) {\n    inicio = meio + 1;\n  } else {\n    fim = meio - 1;\n  }\n}';
+            }
+
+            // 10. TRILHA: SEGURANÇA WEB
+            if (subjectId === 'seguranca_web') {
+                return '// 🛡️ Simulação de Hash Criptográfico de Senha (com Salt)\nfunction simularHashComSalt(senha, salt) {\n  let hash = 0;\n  const combinada = salt + "_" + senha;\n  for (let i = 0; i < combinada.length; i++) {\n    hash = (hash << 5) - hash + combinada.charCodeAt(i);\n    hash |= 0;\n  }\n  return "$2b$12$" + salt + "$" + Math.abs(hash).toString(16);\n}\n\nconsole.log("=== ARMAZENAMENTO SEGURO DE SENHAS ===");\nconst senhaDigitada = "Dev@2026_Forte!";\nconst saltUnico = Math.random().toString(36).substring(2, 10);\n\nconsole.log("1. Senha em texto puro (NUNCA salvar):", senhaDigitada);\nconsole.log("2. Salt aleatório gerado:", saltUnico);\nconst hashSalvo = simularHashComSalt(senhaDigitada, saltUnico);\nconsole.log("3. Hash seguro gravado no Banco de Dados:\n   " + hashSalvo);\nconsole.log("✅ Protegido contra vazamentos e Rainbow Tables!");';
             }
 
             return '// ⚡ Terminal de Código Geral\nconsole.log("Olá, Dev! Bem-vindo ao CodeLogic PRO 🚀");';
@@ -4144,6 +5314,10 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                             <button onclick="window.soundClick(); window.changeState('ADMIN_EDITOR')" class="w-full text-left px-4 py-2.5 bg-sky-500 text-slate-950 font-black rounded-xl flex items-center gap-2 text-xs font-code cursor-pointer shadow">
                                 📝 Editor de Aulas & IA
                             </button>
+                            <button onclick="window.soundClick(); window.openAdminInboxModal()" class="w-full text-left px-4 py-2.5 hover:bg-slate-800 text-sky-400 font-bold rounded-xl transition flex items-center justify-between font-code text-xs cursor-pointer border border-sky-500/20">
+                                <span class="flex items-center gap-2">📬 Dúvidas & Suporte</span>
+                                <span class="bg-amber-500 text-slate-950 text-[10px] px-2 py-0.5 rounded-full font-black">${typeof window.getStoredFeedbacks === 'function' ? window.getStoredFeedbacks().filter(m => !m.adminReply).length : 0}</span>
+                            </button>
                             <button onclick="window.soundClick(); window.openFirebaseConfigModal()" class="w-full text-left px-4 py-2.5 hover:bg-slate-800 text-slate-300 rounded-xl transition flex items-center gap-2 font-code text-xs cursor-pointer">
                                 🔥 Conexão Firebase
                             </button>
@@ -4160,6 +5334,22 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
 
                     <!-- Área de Conteúdo do Editor -->
                     <div class="flex-grow bg-slate-900 flex flex-col p-6 overflow-y-auto custom-scrollbar">
+                        <!-- Banner de Atendimento & Dúvidas dos Alunos -->
+                        <div class="bg-gradient-to-r from-slate-900 to-indigo-950/50 border-2 border-indigo-500/30 rounded-2xl p-4 mb-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center text-xl shrink-0">📬</div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm font-code flex items-center gap-2">
+                                        Central de Atendimento & Dúvidas dos Alunos
+                                        <span class="bg-indigo-500/20 text-indigo-300 text-[10px] px-2 py-0.5 rounded-full border border-indigo-500/30 font-bold">${typeof window.getStoredFeedbacks === 'function' ? window.getStoredFeedbacks().filter(m => !m.adminReply).length : 0} pendentes</span>
+                                    </h4>
+                                    <p class="text-xs text-slate-400 mt-0.5">Responda diretamente às mensagens e solicitações pedagógicas enviadas pelos estudantes.</p>
+                                </div>
+                            </div>
+                            <button onclick="window.soundClick(); window.openAdminInboxModal()" class="bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-black px-4 py-2 rounded-xl text-xs font-code transition flex items-center gap-1.5 shadow cursor-pointer shrink-0">
+                                Abrir Mensagens 💬
+                            </button>
+                        </div>
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 pb-3 border-b border-slate-800">
                             <div>
                                 <h2 class="text-lg font-black text-white flex items-center gap-2 font-code">
