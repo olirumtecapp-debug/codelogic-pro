@@ -64,13 +64,20 @@
 
                 <!-- 4. Perfil do Estudante quando logado -->
                 <div id="user-info-display" class="hidden items-center gap-1 sm:gap-2 bg-slate-800/80 px-2 sm:px-3 py-1.5 rounded-xl sm:rounded-2xl border border-slate-700">
-                    <span id="current-user-avatar" class="text-base sm:text-lg">🧑‍💻</span>
+                    <div class="relative flex items-center">
+                        <span id="current-user-avatar" class="text-base sm:text-lg">🧑‍💻</span>
+                        <span id="avatar-inbox-dot" class="hidden absolute -top-1 -right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-slate-800 animate-ping"></span>
+                    </div>
                     <div class="text-left leading-tight hidden sm:block">
                         <span id="current-user-name" class="font-black text-xs text-sky-400 block font-code">Dev</span>
                         <span id="current-user-turma" class="text-[10px] text-slate-400 block hidden md:block">Turma Geral</span>
                     </div>
-                    <button onclick="window.showCertificatesModal()" title="Ver Certificados e Conquistas" class="ml-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-1 rounded-full text-xs transition cursor-pointer">
+                    <button onclick="window.showCertificatesModal()" title="Ver Certificados e Conquistas" class="ml-0.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-1 rounded-full text-xs transition cursor-pointer">
                         🏆
+                    </button>
+                    <button onclick="window.openStudentInbox()" title="Minha Caixa Postal" class="text-indigo-400 hover:text-indigo-300 text-xs p-1 rounded transition cursor-pointer relative">
+                        📬
+                        <span id="profile-inbox-dot" class="hidden absolute -top-0.5 -right-0.5 w-2 h-2 bg-rose-500 rounded-full"></span>
                     </button>
                     <button onclick="window.logoutStudent()" title="Sair da Conta" class="text-slate-400 hover:text-rose-400 text-xs px-1 py-0.5 rounded transition cursor-pointer">
                         🚪
@@ -139,12 +146,12 @@
         </div>
     </footer>
 
-    <!-- Botão Flutuante de Caixa Postal (Dúvidas & Mensagens do Aluno - Fácil Acesso no Smartphone) -->
-    <div id="floating-inbox-container" class="fixed bottom-5 right-4 sm:right-6 z-40">
-        <button onclick="window.soundClick(); window.openStudentInbox()" title="Minha Caixa Postal de Dúvidas & Mensagens" class="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white p-3.5 sm:px-4 sm:py-3 rounded-full shadow-2xl border-2 border-indigo-400/50 flex items-center gap-2 font-code text-xs font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer glow-border relative group">
-            <span class="text-lg">📬</span>
-            <span class="hidden sm:inline">Caixa Postal</span>
-            <span id="nav-inbox-badge" class="hidden absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[10px] font-black px-1.5 py-0.2 rounded-full border-2 border-slate-900 shadow-md leading-tight animate-bounce">0</span>
+    <!-- Notificador Flutuante Inteligente (Só surge quando houver resposta do instrutor) -->
+    <div id="floating-inbox-container" class="hidden fixed bottom-24 right-4 sm:bottom-6 sm:right-6 z-40 transition-all duration-300 transform translate-y-0">
+        <button onclick="window.soundClick(); window.openStudentInbox()" title="Você tem uma nova resposta do instrutor!" class="bg-gradient-to-r from-indigo-600 via-sky-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-full shadow-2xl border-2 border-indigo-400/80 flex items-center gap-2 font-code text-xs font-black transition-all transform hover:scale-105 active:scale-95 cursor-pointer glow-border relative animate-pulse">
+            <span class="text-base animate-bounce">📬</span>
+            <span class="text-[11px] sm:text-xs">Resposta do Instrutor</span>
+            <span id="nav-inbox-badge" class="bg-rose-500 text-white text-[10px] font-black px-1.5 py-0.2 rounded-full border-2 border-slate-900 shadow-md leading-tight">1</span>
         </button>
     </div>
 
@@ -5448,22 +5455,56 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
             const messages = window.getStoredFeedbacks();
             const unreadCount = messages.filter(m => m.adminReply && !m.readByStudent).length;
             
-            const badges = [
-                document.getElementById('nav-inbox-badge'),
-                document.getElementById('hub-inbox-badge')
-            ];
+            const floatingContainer = document.getElementById('floating-inbox-container');
+            const badge = document.getElementById('nav-inbox-badge');
+            const hubBadge = document.getElementById('hub-inbox-badge');
+            const avatarDot = document.getElementById('avatar-inbox-dot');
+            const profileDot = document.getElementById('profile-inbox-dot');
 
-            badges.forEach(b => {
-                if (b) {
-                    if (unreadCount > 0) {
-                        b.textContent = unreadCount;
-                        b.classList.remove('hidden');
-                    } else {
-                        b.classList.add('hidden');
-                    }
+            // 🎯 LÓGICA INTELIGENTE: Só exibe na tela se HOUVER resposta do instrutor!
+            if (unreadCount > 0) {
+                if (floatingContainer) {
+                    floatingContainer.classList.remove('hidden');
+                    floatingContainer.classList.add('flex');
                 }
-            });
+                if (badge) {
+                    badge.textContent = unreadCount;
+                    badge.classList.remove('hidden');
+                }
+                if (hubBadge) {
+                    hubBadge.textContent = unreadCount;
+                    hubBadge.classList.remove('hidden');
+                }
+                if (avatarDot) avatarDot.classList.remove('hidden');
+                if (profileDot) profileDot.classList.remove('hidden');
+            } else {
+                // 100% Oculto quando não há mensagens pendentes (Foco total no estudo!)
+                if (floatingContainer) {
+                    floatingContainer.classList.add('hidden');
+                    floatingContainer.classList.remove('flex');
+                }
+                if (badge) badge.classList.add('hidden');
+                if (hubBadge) hubBadge.classList.add('hidden');
+                if (avatarDot) avatarDot.classList.add('hidden');
+                if (profileDot) profileDot.classList.add('hidden');
+            }
         };
+
+        // 📜 Modo Foco Total ao Rolar: se o botão estiver visível, oculta suavemente ao rolar para baixo
+        let lastUserScrollY = 0;
+        window.addEventListener('scroll', () => {
+            const floating = document.getElementById('floating-inbox-container');
+            if (!floating || floating.classList.contains('hidden')) return;
+            const currentY = window.pageYOffset || document.documentElement.scrollTop;
+            if (currentY > lastUserScrollY + 15 && currentY > 100) {
+                // Rolando para baixo: oculta para não cobrir o texto nem botões da aula
+                floating.classList.add('opacity-0', 'pointer-events-none', 'translate-y-8');
+            } else if (currentY < lastUserScrollY - 10 || currentY <= 50) {
+                // Rolando para cima ou parado no topo: reaparece suavemente
+                floating.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-8');
+            }
+            lastUserScrollY = currentY;
+        }, { passive: true });
 
         window.openFeedbackModal = function() {
             if (typeof window.soundClick === 'function') window.soundClick();
@@ -7588,6 +7629,7 @@ Explicação: [Explicação curta e didática do porquê a alternativa está cer
 
         // Inicialização da Aplicação
         loadLocalData();
+        window.updateInboxBadges();
         window.changeState('PORTAL_HUB');
     </script>
 </body>
