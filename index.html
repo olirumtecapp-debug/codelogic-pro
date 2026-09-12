@@ -2793,6 +2793,8 @@
             modalContainer.classList.remove('hidden');
         };
 
+        window.closeModal = function() { window.hideModal(); };
+        window.openModal = function(c, m) { window.showModal(c, m); };
         window.hideModal = function() {
             modalContainer.classList.add('hidden');
         };
@@ -4053,33 +4055,321 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
         };
 
         
+        // --- SISTEMA DINÂMICO DE GERAÇÃO E GESTÃO DE CUPONS VIP ---
+        window.getCustomCoupons = function() {
+            try {
+                const raw = localStorage.getItem('codelogic_custom_vip_coupons');
+                return raw ? JSON.parse(raw) : [];
+            } catch(e) {
+                return [];
+            }
+        };
+
+        window.saveCustomCoupons = function(coupons) {
+            try {
+                localStorage.setItem('codelogic_custom_vip_coupons', JSON.stringify(coupons));
+                if (window.db && typeof window.db.collection === 'function') {
+                    window.db.collection('settings').doc('vipCoupons').set({ coupons: coupons, updatedAt: new Date().toISOString() }).catch(() => {});
+                }
+            } catch(e) {
+                console.error('Erro ao salvar cupons:', e);
+            }
+        };
+
+        window.generateRandomCouponCode = function() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let part = '';
+            for (let i = 0; i < 4; i++) {
+                part += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return 'VIP-' + part + '-2026';
+        };
+
+        window.createAdminCoupon = function() {
+            const input = document.getElementById('admin-coupon-code');
+            const usesSelect = document.getElementById('admin-coupon-uses');
+            const descInput = document.getElementById('admin-coupon-desc');
+            const feedback = document.getElementById('admin-coupon-feedback');
+
+            if (!input) return;
+
+            let code = (input.value || '').trim().toUpperCase().replace(/\s+/g, '-');
+            if (!code || code.length < 3) {
+                if (feedback) {
+                    feedback.className = 'text-xs font-code text-rose-400 font-bold block mt-2';
+                    feedback.textContent = '❌ Por favor, digite um código válido com pelo menos 3 caracteres.';
+                } else {
+                    alert('Por favor, digite um código com pelo menos 3 caracteres.');
+                }
+                return;
+            }
+
+            const maxUses = parseInt(usesSelect?.value || '1', 10);
+            const description = (descInput?.value || '').trim() || 'Acesso VIP Liberado pelo Instrutor';
+
+            const coupons = window.getCustomCoupons();
+            const staticCoupons = ['VIPPRO', 'DEV2026', 'CODEMASTER', 'ALUNOVIP', 'EADPRO', 'CONECTADEV'];
+
+            if (staticCoupons.includes(code) || coupons.some(c => c.code === code)) {
+                if (feedback) {
+                    feedback.className = 'text-xs font-code text-rose-400 font-bold block mt-2';
+                    feedback.textContent = '⚠️ Já existe um cupom com o código ' + code + '. Escolha outro ou gere um código aleatório.';
+                } else {
+                    alert('Já existe um cupom com este código!');
+                }
+                return;
+            }
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+            const newCoupon = {
+                id: 'cp_' + Date.now(),
+                code: code,
+                maxUses: maxUses,
+                usedCount: 0,
+                active: true,
+                description: description,
+                createdAt: dateStr
+            };
+
+            coupons.unshift(newCoupon);
+            window.saveCustomCoupons(coupons);
+
+            if (typeof window.soundCorrect === 'function') window.soundCorrect();
+            window.openAdminCouponGeneratorModal();
+
+            const badge = document.getElementById('sidebar-coupons-count');
+            if (badge) badge.textContent = coupons.filter(c => c.active).length;
+        };
+
+        window.deleteAdminCoupon = function(couponId) {
+            if (!confirm('Deseja realmente revogar/excluir este cupom VIP? Ele não poderá mais ser resgatado.')) return;
+            let coupons = window.getCustomCoupons();
+            coupons = coupons.filter(c => c.id !== couponId);
+            window.saveCustomCoupons(coupons);
+            if (typeof window.soundClick === 'function') window.soundClick();
+            window.openAdminCouponGeneratorModal();
+            const badge = document.getElementById('sidebar-coupons-count');
+            if (badge) badge.textContent = coupons.filter(c => c.active).length;
+        };
+
+        window.copyCouponMessage = function(code) {
+            const text = '🎉 Parabéns! Você recebeu Acesso VIP Vitalício ao CodeLogic PRO!\n\n' +
+                         '🔑 Seu Código VIP de Resgate: ' + code + '\n\n' +
+                         '👉 Como ativar:\n' +
+                         '1. Acesse: https://codelogic-pro-ead.vercel.app/\n' +
+                         '2. Clique no botão dourado "👑 Seja VIP"\n' +
+                         '3. No campo "Tem um Cupom VIP?", cole seu código: ' + code + '\n' +
+                         '4. Clique em "Ativar" e aproveite todas as 10 trilhas e certificados sem custo!\n\n' +
+                         'Bons estudos na CodeLogic PRO! 🚀';
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    if (typeof window.soundCorrect === 'function') window.soundCorrect();
+                    alert('📋 Código ' + code + ' e instruções copiados para a área de transferência!\n\nBasta colar no WhatsApp ou e-mail do aluno.');
+                }).catch(() => {
+                    prompt('Copie o texto para enviar ao aluno:', text);
+                });
+            } else {
+                prompt('Copie o texto para enviar ao aluno:', text);
+            }
+        };
+
+        window.fillRandomCouponInput = function() {
+            const input = document.getElementById('admin-coupon-code');
+            if (input) {
+                input.value = window.generateRandomCouponCode();
+                if (typeof window.soundClick === 'function') window.soundClick();
+            }
+        };
+
+        window.openAdminCouponGeneratorModal = function() {
+            if (typeof window.soundClick === 'function') window.soundClick();
+            const coupons = window.getCustomCoupons();
+            const randomDefault = window.generateRandomCouponCode();
+
+            const couponsListHTML = coupons.length === 0 ? `
+                <div class="bg-slate-950/70 border border-dashed border-slate-800 rounded-2xl p-6 text-center">
+                    <span class="text-3xl block mb-2">🎟️</span>
+                    <p class="text-xs font-bold text-slate-300 font-code">Nenhum cupom VIP gerado até o momento.</p>
+                    <p class="text-[11px] text-slate-500 mt-1">Crie seu primeiro código no formulário acima para liberar o VIP a um aluno ou turma.</p>
+                </div>
+            ` : coupons.map(c => {
+                const isDepleted = c.maxUses > 0 && (c.usedCount || 0) >= c.maxUses;
+                const statusBadge = isDepleted ?
+                    '<span class="bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[9px] px-2 py-0.5 rounded-full font-bold uppercase font-code">🔴 Resgatado</span>' :
+                    '<span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[9px] px-2 py-0.5 rounded-full font-bold uppercase font-code">🟢 Ativo</span>';
+
+                const usesText = c.maxUses === 1 ?
+                    ((c.usedCount || 0) + ' de 1 uso') :
+                    (c.maxUses === 0 ? ((c.usedCount || 0) + ' resgates (Ilimitado)') : ((c.usedCount || 0) + ' de ' + c.maxUses + ' usos'));
+
+                return `
+                    <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-slate-700 transition">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-sm font-black text-amber-300 font-code tracking-wider bg-slate-900 px-2.5 py-1 rounded-lg border border-amber-500/30 select-all">${c.code}</span>
+                                ${statusBadge}
+                                <span class="text-[10px] text-slate-400 font-code bg-slate-900 px-2 py-0.5 rounded-md border border-slate-800">📊 ${usesText}</span>
+                            </div>
+                            <p class="text-xs text-slate-300 font-sans">${(c.description || 'Acesso VIP Liberado').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+                            <p class="text-[10px] text-slate-500 font-code">Criado em: ${c.createdAt || 'Recentemente'}</p>
+                        </div>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button onclick="window.copyCouponMessage('${c.code}')" class="bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/30 text-xs px-3 py-1.5 rounded-xl font-code font-bold transition flex items-center gap-1 cursor-pointer" title="Copiar código e mensagem para WhatsApp">
+                                <span>📋</span> Copiar Msg
+                            </button>
+                            <button onclick="window.deleteAdminCoupon('${c.id}')" class="bg-rose-500/10 hover:bg-rose-500/25 text-rose-400 border border-rose-500/20 text-xs px-2.5 py-1.5 rounded-xl font-code transition cursor-pointer" title="Revogar cupom">
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const modalHTML = `
+                <div class="space-y-5 text-left">
+                    <!-- Header do Modal -->
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-2xl">🎟️</span>
+                            <div>
+                                <h3 class="font-black text-base text-white font-code">Gerador & Gestor de Cupons VIP</h3>
+                                <p class="text-xs text-slate-400">Gere códigos exclusivos para liberar o Passe Vitalício aos alunos</p>
+                            </div>
+                        </div>
+                        <button onclick="window.hideModal()" class="text-slate-400 hover:text-white p-1 rounded-lg text-lg cursor-pointer">✕</button>
+                    </div>
+
+                    <!-- Card: Criar Novo Cupom -->
+                    <div class="bg-gradient-to-br from-slate-950 to-slate-900 p-4 rounded-2xl border border-amber-500/30 shadow-lg space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-bold text-amber-300 font-code flex items-center gap-1.5">
+                                <span>✨</span> Criar Novo Código VIP
+                            </h4>
+                            <span class="text-[10px] text-slate-400 font-code">Libera 100% de desconto</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+                            <div class="sm:col-span-8 flex gap-1.5">
+                                <input type="text" id="admin-coupon-code" value="${randomDefault}" placeholder="Ex: VIP-ALUNO-2026" class="w-full text-xs font-code font-bold p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-amber-200 uppercase focus:outline-none focus:border-amber-400">
+                                <button onclick="window.fillRandomCouponInput()" type="button" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-xl text-xs font-code font-bold shrink-0 transition cursor-pointer" title="Gerar outro código aleatório">
+                                    🎲 Novo
+                                </button>
+                            </div>
+                            <div class="sm:col-span-4">
+                                <select id="admin-coupon-uses" class="w-full text-xs font-code p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-slate-200 focus:outline-none focus:border-amber-400 cursor-pointer">
+                                    <option value="1">Uso Único (1 aluno)</option>
+                                    <option value="0">Ilimitado (Vários alunos)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <input type="text" id="admin-coupon-desc" placeholder="Anotação ou Nome do Aluno (Ex: Aluno Marcos via WhatsApp, Bolsa de Estudos)" class="w-full text-xs font-sans p-2 bg-slate-900/80 border border-slate-700/80 rounded-xl text-slate-300 focus:outline-none focus:border-sky-400 placeholder-slate-500">
+                        </div>
+
+                        <div id="admin-coupon-feedback" class="text-xs font-code hidden"></div>
+
+                        <div class="flex justify-end pt-1">
+                            <button onclick="window.createAdminCoupon()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs font-code transition shadow flex items-center gap-1.5 cursor-pointer">
+                                <span>✨</span> Gerar & Salvar Cupom VIP
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card: Lista de Cupons Gerados -->
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="text-xs font-bold text-slate-300 font-code flex items-center gap-1.5">
+                                <span>📋</span> Cupons Cadastrados (${coupons.length})
+                            </h4>
+                            <span class="text-[10px] text-slate-500 font-code">Cupons fixos do sistema: VIPPRO, DEV2026</span>
+                        </div>
+                        <div class="space-y-2 max-h-56 overflow-y-auto custom-scrollbar pr-1">
+                            ${couponsListHTML}
+                        </div>
+                    </div>
+
+                    <!-- Rodapé do Modal -->
+                    <div class="flex justify-between items-center pt-2 border-t border-slate-800 text-[11px] text-slate-500">
+                        <span>CodeLogic PRO • Painel de Gestão VIP</span>
+                        <button onclick="window.hideModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-xl text-xs font-code font-bold cursor-pointer">
+                            Fechar
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            window.showModal(modalHTML, 'max-w-xl');
+        };
+
         window.activateVipCoupon = function() {
             const input = document.getElementById('vip-coupon-input');
             const feedback = document.getElementById('vip-coupon-feedback');
             if (!input) return;
 
             const code = (input.value || '').trim().toUpperCase();
-            const validCoupons = ['VIPPRO', 'DEV2026', 'CODEMASTER', 'ALUNOVIP', 'EADPRO', 'CONECTADEV'];
+            const staticCoupons = ['VIPPRO', 'DEV2026', 'CODEMASTER', 'ALUNOVIP', 'EADPRO', 'CONECTADEV'];
 
-            if (validCoupons.includes(code)) {
+            // 1. Verifica cupons estáticos do sistema
+            if (staticCoupons.includes(code)) {
                 if (typeof window.soundCorrect === 'function') window.soundCorrect();
                 window.setStudentVip(true);
                 if (feedback) {
                     feedback.className = 'text-xs font-code text-emerald-400 font-bold block mt-2';
-                    feedback.innerHTML = '✨ Parabéns! O cupom foi validado com sucesso. Seu Acesso VIP Vitalício está ativo!';
+                    feedback.innerHTML = '✨ Parabéns! O cupom oficial foi validado com sucesso. Seu Acesso VIP Vitalício está ativo!';
                 }
                 setTimeout(() => {
                     window.hideModal();
                     window.customAlert('👑 <b>Acesso VIP Vitalício Ativado!</b><br>Todos os módulos, trilhas e recursos de certificação do CodeLogic PRO foram desbloqueados com sucesso!');
                 }, 1000);
-            } else {
-                if (typeof window.soundWrong === 'function') window.soundWrong();
-                if (feedback) {
-                    feedback.className = 'text-xs font-code text-rose-400 font-bold block mt-2';
-                    feedback.innerHTML = '❌ Cupom inválido ou expirado. Tente VIPPRO ou adquira seu acesso via PIX.';
-                } else {
-                    alert('Cupom inválido ou expirado. Tente VIPPRO.');
+                return;
+            }
+
+            // 2. Verifica cupons dinâmicos gerados pelo instrutor
+            const customCoupons = typeof window.getCustomCoupons === 'function' ? window.getCustomCoupons() : [];
+            const foundCoupon = customCoupons.find(c => c.code.toUpperCase() === code);
+
+            if (foundCoupon) {
+                // Se o cupom for de uso único e já foi utilizado
+                if (foundCoupon.maxUses > 0 && (foundCoupon.usedCount || 0) >= foundCoupon.maxUses) {
+                    if (typeof window.soundWrong === 'function') window.soundWrong();
+                    if (feedback) {
+                        feedback.className = 'text-xs font-code text-rose-400 font-bold block mt-2';
+                        feedback.innerHTML = '❌ Este cupom VIP já atingiu o limite máximo de resgates (' + foundCoupon.maxUses + ').';
+                    } else {
+                        alert('Este cupom VIP já foi resgatado.');
+                    }
+                    return;
                 }
+
+                // Incrementa contador de uso
+                foundCoupon.usedCount = (foundCoupon.usedCount || 0) + 1;
+                window.saveCustomCoupons(customCoupons);
+
+                if (typeof window.soundCorrect === 'function') window.soundCorrect();
+                window.setStudentVip(true);
+
+                if (feedback) {
+                    feedback.className = 'text-xs font-code text-emerald-400 font-bold block mt-2';
+                    feedback.innerHTML = '✨ Parabéns! O cupom <b>' + foundCoupon.code + '</b> foi validado com sucesso! Seu Acesso VIP Vitalício está ativo!';
+                }
+                setTimeout(() => {
+                    window.hideModal();
+                    window.customAlert('👑 <b>Acesso VIP Vitalício Desbloqueado!</b><br>Cupom <b>' + foundCoupon.code + '</b> resgatado com sucesso!<br>Todas as 10 trilhas, simuladores e certificados foram liberados.');
+                }, 1000);
+                return;
+            }
+
+            // 3. Não encontrou cupom válido
+            if (typeof window.soundWrong === 'function') window.soundWrong();
+            if (feedback) {
+                feedback.className = 'text-xs font-code text-rose-400 font-bold block mt-2';
+                feedback.innerHTML = '❌ Cupom inválido ou inexistente. Tente VIPPRO ou adquira seu acesso via PIX.';
+            } else {
+                alert('Cupom inválido ou inexistente. Tente VIPPRO.');
             }
         };
 
@@ -5667,6 +5957,10 @@ window.runSandboxCode = function() {
                             <button onclick="window.soundClick(); window.openAdminPromoModal()" class="w-full text-left px-4 py-2.5 hover:bg-slate-800 text-amber-300 font-bold rounded-xl transition flex items-center justify-between font-code text-xs cursor-pointer border border-amber-500/20">
                                 <span class="flex items-center gap-2">🏷️ Ofertas & Promoção VIP</span>
                                 <span class="bg-amber-500/20 text-amber-300 text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase">${(window.getVipPromoConfig && window.getVipPromoConfig().enabled) ? 'Ativa' : 'Padrão'}</span>
+                            </button>
+                            <button onclick="window.soundClick(); window.openAdminCouponGeneratorModal()" class="w-full text-left px-4 py-2.5 hover:bg-slate-800 text-emerald-300 font-bold rounded-xl transition flex items-center justify-between font-code text-xs cursor-pointer border border-emerald-500/20">
+                                <span class="flex items-center gap-2">🎟️ Gerador de Cupons VIP</span>
+                                <span id="sidebar-coupons-count" class="bg-emerald-500/20 text-emerald-300 text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase">${typeof window.getCustomCoupons === 'function' ? window.getCustomCoupons().length : 0}</span>
                             </button>
                             <button onclick="window.soundClick(); window.openFirebaseConfigModal()" class="w-full text-left px-4 py-2.5 hover:bg-slate-800 text-slate-300 rounded-xl transition flex items-center gap-2 font-code text-xs cursor-pointer">
                                 🔥 Conexão Firebase
