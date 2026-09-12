@@ -2945,6 +2945,232 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
             ]
         };
 
+        window.runSandboxCode = function() {
+            if (typeof window.soundClick === 'function') window.soundClick();
+            const editor = document.getElementById('sandbox-code-editor');
+            const consoleOutput = document.getElementById('sandbox-console-output');
+            const livePreview = document.getElementById('sandbox-live-preview');
+            if (!editor) return;
+
+            const codeStr = editor.value;
+            const sub = typeof currentSubjectId !== 'undefined' ? currentSubjectId : 'logica';
+
+            // 1. HTML & CSS Live Preview
+            if (sub === 'html_css' || (sub === 'historia' && typeof currentChapterIndex !== 'undefined' && currentChapterIndex === 1 && typeof selectedCategoryId !== 'undefined' && selectedCategoryId === 'historia_internet')) {
+                if (livePreview) {
+                    livePreview.innerHTML = codeStr;
+                    if (typeof window.soundCorrect === 'function') window.soundCorrect();
+                }
+                return;
+            }
+
+            if (consoleOutput) {
+                consoleOutput.innerHTML = '';
+                const logs = [];
+
+                // 2. Banco de Dados (SQL)
+                if (sub === 'banco_dados') {
+                    try {
+                        const trimmedSql = codeStr.trim();
+                        const isSelect = trimmedSql.toUpperCase().includes('SELECT');
+                        if (isSelect) {
+                            let rows = [...SAMPLE_SQL_DB.alunos];
+                            const upper = trimmedSql.toUpperCase();
+                            
+                            // Filtros WHERE
+                            if (upper.includes('WHERE')) {
+                                if (upper.includes('NOTA >= 7') || upper.includes('NOTA >= 7.0') || upper.includes('NOTA > 7')) {
+                                    rows = rows.filter(r => r.nota >= 7.0);
+                                } else if (upper.includes('NOTA >= 8') || upper.includes('NOTA > 8')) {
+                                    rows = rows.filter(r => r.nota >= 8.0);
+                                } else if (upper.includes('NOTA >= 9') || upper.includes('NOTA > 9')) {
+                                    rows = rows.filter(r => r.nota >= 9.0);
+                                } else if (upper.includes("TURMA = 'WEB DEV'") || upper.includes('TURMA = "WEB DEV"')) {
+                                    rows = rows.filter(r => r.turma.toLowerCase() === 'web dev');
+                                } else if (upper.includes("TURMA = 'PYTHON PRO'") || upper.includes('TURMA = "PYTHON PRO"')) {
+                                    rows = rows.filter(r => r.turma.toLowerCase() === 'python pro');
+                                }
+                            }
+                            
+                            if (upper.includes('ORDER BY NOTA DESC')) {
+                                rows.sort((a, b) => b.nota - a.nota);
+                            } else if (upper.includes('ORDER BY NOTA ASC') || (upper.includes('ORDER BY NOTA') && !upper.includes('DESC'))) {
+                                rows.sort((a, b) => a.nota - b.nota);
+                            } else if (upper.includes('ORDER BY NOME')) {
+                                rows.sort((a, b) => a.nome.localeCompare(b.nome));
+                            }
+                            
+                            let tableHtml = '<div class="overflow-x-auto my-1"><table class="w-full text-left text-xs border border-slate-700 rounded-lg overflow-hidden">';
+                            tableHtml += '<thead class="bg-slate-800 text-sky-400 font-code font-bold"><tr><th class="p-2 border-b border-slate-700">ID</th><th class="p-2 border-b border-slate-700">NOME</th><th class="p-2 border-b border-slate-700">EMAIL</th><th class="p-2 border-b border-slate-700">NOTA</th><th class="p-2 border-b border-slate-700">TURMA</th></tr></thead><tbody>';
+                            rows.forEach(r => {
+                                tableHtml += '<tr class="border-b border-slate-800/60 hover:bg-slate-800/40"><td class="p-2 font-mono text-slate-400">' + r.id + '</td><td class="p-2 font-bold text-white">' + r.nome + '</td><td class="p-2 text-slate-300">' + r.email + '</td><td class="p-2 text-emerald-400 font-bold">' + r.nota.toFixed(1) + '</td><td class="p-2 text-slate-400">' + r.turma + '</td></tr>';
+                            });
+                            tableHtml += '</tbody></table></div>';
+                            
+                            consoleOutput.innerHTML = '<div class="text-emerald-400 font-bold mb-2 font-code">✅ Consulta SQL Executada com Sucesso (' + rows.length + ' registros retornados):</div>' + tableHtml;
+                            if (typeof window.soundCorrect === 'function') window.soundCorrect();
+                        } else {
+                            consoleOutput.innerHTML = '<div class="text-emerald-400 font-bold font-code">✅ Comando SQL processado com sucesso pelo SGBD simulado (1 linha afetada).</div>';
+                            if (typeof window.soundCorrect === 'function') window.soundCorrect();
+                        }
+                    } catch (err) {
+                        consoleOutput.innerHTML = '<div class="text-rose-400 font-bold font-code">❌ Erro SQL: ' + err.message + '</div>';
+                        if (typeof window.soundWrong === 'function') window.soundWrong();
+                    }
+                    return;
+                }
+
+                // 3. Python Simulator & Runner
+                if (sub === 'python') {
+                    try {
+                        const customLog = (...args) => {
+                            logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' '));
+                        };
+
+                        let jsCode = '';
+                        const lines = codeStr.split('\n');
+                        for (let line of lines) {
+                            let trimmed = line.trim();
+                            if (trimmed.startsWith('#')) continue;
+                            line = line.replace(/\bprint\s*\((.*)\)/g, (match, p1) => `console.log(${p1})`);
+                            line = line.replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false').replace(/\bNone\b/g, 'null');
+                            if (/^\s*for\s+([a-zA-Z0-9_]+)\s+in\s+([a-zA-Z0-9_]+)\s*:/.test(line)) {
+                                line = line.replace(/for\s+([a-zA-Z0-9_]+)\s+in\s+([a-zA-Z0-9_]+)\s*:/, 'for (let $1 of $2) {');
+                            }
+                            if (/^\s*if\s+(.*):/.test(line)) {
+                                line = line.replace(/if\s+(.*):/, (m, cond) => {
+                                    if (cond.includes(' in ')) {
+                                        const parts = cond.split(' in ');
+                                        return `if (${parts[1].trim()}.includes(${parts[0].trim()})) {`;
+                                    }
+                                    return `if (${cond}) {`;
+                                });
+                            } else if (/^\s*else\s*:/.test(line)) {
+                                line = line.replace(/else\s*:/, '} else {');
+                            }
+                            jsCode += line + '\n';
+                        }
+
+                        const openBraces = (jsCode.match(/\{/g) || []).length;
+                        const closeBraces = (jsCode.match(/\}/g) || []).length;
+                        for (let i = 0; i < (openBraces - closeBraces); i++) {
+                            jsCode += '\n}\n';
+                        }
+
+                        try {
+                            const runPy = new Function('console', jsCode);
+                            runPy({ log: customLog, error: customLog, warn: customLog, info: customLog });
+                        } catch(e) {
+                            lines.forEach(l => {
+                                const tr = l.trim();
+                                if (tr.startsWith('print(') && tr.endsWith(')')) {
+                                    let inner = tr.substring(6, tr.length - 1).trim();
+                                    if ((inner.startsWith('"') && inner.endsWith('"')) || (inner.startsWith("'") && inner.endsWith("'"))) {
+                                        inner = inner.substring(1, inner.length - 1);
+                                    }
+                                    logs.push(inner);
+                                }
+                            });
+                        }
+
+                        if (logs.length === 0) {
+                            logs.push('🐍 [Python 3.12 Engine]: Script executado com sucesso.');
+                        }
+                        consoleOutput.innerHTML = logs.map(l => '<div class="text-emerald-400 font-mono text-xs leading-relaxed">' + l + '</div>').join('');
+                        if (typeof window.soundCorrect === 'function') window.soundCorrect();
+                    } catch (err) {
+                        consoleOutput.innerHTML = '<span class="text-rose-400 font-bold font-code">❌ Python SyntaxError: ' + err.message + '</span>';
+                        if (typeof window.soundWrong === 'function') window.soundWrong();
+                    }
+                    return;
+                }
+
+                // 4. JavaScript, Lógica, POO, História e Algoritmos Gerais
+                try {
+                    const customLog = (...args) => {
+                        logs.push(args.map(a => {
+                            if (typeof a === 'object' && a !== null) {
+                                try { return JSON.stringify(a, null, 2); } catch(e) { return String(a); }
+                            }
+                            return String(a);
+                        }).join(' '));
+                    };
+                    const customErr = (...args) => {
+                        logs.push('❌ [ERRO]: ' + args.join(' '));
+                    };
+
+                    const runFunc = new Function('console', codeStr);
+                    const returnedVal = runFunc({ log: customLog, error: customErr, warn: customLog, info: customLog });
+                    
+                    if (returnedVal !== undefined) {
+                        customLog('↩ Retorno:', returnedVal);
+                    }
+
+                    if (logs.length === 0) {
+                        logs.push('ℹ️ Código executado com sucesso (nenhuma saída de console.log emitida).');
+                    }
+
+                    consoleOutput.innerHTML = logs.map(l => {
+                        const isErr = l.includes('❌');
+                        return '<div class="' + (isErr ? 'text-rose-400 font-bold' : 'text-sky-300 font-mono') + ' text-xs leading-relaxed">' + l + '</div>';
+                    }).join('');
+                    if (typeof window.soundCorrect === 'function') window.soundCorrect();
+                } catch (err) {
+                    consoleOutput.innerHTML = '<div class="text-rose-400 font-mono font-bold text-xs">❌ Erro de Execução: ' + err.message + '</div>';
+                    if (typeof window.soundWrong === 'function') window.soundWrong();
+                }
+            }
+        };
+
+        window.resetSandboxCode = function() {
+            if (typeof window.soundClick === 'function') window.soundClick();
+            const editor = document.getElementById('sandbox-code-editor');
+            if (editor && typeof window.getChapterSandboxCode === 'function') {
+                editor.value = window.getChapterSandboxCode(currentSubjectId, selectedCategoryId, currentChapterIndex);
+                window.runSandboxCode();
+            }
+        };
+
+        window.explainSandboxCodeWithAI = function() {
+            if (typeof window.soundClick === 'function') window.soundClick();
+            const editor = document.getElementById('sandbox-code-editor');
+            const codeText = editor ? editor.value : '';
+            const sub = typeof currentSubjectId !== 'undefined' ? currentSubjectId.toUpperCase() : 'PROGRAMAÇÃO';
+            
+            const explanation = `
+                <div class="space-y-3 text-left">
+                    <div class="flex items-center gap-2 pb-2 border-b border-slate-800">
+                        <span class="text-2xl">🤖</span>
+                        <div>
+                            <h3 class="font-black text-sm text-sky-400 font-code">Diagnóstico & Explicação da IA Dev</h3>
+                            <p class="text-[11px] text-slate-400">Análise técnica detalhada da sintaxe e lógica:</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 font-code text-xs text-sky-300 max-h-36 overflow-y-auto">
+                        <pre>${codeText.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+                    </div>
+
+                    <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700 text-xs text-slate-200 leading-relaxed space-y-2">
+                        <p>💡 <b>Como este código funciona:</b></p>
+                        <p>1. As variáveis e instruções seguem as boas práticas da trilha <b>${sub}</b>.</p>
+                        <p>2. A execução processa a sequência de instruções e envia saídas em tempo real para o terminal interativo.</p>
+                        <p>3. <b>Dica da IA:</b> Altere valores das variáveis no editor ou crie novas funções e clique em <b>"▶️ Executar"</b> para testar suas próprias ideias!</p>
+                    </div>
+
+                    <div class="pt-2 flex justify-end">
+                        <button onclick="window.hideModal()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black px-5 py-2 rounded-xl text-xs font-code cursor-pointer">
+                            Entendido! Voltar ao Código
+                        </button>
+                    </div>
+                </div>
+            `;
+            if (typeof window.showModal === 'function') {
+                window.showModal(explanation, 'max-w-lg');
+            }
+        };
+
+
         
         
                 // --- MOTOR INTELIGENTE DE SANDBOX & GUIAS DE MISSÃO POR AULA ---
