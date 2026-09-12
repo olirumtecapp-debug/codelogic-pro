@@ -3181,27 +3181,7 @@
             mainContent.innerHTML = `
                 <div class="fade-in w-full max-w-6xl space-y-10 py-2">
 
-                    <!-- ⚖️ AVISO TAXATIVO DE TRANSPARÊNCIA LEGAL & PEDAGÓGICA (CURSOS LIVRES) -->
-                    <div class="bg-slate-900/90 border-2 border-sky-500/30 rounded-3xl p-4 sm:p-5 shadow-xl relative overflow-hidden">
-                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3.5">
-                            <div class="w-10 h-10 rounded-2xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-xl shrink-0">
-                                ⚖️
-                            </div>
-                            <div class="flex-1 text-xs text-slate-300 leading-relaxed font-code">
-                                <div class="flex flex-wrap items-center gap-2 mb-1">
-                                    <h3 class="text-white font-black text-xs uppercase tracking-wide flex items-center gap-1">
-                                        <span>Transparência Pedagógica & Amparo Legal</span>
-                                    </h3>
-                                    <span class="bg-sky-500/20 text-sky-300 border border-sky-500/40 text-[9px] px-2 py-0.5 rounded-full font-bold">Lei Federal nº 9.394/96 (LDB - Art. 39 a 42)</span>
-                                    <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[9px] px-2 py-0.5 rounded-full font-bold">Decreto nº 5.154/04</span>
-                                </div>
-                                <p class="text-slate-300">
-                                    O <strong>CodeLogic PRO</strong> é uma plataforma aberta e interativa de <strong>Cursos Livres de Iniciação e Nivelamento Tecnológico</strong>. Os conteúdos práticos e certificados digitais destinam-se exclusivamente à <strong>capacitação introdutória, noções práticas de programação e comprovação de horas extracurriculares</strong>.
-                                    <span class="text-amber-300 font-bold block mt-1">⚠️ IMPORTANTE: Esta plataforma NÃO constitui formação de nível técnico profissionalizante nem curso de graduação superior ou universitária.</span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+
 
                     
                     <!-- HERO SECTION DE ALTA CONVERSÃO & PROPOSTA REALISTA -->
@@ -3480,7 +3460,7 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                                 <span class="text-sky-400 text-xs font-black font-code uppercase tracking-wider">GRADE DE CURSOS</span>
                                 <h2 class="text-2xl font-black text-white font-code">Escolha sua Trilha de Formação</h2>
                             </div>
-                            <p class="text-xs text-slate-400">Total de 7 Trilhas • 62 Aulas Práticas • Do Nível 0 ao Nível 6</p>
+                            <p class="text-xs text-slate-400">Total de ${window.PORTAL_TRACKS.length} Trilhas • ${totalAulasGlobal} Aulas Práticas • Do Nível 0 ao Nível 9</p>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -3488,9 +3468,26 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                         </div>
                     </div>
 
-                    <!-- AVISO DE TRANSPARÊNCIA EDUCACIONAL -->
-                    <div class="bg-slate-900/40 border border-slate-800 rounded-2xl p-4 text-center text-xs text-slate-500">
-                        <span>ℹ️ <strong>Nota de Transparência:</strong> O CodeLogic PRO é uma plataforma educacional independente voltada à prática, lógica e autoaprendizado. Os certificados emitidos são de <strong>Cursos Livres de Capacitação e Formação Continuada</strong> (conforme a Lei nº 9.394/96 e Decreto Presidencial nº 5.154/04), destinados à comprovação de conclusão, carga horária informada, enriquecimento de currículo e portfólio de programação. A aceitação para fins acadêmicos (horas complementares) ou profissionais depende das normas de cada instituição receptora.</span>
+                    <!-- ⚖️ AVISO TAXATIVO DE TRANSPARÊNCIA LEGAL & PEDAGÓGICA (CURSOS LIVRES) -->
+                    <div class="bg-slate-900/90 border-2 border-sky-500/30 rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden my-4">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-2xl shrink-0">
+                                ⚖️
+                            </div>
+                            <div class="flex-1 text-xs text-slate-300 leading-relaxed font-code">
+                                <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                                    <h3 class="text-white font-black text-xs sm:text-sm uppercase tracking-wide flex items-center gap-1">
+                                        <span>Transparência Pedagógica & Amparo Legal</span>
+                                    </h3>
+                                    <span class="bg-sky-500/20 text-sky-300 border border-sky-500/40 text-[10px] px-2.5 py-0.5 rounded-full font-bold">Lei Federal nº 9.394/96 (LDB - Art. 39 a 42)</span>
+                                    <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] px-2.5 py-0.5 rounded-full font-bold">Decreto nº 5.154/04</span>
+                                </div>
+                                <p class="text-slate-300">
+                                    O <strong>CodeLogic PRO</strong> é uma plataforma aberta e interativa de <strong>Cursos Livres de Iniciação e Nivelamento Tecnológico</strong>. Os conteúdos práticos e certificados digitais destinam-se exclusivamente à <strong>capacitação introdutória, noções práticas de programação e comprovação de horas extracurriculares</strong>.
+                                    <span class="text-amber-300 font-bold block mt-1.5">⚠️ IMPORTANTE: Esta plataforma NÃO constitui formação de nível técnico profissionalizante nem curso de graduação superior ou universitária.</span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
