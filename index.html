@@ -25,33 +25,33 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-[#0b0f19] text-slate-100">
-        <!-- Header Global Tech -->
+    <!-- Header Global Tech -->
     <header class="bg-slate-900/95 border-b border-slate-800/80 backdrop-blur-md sticky top-0 z-40 shadow-xl">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="max-w-6xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex justify-between items-center gap-2">
             <!-- Logo e Título Limpo -->
-            <div class="flex items-center gap-3 cursor-pointer select-none" onclick="window.soundClick(); window.changeState('PORTAL_HUB')">
-                <span class="text-2xl p-2 bg-sky-500/10 text-sky-400 rounded-2xl border border-sky-500/20 font-code font-bold glow-border">&lt;/&gt;</span>
+            <div class="flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none shrink-0" onclick="window.soundClick(); window.changeState('PORTAL_HUB')">
+                <span class="text-xl sm:text-2xl p-1.5 sm:p-2 bg-sky-500/10 text-sky-400 rounded-xl sm:rounded-2xl border border-sky-500/20 font-code font-bold glow-border">&lt;/&gt;</span>
                 <div>
-                    <div class="flex items-center gap-2">
-                        <h1 class="font-black text-lg md:text-xl tracking-wider font-code text-white">Code<span class="text-sky-400">Logic</span><span class="text-xs text-amber-400 ml-1 font-sans font-black bg-amber-400/10 border border-amber-400/30 px-1.5 py-0.5 rounded-full">PRO</span></h1>
+                    <div class="flex items-center gap-1.5">
+                        <h1 class="font-black text-base sm:text-lg md:text-xl tracking-wider font-code text-white">Code<span class="text-sky-400">Logic</span><span class="text-[10px] sm:text-xs text-amber-400 ml-1 font-sans font-black bg-amber-400/10 border border-amber-400/30 px-1.5 py-0.5 rounded-full">PRO</span></h1>
                     </div>
-                    <p class="text-[10px] text-slate-400 hidden sm:block">Plataforma Prática • Lógica, Web, Python & SQL</p>
+                    <p class="text-[10px] text-slate-400 hidden md:block">Plataforma Prática • Lógica, Web, Python & SQL</p>
                 </div>
             </div>
 
-            <!-- Botões de Ação do Header (Essenciais) -->
-            <div class="flex items-center gap-2">
+            <!-- Botões de Ação do Header (Essenciais e 100% Responsivos) -->
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
                 <!-- Botão Entrar/Cadastrar quando deslogado -->
-                <button id="btn-header-auth" onclick="window.soundClick(); window.openStudentAuthModal()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 px-3 py-1.5 rounded-xl font-black text-xs font-code transition flex items-center gap-1.5 cursor-pointer shadow-sm">
-                    <span>👤</span> <span class="hidden sm:inline">Entrar / Cadastrar</span><span class="sm:hidden">Entrar</span>
+                <button id="btn-header-auth" onclick="window.soundClick(); window.openStudentAuthModal()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 px-2.5 sm:px-3 py-1.5 rounded-xl font-black text-xs font-code transition flex items-center gap-1.5 cursor-pointer shadow-sm">
+                    <span>👤</span> <span class="hidden sm:inline">Entrar / Cadastrar</span><span class="sm:hidden text-[11px]">Entrar</span>
                 </button>
 
                 <!-- Perfil do Estudante quando logado -->
-                <div id="user-info-display" class="hidden items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-2xl border border-slate-700">
-                    <span id="current-user-avatar" class="text-lg">🧑‍💻</span>
+                <div id="user-info-display" class="hidden items-center gap-1.5 sm:gap-2 bg-slate-800/80 px-2.5 sm:px-3 py-1.5 rounded-xl sm:rounded-2xl border border-slate-700">
+                    <span id="current-user-avatar" class="text-base sm:text-lg">🧑‍💻</span>
                     <div class="text-left leading-tight hidden sm:block">
                         <span id="current-user-name" class="font-black text-xs text-sky-400 block font-code">Dev</span>
-                        <span id="current-user-turma" class="text-[10px] text-slate-400 block">Turma Geral</span>
+                        <span id="current-user-turma" class="text-[10px] text-slate-400 block hidden md:block">Turma Geral</span>
                     </div>
                     <button onclick="window.showCertificatesModal()" title="Ver Certificados e Conquistas" class="ml-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-1 rounded-full text-xs transition cursor-pointer">
                         🏆
@@ -60,38 +60,34 @@
                         🚪
                     </button>
                 </div>
-                    <button onclick="window.showCertificatesModal()" title="Ver Certificados e Conquistas" class="ml-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-1 rounded-full text-xs transition cursor-pointer">
-                        🏆
-                    </button>
-                </div>
 
                 <!-- Botão Caixa Postal com Badge (Unifica Dúvidas e Histórico) -->
-                <button onclick="window.openStudentInbox()" title="Minha Caixa Postal de Dúvidas & Mensagens" class="bg-indigo-950/60 hover:bg-indigo-900/80 text-indigo-300 px-3 py-1.5 rounded-xl border border-indigo-500/40 text-xs font-bold transition flex items-center gap-1.5 font-code relative cursor-pointer shadow-sm">
-                    <span>📬</span> <span class="hidden sm:inline">Caixa Postal</span>
+                <button onclick="window.openStudentInbox()" title="Minha Caixa Postal de Dúvidas & Mensagens" class="bg-indigo-950/60 hover:bg-indigo-900/80 text-indigo-300 px-2.5 sm:px-3 py-1.5 rounded-xl border border-indigo-500/40 text-xs font-bold transition flex items-center gap-1.5 font-code relative cursor-pointer shadow-sm">
+                    <span>📬</span> <span class="hidden md:inline">Caixa Postal</span>
                     <span id="nav-inbox-badge" class="hidden absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.2 rounded-full border-2 border-slate-900 shadow-sm leading-tight">0</span>
                 </button>
 
                 <!-- Botão / Badge VIP -->
                 <div id="header-vip-container" class="flex items-center">
-                    <button onclick="window.openVipModal()" id="btn-header-vip" class="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-xs font-code transition shadow flex items-center gap-1.5 cursor-pointer">
-                        <span>⭐</span> <span>Seja VIP</span>
-                        <span class="bg-amber-950/30 text-amber-950 text-[9px] px-1.5 py-0.5 rounded-full font-black uppercase hidden md:inline">Ativar</span>
+                    <button onclick="window.openVipModal()" id="btn-header-vip" class="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-code transition shadow flex items-center gap-1 sm:gap-1.5 cursor-pointer">
+                        <span>⭐</span> <span class="hidden sm:inline">Seja VIP</span><span class="sm:hidden text-[11px]">VIP</span>
+                        <span class="bg-amber-950/30 text-amber-950 text-[9px] px-1.5 py-0.5 rounded-full font-black uppercase hidden lg:inline">Ativar</span>
                     </button>
-                    <div onclick="window.openVipModal()" id="badge-header-vip" class="hidden bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-amber-950 font-black px-3 py-1.5 rounded-xl text-xs shadow-md border border-amber-400 items-center gap-1.5 font-code cursor-pointer animate-pulse" title="Membro VIP Vitalício CodeLogic PRO">
+                    <div onclick="window.openVipModal()" id="badge-header-vip" class="hidden bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-amber-950 font-black px-2.5 sm:px-3 py-1.5 rounded-xl text-xs shadow-md border border-amber-400 items-center gap-1.5 font-code cursor-pointer animate-pulse" title="Membro VIP Vitalício CodeLogic PRO">
                         <span>👑</span> <span class="hidden sm:inline">VIP VITALÍCIO</span>
                     </div>
                 </div>
 
                 <!-- Atalho Direto para Trilhas -->
-                <button onclick="window.scrollToTracks()" title="Explorar as Trilhas de Cursos" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
-                    💻 <span class="hidden sm:inline">Trilhas</span>
+                <button onclick="window.scrollToTracks()" title="Explorar as Trilhas de Cursos" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
+                    <span>💻</span> <span class="hidden sm:inline">Trilhas</span>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- Conteúdo Principal -->
-    <main id="main-content" class="flex-grow flex items-center justify-center p-4 md:p-6 max-w-6xl mx-auto w-full relative">
+    <main id="main-content" class="flex-grow flex flex-col items-center justify-start p-3 sm:p-4 md:p-6 max-w-6xl mx-auto w-full relative">
         <div class="text-center fade-in">
             <div class="text-6xl animate-bounce mb-4 text-sky-400">⚡</div>
             <h2 class="text-2xl font-black text-sky-400 font-code">Iniciando Servidores do CodeLogic Pro...</h2>
