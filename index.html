@@ -3588,12 +3588,16 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
         };
 
         window.openModule = function(catId) {
-            // Checagem de Módulo VIP
             const course = window.coursesDatabase[currentSubjectId] || initialCoursesDatabase[currentSubjectId] || initialCoursesDatabase.logica;
-            const targetCat = (course.categories || []).find(c => c.id === catId);
-            if (targetCat && targetCat.isVip && !window.isStudentVip()) {
+            const catIndex = (course.categories || []).findIndex(c => c.id === catId);
+            const targetCat = (course.categories || [])[catIndex];
+
+            // Módulos 1 e 2 (índices 0 e 1) são 100% livres para degustação
+            const isFreeModule = catIndex < 2;
+
+            if (!isFreeModule && !window.isStudentVip() && !window.isTrackPurchased(currentSubjectId)) {
                 if (typeof window.soundWrong === 'function') window.soundWrong();
-                window.openVipModal(targetCat.name || targetCat.title);
+                window.openVipModal(targetCat ? (targetCat.name || targetCat.title) : 'Módulo Avançado', currentSubjectId);
                 return;
             }
 
@@ -3620,7 +3624,75 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
         };
 
         
-        // --- SISTEMA FREEMIUM & CUPOM VIP CODELOGIC PRO ---
+        
+        // ========================================================
+        // GATEWAY ASAAS PIX & COMBO INTELIGENTE CODELOGIC PRO
+        // ========================================================
+        window.ASAAS_CHECKOUT_CONFIG = {
+            VIP_FULL: {
+                id: "x7dial10tuig2v5c",
+                title: "Passe VIP Vitalício Completo (10 Trilhas)",
+                price: 35.99,
+                priceFormatted: "R$ 35,99",
+                checkoutUrl: "https://www.asaas.com/c/x7dial10tuig2v5c"
+            },
+            MODULE_INDIVIDUAL: {
+                id: "2gzaf337jc4qa0h7",
+                title: "Trilha Individual com Certificado Oficial",
+                price: 6.99,
+                priceFormatted: "R$ 6,99",
+                checkoutUrl: "https://www.asaas.com/c/2gzaf337jc4qa0h7"
+            },
+            CERTIFICATE_FREE: {
+                id: "uvvnbv7qzoarkpiq",
+                title: "Certificado Digital de Módulos Free (Horas Extracurriculares)",
+                price: 5.00,
+                priceFormatted: "R$ 5,00",
+                checkoutUrl: "https://www.asaas.com/c/uvvnbv7qzoarkpiq"
+            },
+            APOIO_5: {
+                id: "vg3zcal8empw72i0",
+                title: "Pagar um Cafezinho Dev",
+                icon: "☕",
+                price: 5.00,
+                priceFormatted: "R$ 5,00",
+                checkoutUrl: "https://www.asaas.com/c/vg3zcal8empw72i0"
+            },
+            APOIO_10: {
+                id: "p7wtsru0tm8el0kc",
+                title: "Pão na Chapa com Pingado",
+                icon: "🥖🥛",
+                price: 10.00,
+                priceFormatted: "R$ 10,00",
+                popular: true,
+                checkoutUrl: "https://www.asaas.com/c/p7wtsru0tm8el0kc"
+            },
+            APOIO_15: {
+                id: "2sbjpt6y06lkarwx",
+                title: "Misto Quente Especial",
+                icon: "🥪",
+                price: 15.00,
+                priceFormatted: "R$ 15,00",
+                checkoutUrl: "https://www.asaas.com/c/2sbjpt6y06lkarwx"
+            }
+        };
+
+        // Gestão de Promoções VIP
+        window.getVipPromoConfig = function() {
+            try {
+                const stored = localStorage.getItem('codelogic_vip_promo_config');
+                return stored ? JSON.parse(stored) : { enabled: false, promoPrice: 27.90, promoLabel: 'Oferta Especial' };
+            } catch(e) {
+                return { enabled: false, promoPrice: 27.90, promoLabel: 'Oferta Especial' };
+            }
+        };
+
+        window.saveVipPromoConfig = function(cfg) {
+            try {
+                localStorage.setItem('codelogic_vip_promo_config', JSON.stringify(cfg));
+            } catch(e) {}
+        };
+
         window.isStudentVip = function() {
             try {
                 const stored = localStorage.getItem('codelogic_vip');
@@ -3638,91 +3710,353 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
             window.renderApp();
         };
 
-        window.openVipModal = function(reason) {
+        window.isTrackPurchased = function(trackId) {
+            if (window.isStudentVip()) return true;
+            try {
+                const list = JSON.parse(localStorage.getItem('codelogic_purchased_tracks') || '[]');
+                return list.includes(trackId);
+            } catch(e) {
+                return false;
+            }
+        };
+
+        window.setTrackPurchased = function(trackId) {
+            try {
+                const list = JSON.parse(localStorage.getItem('codelogic_purchased_tracks') || '[]');
+                if (!list.includes(trackId)) {
+                    list.push(trackId);
+                    localStorage.setItem('codelogic_purchased_tracks', JSON.stringify(list));
+                }
+            } catch(e) {}
+            window.renderApp();
+        };
+
+        // Polling do Webhook Asaas
+        let checkoutPollingInterval = null;
+
+        window.startCheckoutPolling = function(targetValue, onSuccessCallback) {
+            window.stopCheckoutPolling();
+            checkoutPollingInterval = setInterval(async () => {
+                try {
+                    const res = await fetch('/api/asaas-webhook?value=' + encodeURIComponent(targetValue));
+                    if (!res.ok) return;
+                    const data = await res.json();
+                    if (data.approved) {
+                        window.stopCheckoutPolling();
+                        if (typeof onSuccessCallback === 'function') {
+                            onSuccessCallback(data);
+                        }
+                    }
+                } catch(e) {}
+            }, 3000);
+        };
+
+        window.stopCheckoutPolling = function() {
+            if (checkoutPollingInterval) {
+                clearInterval(checkoutPollingInterval);
+                checkoutPollingInterval = null;
+            }
+        };
+
+        // Tela de Checkout & PIX Direto
+        window.openPixCheckoutScreen = function(cfg) {
             if (typeof window.soundClick === 'function') window.soundClick();
-            const reasonHtml = reason ? `<div class="bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs px-3.5 py-2 rounded-xl mb-4 font-code">🔒 Você tentou acessar um <b>módulo VIP</b> (${reason}). Desbloqueie abaixo com um cupom promocional!</div>` : '';
-            
-            const vipContent = `
+            const { itemType, itemTitle, value, checkoutUrl, trackId } = cfg;
+
+            const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent(checkoutUrl);
+
+            const screenHTML = `
                 <div class="space-y-4 text-left">
-                    <div class="flex items-center gap-3 pb-3 border-b border-slate-800">
-                        <span class="text-3xl">👑</span>
+                    <div class="flex justify-between items-center pb-3 border-b border-slate-800">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-2xl">⚡</span>
+                            <div>
+                                <h3 class="text-base font-black text-white font-code">Pagamento Seguro via PIX Asaas</h3>
+                                <p class="text-xs text-sky-400 font-sans">${itemTitle}</p>
+                            </div>
+                        </div>
+                        <button onclick="window.stopCheckoutPolling(); window.hideModal()" class="text-slate-400 hover:text-white p-1 rounded-lg text-lg">✕</button>
+                    </div>
+
+                    <!-- Card do QR Code & Valor -->
+                    <div class="bg-slate-950 p-4 rounded-2xl border-2 border-slate-800 text-center space-y-3">
+                        <div class="inline-block bg-white p-2.5 rounded-2xl shadow-md">
+                            <img src="${qrUrl}" alt="QR Code PIX Asaas" class="w-44 h-44 object-contain rounded-xl" />
+                        </div>
+
                         <div>
-                            <div class="flex items-center gap-2">
-                                <h3 class="font-black text-lg text-amber-400 font-code">Acesso VIP Vitalício CodeLogic PRO</h3>
-                                <span class="bg-amber-500/20 text-amber-300 text-[10px] font-black uppercase px-2 py-0.5 rounded-full border border-amber-500/30">Plano Pro</span>
-                            </div>
-                            <p class="text-xs text-slate-400 mt-0.5">Desbloqueie todos os módulos avançados, certificações e suporte prioritário</p>
+                            <div class="text-xs text-slate-400">Valor a pagar:</div>
+                            <div class="text-2xl font-black text-emerald-400 font-code">R$ ${parseFloat(value).toFixed(2).replace('.', ',')}</div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">Favorecido: Murilo Ferreira da Silva (Asaas I.P. S.A.)</div>
                         </div>
-                    </div>
 
-                    ${reasonHtml}
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 flex items-start gap-2.5">
-                            <span class="text-lg">🔓</span>
-                            <div>
-                                <h4 class="font-black text-xs text-white font-code">100% dos Módulos Destravados</h4>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Acesso completo a Git, DevOps, Estruturas de Dados, Segurança e SQL Avançado.</p>
-                            </div>
-                        </div>
-                        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 flex items-start gap-2.5">
-                            <span class="text-lg">📜</span>
-                            <div>
-                                <h4 class="font-black text-xs text-white font-code">Certificados Digitais Oficiais</h4>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Emita certificados digitais de participação em cursos livres para horas complementares.</p>
-                            </div>
-                        </div>
-                        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 flex items-start gap-2.5">
-                            <span class="text-lg">📬</span>
-                            <div>
-                                <h4 class="font-black text-xs text-white font-code">Suporte Direto na Caixa Postal</h4>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Tire dúvidas pedagógicas diretamente com a equipe de instrução na plataforma.</p>
-                            </div>
-                        </div>
-                        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 flex items-start gap-2.5">
-                            <span class="text-lg">⚡</span>
-                            <div>
-                                <h4 class="font-black text-xs text-white font-code">Sandbox & IA Ilimitados</h4>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Pratique sem limites com o terminal interativo e a assistência didática da IA Dev.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Formulário de Ativação por Cupom VIP -->
-                    <div class="bg-slate-950 p-4 rounded-2xl border-2 border-amber-500/40 space-y-3">
-                        <div class="flex justify-between items-center">
-                            <label class="text-xs font-black uppercase text-amber-300 font-code flex items-center gap-1.5">
-                                <span>🎟️</span> Possui um Cupom de Acesso VIP?
-                            </label>
-                            <span class="text-[10px] text-slate-400">Ativação instantânea</span>
-                        </div>
-                        <div class="flex gap-2">
-                            <input type="text" id="vip-coupon-input" placeholder="Ex: VIPPRO, DEV2026, CODEMASTER..." class="form-input flex-1 uppercase font-code text-xs px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-amber-200 placeholder-slate-500 focus:border-amber-400 focus:outline-none">
-                            <button onclick="window.activateVipCoupon()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-4 py-2 rounded-xl text-xs font-code transition shadow cursor-pointer">
-                                Ativar VIP
+                        <!-- Botões de Ação Imediata -->
+                        <div class="space-y-2 pt-1">
+                            <a href="${checkoutUrl}" target="_blank" rel="noopener noreferrer" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black py-3 px-4 rounded-xl text-xs font-code transition flex items-center justify-center gap-2 shadow-lg cursor-pointer">
+                                <span>🚀</span> <span>Pagar no Checkout Oficial Asaas (PIX / Cartão)</span>
+                            </a>
+                            
+                            <button onclick="navigator.clipboard.writeText('${checkoutUrl}'); alert('Link seguro de pagamento copiado com sucesso!');" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2 px-3 rounded-xl text-xs font-code transition flex items-center justify-center gap-1.5 cursor-pointer">
+                                <span>📋</span> <span>Copiar Link de Pagamento</span>
                             </button>
                         </div>
-                        <div id="vip-coupon-feedback" class="text-xs font-code hidden"></div>
-                        <p class="text-[10px] text-slate-500 leading-relaxed">
-                            💡 <i>Dica: Experimente o cupom promocional <code>VIPPRO</code> ou <code>DEV2026</code> para liberar o acesso VIP de avaliação imediatamente.</i>
-                        </p>
+
+                        <!-- Status dinâmico de monitoramento -->
+                        <div class="flex items-center justify-center gap-2 py-2 px-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-300 text-xs font-code">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
+                            <span>Aguardando confirmação bancária em tempo real...</span>
+                        </div>
                     </div>
 
-                    <div class="pt-1 flex justify-between items-center border-t border-slate-800">
-                        <span class="text-[10px] text-slate-500 font-code">CodeLogic PRO • Plataforma Aberta</span>
-                        <button onclick="window.hideModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-4 py-1.5 rounded-xl text-xs font-code transition cursor-pointer">
+                    <div class="flex justify-between items-center pt-2 border-t border-slate-800 text-[11px] text-slate-500">
+                        <button onclick="window.openVipModal()" class="text-sky-400 hover:text-sky-300 font-code">
+                            ← Voltar às Opções
+                        </button>
+                        <button onclick="window.stopCheckoutPolling(); window.hideModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-1.5 rounded-xl font-bold font-code">
                             Fechar
                         </button>
                     </div>
                 </div>
             `;
-            window.showModal(vipContent, 'max-w-xl');
+
+            window.showModal(screenHTML, 'max-w-md');
+
+            // Inicia o polling escutando o valor correspondente
+            window.startCheckoutPolling(value, (approval) => {
+                if (typeof window.soundCorrect === 'function') window.soundCorrect();
+                window.hideModal();
+
+                if (itemType === 'VIP') {
+                    window.setStudentVip(true);
+                    window.customAlert('👑 <b>Parabéns! Pagamento Confirmado!</b><br>Seu <b>Passe VIP Vitalício</b> está ativo! Todas as 10 trilhas e certificações foram desbloqueadas!');
+                } else if (itemType === 'MODULE' && trackId) {
+                    window.setTrackPurchased(trackId);
+                    window.customAlert('📚 <b>Trilha Desbloqueada com Sucesso!</b><br>Você agora tem acesso total a esta trilha e à emissão do seu certificado!');
+                } else if (itemType === 'CERTIFICATE') {
+                    window.customAlert('📜 <b>Certificado Liberado!</b><br>O pagamento da emissão foi confirmado. Abra a aba de Conquistas para baixar o seu Certificado Digital!');
+                } else if (itemType === 'APOIO') {
+                    window.customAlert('☕ <b>Muito Obrigado pelo Apoio!</b><br>Sua contribuição fortalece o projeto CodeLogic PRO e mantém nossa infraestrutura no ar! ❤️');
+                }
+            });
         };
 
+        // Modal do Aluno com as Abas do Combo Inteligente
+        window.openVipModal = function(reason, targetTrackId) {
+            if (typeof window.soundClick === 'function') window.soundClick();
+            window.stopCheckoutPolling();
+
+            const promoCfg = window.getVipPromoConfig();
+            const currentTrack = targetTrackId || (typeof currentSubjectId !== 'undefined' ? currentSubjectId : 'logica');
+            const trackObj = (window.PORTAL_TRACKS || []).find(t => t.id === currentTrack) || { name: 'Trilha Atual', icon: '💻' };
+
+            const reasonHtml = reason ? `<div class="bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs px-3.5 py-2 rounded-xl mb-3 font-code">🔒 Você tentou acessar um <b>módulo avançado</b> (${reason}). Escolha uma opção do Combo Inteligente abaixo para prosseguir:</div>` : '';
+
+            const vipPriceDisplay = promoCfg.enabled ? `
+                <div class="flex items-baseline gap-2">
+                    <span class="text-sm line-through text-slate-500 font-code">R$ 35,99</span>
+                    <span class="text-2xl font-black text-amber-400 font-code">R$ ${parseFloat(promoCfg.promoPrice).toFixed(2).replace('.', ',')}</span>
+                    <span class="bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[9px] px-2 py-0.5 rounded-full font-black uppercase tracking-wider animate-pulse">${promoCfg.promoLabel || 'OFERTA'}</span>
+                </div>
+            ` : `
+                <div class="text-2xl font-black text-amber-400 font-code">R$ 35,99 <span class="text-xs text-slate-400 font-normal font-sans">(Acesso Vitalício)</span></div>
+            `;
+
+            const vipEffectivePrice = promoCfg.enabled ? promoCfg.promoPrice : 35.99;
+            const vipCheckoutUrl = window.ASAAS_CHECKOUT_CONFIG.VIP_FULL.checkoutUrl;
+
+            const modalContent = `
+                <div class="space-y-4 text-left">
+                    <!-- Header do Modal -->
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-3xl">👑</span>
+                            <div>
+                                <h3 class="font-black text-base sm:text-lg text-white font-code">Combo Inteligente & Desbloqueio</h3>
+                                <p class="text-xs text-slate-400">Escolha a melhor opção para a sua formação prática</p>
+                            </div>
+                        </div>
+                        <button onclick="window.hideModal()" class="text-slate-400 hover:text-white p-1 rounded-lg text-lg">✕</button>
+                    </div>
+
+                    ${reasonHtml}
+
+                    <!-- GRADE DE OPÇÕES DO COMBO INTELIGENTE -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        
+                        <!-- Opção 1: Certificado dos Módulos Free (R$ 5,00) -->
+                        <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xl">📜</span>
+                                    <span class="bg-slate-800 text-slate-300 text-[9px] font-bold px-2 py-0.5 rounded-full font-code">Módulos Free</span>
+                                </div>
+                                <h4 class="font-black text-xs text-white font-code mb-1">Certificado de Nivelamento</h4>
+                                <p class="text-[11px] text-slate-400 leading-relaxed mb-3">Concluiu os 2 módulos iniciais gratuitos? Emita o Certificado Digital oficial de 10 Horas.</p>
+                            </div>
+                            <div>
+                                <div class="text-lg font-black text-emerald-400 font-code mb-2">R$ 5,00</div>
+                                <button onclick="window.openPixCheckoutScreen({ itemType: 'CERTIFICATE', itemTitle: 'Certificado Módulos Iniciais (10h)', value: 5.00, checkoutUrl: window.ASAAS_CHECKOUT_CONFIG.CERTIFICADO_FREE.checkoutUrl })" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2 rounded-xl text-xs font-code transition cursor-pointer">
+                                    Emitir por R$ 5 📜
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Opção 2: Módulo / Trilha Individual (R$ 6,99) -->
+                        <div class="bg-slate-950 p-4 rounded-2xl border border-sky-500/40 flex flex-col justify-between hover:border-sky-400 transition relative">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xl">${trackObj.icon || '💻'}</span>
+                                    <span class="bg-sky-500/20 text-sky-300 text-[9px] font-bold px-2 py-0.5 rounded-full font-code">Trilha Avulsa</span>
+                                </div>
+                                <h4 class="font-black text-xs text-white font-code mb-1">${trackObj.name}</h4>
+                                <p class="text-[11px] text-slate-400 leading-relaxed mb-3">Libera todos os módulos avançados desta trilha com Certificado de Conclusão incluso.</p>
+                            </div>
+                            <div>
+                                <div class="text-lg font-black text-sky-400 font-code mb-2">R$ 6,99</div>
+                                <button onclick="window.openPixCheckoutScreen({ itemType: 'MODULE', itemTitle: 'Trilha: ' + '${trackObj.name}', value: 6.99, checkoutUrl: window.ASAAS_CHECKOUT_CONFIG.MODULE_INDIVIDUAL.checkoutUrl, trackId: '${currentTrack}' })" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-black py-2 rounded-xl text-xs font-code transition shadow cursor-pointer">
+                                    Liberar Trilha 🔓
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Opção 3: Passe VIP Vitalício (Destaque Máximo - R$ 35,99 ou Promo) -->
+                        <div class="bg-gradient-to-b from-amber-950/40 via-slate-950 to-slate-950 p-4 rounded-2xl border-2 border-amber-500/60 flex flex-col justify-between shadow-lg relative">
+                            <span class="absolute -top-2.5 right-3 bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 text-[8px] font-black uppercase px-2 py-0.5 rounded-full shadow">MELHOR VALOR</span>
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xl">👑</span>
+                                    <span class="bg-amber-500/20 text-amber-300 text-[9px] font-black px-2 py-0.5 rounded-full font-code">Tudo Liberado</span>
+                                </div>
+                                <h4 class="font-black text-xs text-white font-code mb-1">Passe VIP Vitalício</h4>
+                                <p class="text-[11px] text-slate-400 leading-relaxed mb-3">Acesso total a todas as 10 Trilhas, 66 Aulas, Certificados Ilimitados e Suporte.</p>
+                            </div>
+                            <div>
+                                <div class="mb-2">${vipPriceDisplay}</div>
+                                <button onclick="window.openPixCheckoutScreen({ itemType: 'VIP', itemTitle: 'Passe VIP Vitalício (10 Trilhas)', value: ${vipEffectivePrice}, checkoutUrl: '${vipCheckoutUrl}' })" class="w-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black py-2.5 rounded-xl text-xs font-code transition shadow-lg cursor-pointer transform hover:scale-102">
+                                    Desbloquear Tudo 🚀
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GESTO DE CARINHO & APOIO DEV -->
+                    <div class="bg-slate-950/80 p-3.5 rounded-2xl border border-slate-800 space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black uppercase text-slate-300 font-code flex items-center gap-1.5">
+                                <span>☕</span> Apoie o Projeto Dev
+                            </span>
+                            <span class="text-[10px] text-slate-500">Gestos de incentivo via PIX</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="window.openPixCheckoutScreen({ itemType: 'APOIO', itemTitle: 'Cafezinho Dev', value: 5.00, checkoutUrl: window.ASAAS_CHECKOUT_CONFIG.APOIO_5.checkoutUrl })" class="bg-slate-900 hover:bg-slate-800 p-2 rounded-xl border border-slate-700/80 text-center transition cursor-pointer">
+                                <span class="text-lg block">☕</span>
+                                <span class="text-[10px] font-bold text-slate-300 block">Cafezinho</span>
+                                <span class="text-xs font-black text-amber-400 font-code">R$ 5,00</span>
+                            </button>
+                            <button onclick="window.openPixCheckoutScreen({ itemType: 'APOIO', itemTitle: 'Pão na Chapa com Pingado', value: 10.00, checkoutUrl: window.ASAAS_CHECKOUT_CONFIG.APOIO_10.checkoutUrl })" class="bg-slate-900 hover:bg-slate-800 p-2 rounded-xl border border-amber-500/40 text-center transition cursor-pointer relative">
+                                <span class="absolute -top-1.5 right-1 bg-amber-600 text-white text-[7px] font-black uppercase px-1 rounded-full">Top</span>
+                                <span class="text-lg block">🥖🥛</span>
+                                <span class="text-[10px] font-bold text-slate-300 block">Pão c/ Pingado</span>
+                                <span class="text-xs font-black text-amber-400 font-code">R$ 10,00</span>
+                            </button>
+                            <button onclick="window.openPixCheckoutScreen({ itemType: 'APOIO', itemTitle: 'Misto Quente Especial', value: 15.00, checkoutUrl: window.ASAAS_CHECKOUT_CONFIG.APOIO_15.checkoutUrl })" class="bg-slate-900 hover:bg-slate-800 p-2 rounded-xl border border-slate-700/80 text-center transition cursor-pointer">
+                                <span class="text-lg block">🥪</span>
+                                <span class="text-[10px] font-bold text-slate-300 block">Misto Quente</span>
+                                <span class="text-xs font-black text-amber-400 font-code">R$ 15,00</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ATIVAÇÃO POR CUPOM PROMOCIONAL -->
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">🎟️</span>
+                            <span class="text-xs text-slate-300 font-code">Tem um Cupom VIP?</span>
+                        </div>
+                        <div class="flex gap-1.5 w-full sm:w-auto">
+                            <input type="text" id="vip-coupon-input" placeholder="Ex: VIPPRO" class="uppercase font-code text-xs px-2.5 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-amber-200 placeholder-slate-500 focus:outline-none w-28">
+                            <button onclick="window.activateVipCoupon()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold px-3 py-1.5 rounded-lg text-xs font-code transition cursor-pointer">
+                                Ativar
+                            </button>
+                        </div>
+                    </div>
+                    <div id="vip-coupon-feedback" class="text-xs font-code hidden"></div>
+
+                    <div class="pt-1 flex justify-between items-center border-t border-slate-800 text-[10px] text-slate-500">
+                        <span>CodeLogic PRO • Pagamentos processados pelo Asaas</span>
+                        <button onclick="window.hideModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-1.5 rounded-xl font-bold font-code">
+                            Fechar
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            window.showModal(modalContent, 'max-w-2xl');
+        };
+
+        // Modal de Gestão de Ofertas e Promoções do Instrutor
+        window.openAdminPromoModal = function() {
+            if (typeof window.soundClick === 'function') window.soundClick();
+            const cfg = window.getVipPromoConfig();
+
+            const promoModalHTML = `
+                <div class="space-y-4 text-left">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-2xl">🏷️</span>
+                            <div>
+                                <h3 class="font-black text-base text-white font-code">Gestão de Ofertas & Promoções VIP</h3>
+                                <p class="text-xs text-slate-400">Controle o preço promocional do Passe VIP sem alterar código</p>
+                            </div>
+                        </div>
+                        <button onclick="window.closeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg text-lg">✕</button>
+                    </div>
+
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-slate-900 rounded-xl border border-slate-800">
+                            <div>
+                                <h4 class="text-xs font-bold text-white font-code">Ativar Preço Promocional</h4>
+                                <p class="text-[11px] text-slate-400">Quando ativado, substitui o preço padrão de R$ 35,99 no modal</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="admin-promo-enabled" ${cfg.enabled ? 'checked' : ''} class="sr-only peer">
+                                <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                            </label>
+                        </div>
+
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-300 font-code block mb-1">Preço Promocional do VIP (R$):</label>
+                            <input type="number" step="0.10" id="admin-promo-price" value="${cfg.promoPrice || 27.90}" class="w-full text-xs font-code p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-amber-300 focus:outline-none focus:border-amber-400">
+                            <span class="text-[10px] text-slate-500 block mt-1">Preço padrão oficial: <strong>R$ 35,99</strong></span>
+                        </div>
+
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-300 font-code block mb-1">Rótulo / Selo da Oferta:</label>
+                            <input type="text" id="admin-promo-label" value="${cfg.promoLabel || 'OFERTA ESPECIAL'}" placeholder="Ex: Black Week, Semana Dev, Vagas Limitadas" class="w-full text-xs font-code p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-slate-200 focus:outline-none focus:border-sky-400">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-2 border-t border-slate-800">
+                        <button onclick="window.closeModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-xl text-xs font-code font-bold">
+                            Cancelar
+                        </button>
+                        <button onclick="window.saveAdminPromoSettings()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-5 py-2 rounded-xl text-xs font-code transition shadow">
+                            Salvar Configurações ✨
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            if (typeof window.openModal === 'function') {
+                window.openModal(promoModalHTML, 'max-w-md');
+            }
+        };
+
+        
         window.activateVipCoupon = function() {
             const input = document.getElementById('vip-coupon-input');
             const feedback = document.getElementById('vip-coupon-feedback');
-            if (!input || !feedback) return;
+            if (!input) return;
 
             const code = (input.value || '').trim().toUpperCase();
             const validCoupons = ['VIPPRO', 'DEV2026', 'CODEMASTER', 'ALUNOVIP', 'EADPRO', 'CONECTADEV'];
@@ -3730,17 +4064,40 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
             if (validCoupons.includes(code)) {
                 if (typeof window.soundCorrect === 'function') window.soundCorrect();
                 window.setStudentVip(true);
-                feedback.className = 'text-xs font-code text-emerald-400 font-bold block';
-                feedback.innerHTML = '✨ Parabéns! O cupom foi validado com sucesso. Seu Acesso VIP Vitalício está ativo!';
+                if (feedback) {
+                    feedback.className = 'text-xs font-code text-emerald-400 font-bold block mt-2';
+                    feedback.innerHTML = '✨ Parabéns! O cupom foi validado com sucesso. Seu Acesso VIP Vitalício está ativo!';
+                }
                 setTimeout(() => {
                     window.hideModal();
                     window.customAlert('👑 <b>Acesso VIP Vitalício Ativado!</b><br>Todos os módulos, trilhas e recursos de certificação do CodeLogic PRO foram desbloqueados com sucesso!');
-                }, 1200);
+                }, 1000);
             } else {
                 if (typeof window.soundWrong === 'function') window.soundWrong();
-                feedback.className = 'text-xs font-code text-rose-400 font-bold block';
-                feedback.innerHTML = '❌ Cupom inválido ou expirado. Verifique a digitação ou utilize o cupom promocional VIPPRO.';
+                if (feedback) {
+                    feedback.className = 'text-xs font-code text-rose-400 font-bold block mt-2';
+                    feedback.innerHTML = '❌ Cupom inválido ou expirado. Tente VIPPRO ou adquira seu acesso via PIX.';
+                } else {
+                    alert('Cupom inválido ou expirado. Tente VIPPRO.');
+                }
             }
+        };
+
+        window.saveAdminPromoSettings = function() {
+            const enabled = document.getElementById('admin-promo-enabled')?.checked || false;
+            const promoPrice = parseFloat(document.getElementById('admin-promo-price')?.value) || 27.90;
+            const promoLabel = (document.getElementById('admin-promo-label')?.value || 'OFERTA').trim();
+
+            window.saveVipPromoConfig({
+                enabled: enabled,
+                promoPrice: promoPrice,
+                promoLabel: promoLabel
+            });
+
+            if (typeof window.soundCorrect === 'function') window.soundCorrect();
+            window.closeModal();
+            alert('Configurações de promoção salvas com sucesso! O modal VIP já reflete as novas condições.');
+            if (typeof window.renderAdminEditor === 'function') window.renderAdminEditor();
         };
 
         // --- SISTEMA DE CAIXA POSTAL & SUPORTE DO ALUNO ---
@@ -5306,6 +5663,10 @@ window.runSandboxCode = function() {
                             <button onclick="window.soundClick(); window.openAdminInboxModal()" class="w-full text-left px-4 py-2.5 hover:bg-slate-800 text-sky-400 font-bold rounded-xl transition flex items-center justify-between font-code text-xs cursor-pointer border border-sky-500/20">
                                 <span class="flex items-center gap-2">📬 Dúvidas & Suporte</span>
                                 <span class="bg-amber-500 text-slate-950 text-[10px] px-2 py-0.5 rounded-full font-black">${typeof window.getStoredFeedbacks === 'function' ? window.getStoredFeedbacks().filter(m => !m.adminReply).length : 0}</span>
+                            </button>
+                            <button onclick="window.soundClick(); window.openAdminPromoModal()" class="w-full text-left px-4 py-2.5 hover:bg-slate-800 text-amber-300 font-bold rounded-xl transition flex items-center justify-between font-code text-xs cursor-pointer border border-amber-500/20">
+                                <span class="flex items-center gap-2">🏷️ Ofertas & Promoção VIP</span>
+                                <span class="bg-amber-500/20 text-amber-300 text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase">${(window.getVipPromoConfig && window.getVipPromoConfig().enabled) ? 'Ativa' : 'Padrão'}</span>
                             </button>
                             <button onclick="window.soundClick(); window.openFirebaseConfigModal()" class="w-full text-left px-4 py-2.5 hover:bg-slate-800 text-slate-300 rounded-xl transition flex items-center gap-2 font-code text-xs cursor-pointer">
                                 🔥 Conexão Firebase
