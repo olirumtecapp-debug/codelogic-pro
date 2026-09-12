@@ -10,6 +10,7 @@
     <script src="firebase-config.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;600;700;800;900&display=swap');
+        html, body { overflow-x: hidden; max-width: 100vw; }
         body { font-family: 'Inter', sans-serif; background-color: #090d16; color: #f1f5f9; user-select: none; }
         .font-code { font-family: 'Fira Code', monospace; }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -24,30 +25,45 @@
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
-<body class="min-h-screen flex flex-col bg-[#0b0f19] text-slate-100">
-    <!-- Header Global Tech -->
+<body class="min-h-screen flex flex-col bg-[#0b0f19] text-slate-100 overflow-x-hidden">
+    <!-- Header Global Tech (100% Otimizado para Smartphones e Desktop) -->
     <header class="bg-slate-900/95 border-b border-slate-800/80 backdrop-blur-md sticky top-0 z-40 shadow-xl">
-        <div class="max-w-6xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex justify-between items-center gap-2">
+        <div class="max-w-6xl mx-auto px-3 sm:px-4 py-2 sm:py-3 flex justify-between items-center gap-2">
             <!-- Logo e Título Limpo -->
-            <div class="flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none shrink-0" onclick="window.soundClick(); window.changeState('PORTAL_HUB')">
-                <span class="text-xl sm:text-2xl p-1.5 sm:p-2 bg-sky-500/10 text-sky-400 rounded-xl sm:rounded-2xl border border-sky-500/20 font-code font-bold glow-border">&lt;/&gt;</span>
+            <div class="flex items-center gap-2 sm:gap-3 cursor-pointer select-none shrink-0" onclick="window.soundClick(); window.changeState('PORTAL_HUB')">
+                <span class="text-lg sm:text-2xl p-1.5 sm:p-2 bg-sky-500/10 text-sky-400 rounded-xl sm:rounded-2xl border border-sky-500/20 font-code font-bold glow-border">&lt;/&gt;</span>
                 <div>
-                    <div class="flex items-center gap-1.5">
-                        <h1 class="font-black text-base sm:text-lg md:text-xl tracking-wider font-code text-white">Code<span class="text-sky-400">Logic</span><span class="text-[10px] sm:text-xs text-amber-400 ml-1 font-sans font-black bg-amber-400/10 border border-amber-400/30 px-1.5 py-0.5 rounded-full">PRO</span></h1>
+                    <div class="flex items-center gap-1 sm:gap-1.5">
+                        <h1 class="font-black text-sm sm:text-lg md:text-xl tracking-wider font-code text-white">Code<span class="text-sky-400">Logic</span><span class="text-[9px] sm:text-xs text-amber-400 ml-0.5 sm:ml-1 font-sans font-black bg-amber-400/10 border border-amber-400/30 px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded-full">PRO</span></h1>
                     </div>
                     <p class="text-[10px] text-slate-400 hidden md:block">Plataforma Prática • Lógica, Web, Python & SQL</p>
                 </div>
             </div>
 
-            <!-- Botões de Ação do Header (Essenciais e 100% Responsivos) -->
+            <!-- Botões de Ação do Header (Espaçamento Perfeito no Smartphone) -->
             <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                <!-- Botão Entrar/Cadastrar quando deslogado -->
-                <button id="btn-header-auth" onclick="window.soundClick(); window.openStudentAuthModal()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 px-2.5 sm:px-3 py-1.5 rounded-xl font-black text-xs font-code transition flex items-center gap-1.5 cursor-pointer shadow-sm">
-                    <span>👤</span> <span class="hidden sm:inline">Entrar / Cadastrar</span><span class="sm:hidden text-[11px]">Entrar</span>
+                <!-- 1. Atalho Direto para Trilhas (Nunca Cortado no Smartphone!) -->
+                <button onclick="window.scrollToTracks()" title="Explorar as Trilhas de Cursos" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2 sm:px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+                    <span>💻</span> <span class="hidden sm:inline">Trilhas</span>
                 </button>
 
-                <!-- Perfil do Estudante quando logado -->
-                <div id="user-info-display" class="hidden items-center gap-1.5 sm:gap-2 bg-slate-800/80 px-2.5 sm:px-3 py-1.5 rounded-xl sm:rounded-2xl border border-slate-700">
+                <!-- 2. Botão / Badge VIP -->
+                <div id="header-vip-container" class="flex items-center">
+                    <button onclick="window.openVipModal()" id="btn-header-vip" class="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black px-2 sm:px-3 py-1.5 rounded-xl text-xs font-code transition shadow flex items-center gap-1 cursor-pointer">
+                        <span>⭐</span> <span class="hidden sm:inline">Seja VIP</span><span class="sm:hidden text-[11px]">VIP</span>
+                    </button>
+                    <div onclick="window.openVipModal()" id="badge-header-vip" class="hidden bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-amber-950 font-black px-2 sm:px-3 py-1.5 rounded-xl text-xs shadow-md border border-amber-400 items-center gap-1 font-code cursor-pointer animate-pulse" title="Membro VIP Vitalício CodeLogic PRO">
+                        <span>👑</span> <span class="hidden sm:inline">VIP</span>
+                    </div>
+                </div>
+
+                <!-- 3. Botão Entrar/Cadastrar quando deslogado -->
+                <button id="btn-header-auth" onclick="window.soundClick(); window.openStudentAuthModal()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 px-2.5 sm:px-3 py-1.5 rounded-xl font-black text-xs font-code transition flex items-center gap-1 cursor-pointer shadow-sm">
+                    <span>👤</span> <span class="hidden sm:inline">Entrar</span><span class="sm:hidden text-[11px]">Entrar</span>
+                </button>
+
+                <!-- 4. Perfil do Estudante quando logado -->
+                <div id="user-info-display" class="hidden items-center gap-1 sm:gap-2 bg-slate-800/80 px-2 sm:px-3 py-1.5 rounded-xl sm:rounded-2xl border border-slate-700">
                     <span id="current-user-avatar" class="text-base sm:text-lg">🧑‍💻</span>
                     <div class="text-left leading-tight hidden sm:block">
                         <span id="current-user-name" class="font-black text-xs text-sky-400 block font-code">Dev</span>
@@ -60,28 +76,6 @@
                         🚪
                     </button>
                 </div>
-
-                <!-- Botão Caixa Postal com Badge (Unifica Dúvidas e Histórico) -->
-                <button onclick="window.openStudentInbox()" title="Minha Caixa Postal de Dúvidas & Mensagens" class="bg-indigo-950/60 hover:bg-indigo-900/80 text-indigo-300 px-2.5 sm:px-3 py-1.5 rounded-xl border border-indigo-500/40 text-xs font-bold transition flex items-center gap-1.5 font-code relative cursor-pointer shadow-sm">
-                    <span>📬</span> <span class="hidden md:inline">Caixa Postal</span>
-                    <span id="nav-inbox-badge" class="hidden absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.2 rounded-full border-2 border-slate-900 shadow-sm leading-tight">0</span>
-                </button>
-
-                <!-- Botão / Badge VIP -->
-                <div id="header-vip-container" class="flex items-center">
-                    <button onclick="window.openVipModal()" id="btn-header-vip" class="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-code transition shadow flex items-center gap-1 sm:gap-1.5 cursor-pointer">
-                        <span>⭐</span> <span class="hidden sm:inline">Seja VIP</span><span class="sm:hidden text-[11px]">VIP</span>
-                        <span class="bg-amber-950/30 text-amber-950 text-[9px] px-1.5 py-0.5 rounded-full font-black uppercase hidden lg:inline">Ativar</span>
-                    </button>
-                    <div onclick="window.openVipModal()" id="badge-header-vip" class="hidden bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-amber-950 font-black px-2.5 sm:px-3 py-1.5 rounded-xl text-xs shadow-md border border-amber-400 items-center gap-1.5 font-code cursor-pointer animate-pulse" title="Membro VIP Vitalício CodeLogic PRO">
-                        <span>👑</span> <span class="hidden sm:inline">VIP VITALÍCIO</span>
-                    </div>
-                </div>
-
-                <!-- Atalho Direto para Trilhas -->
-                <button onclick="window.scrollToTracks()" title="Explorar as Trilhas de Cursos" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
-                    <span>💻</span> <span class="hidden sm:inline">Trilhas</span>
-                </button>
             </div>
         </div>
     </header>
@@ -144,6 +138,15 @@
             </div>
         </div>
     </footer>
+
+    <!-- Botão Flutuante de Caixa Postal (Dúvidas & Mensagens do Aluno - Fácil Acesso no Smartphone) -->
+    <div id="floating-inbox-container" class="fixed bottom-5 right-4 sm:right-6 z-40">
+        <button onclick="window.soundClick(); window.openStudentInbox()" title="Minha Caixa Postal de Dúvidas & Mensagens" class="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white p-3.5 sm:px-4 sm:py-3 rounded-full shadow-2xl border-2 border-indigo-400/50 flex items-center gap-2 font-code text-xs font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer glow-border relative group">
+            <span class="text-lg">📬</span>
+            <span class="hidden sm:inline">Caixa Postal</span>
+            <span id="nav-inbox-badge" class="hidden absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[10px] font-black px-1.5 py-0.2 rounded-full border-2 border-slate-900 shadow-md leading-tight animate-bounce">0</span>
+        </button>
+    </div>
 
     <!-- Modal Container -->
     <div id="modal-container" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 fade-in">
@@ -3903,15 +3906,18 @@
 
         window.scrollToTracks = function() {
             window.soundClick();
+            const doScroll = () => {
+                const target = document.getElementById('trilhas-grid-section');
+                if (target) {
+                    const y = target.getBoundingClientRect().top + window.pageYOffset - 75;
+                    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+                }
+            };
             if (currentState !== 'PORTAL_HUB') {
                 window.changeState('PORTAL_HUB');
-                setTimeout(() => {
-                    const target = document.getElementById('trilhas-grid-section');
-                    if (target) target.scrollIntoView({ behavior: 'smooth' });
-                }, 150);
+                setTimeout(doScroll, 120);
             } else {
-                const target = document.getElementById('trilhas-grid-section');
-                if (target) target.scrollIntoView({ behavior: 'smooth' });
+                doScroll();
             }
         };
 
@@ -7557,6 +7563,7 @@ Explicação: [Explicação curta e didática do porquê a alternativa está cer
         // --- GERENCIADOR DE ESTADOS GLOBAIS ---
         window.changeState = function(newState) {
             currentState = newState;
+            window.scrollTo({ top: 0, behavior: 'instant' });
             switch(currentState) {
                 case 'PORTAL_HUB': renderPortalHub(); break;
                 case 'CATEGORY_SELECT': renderCategorySelect(); break;
