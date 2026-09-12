@@ -3981,6 +3981,64 @@
             `, 'max-w-xl');
         };
 
+        
+        // --- RASTREAMENTO DA ÚLTIMA AULA ESTUDADA EM TEMPO REAL ---
+        window.recordLastStudied = function(subjectId, categoryId, chapterIndex) {
+            try {
+                const course = window.coursesDatabase[subjectId] || initialCoursesDatabase[subjectId];
+                const trk = (window.PORTAL_TRACKS || []).find(t => t.id === subjectId);
+                const cat = (course?.categories || []).find(c => c.id === categoryId);
+                const chap = cat?.chapters?.[chapterIndex];
+
+                const record = {
+                    subjectId: subjectId,
+                    categoryId: categoryId,
+                    chapterIndex: chapterIndex,
+                    trackName: trk?.name || course?.name || 'Trilha Dev',
+                    categoryName: cat?.name || 'Módulo de Estudos',
+                    chapterTitle: chap?.title || 'Aula Atual',
+                    updatedAt: Date.now()
+                };
+                localStorage.setItem('codelogic_last_studied_lesson', JSON.stringify(record));
+                if (currentUser && studentsProgress[currentUser]) {
+                    if (!studentsProgress[currentUser]._meta) studentsProgress[currentUser]._meta = {};
+                    studentsProgress[currentUser]._meta.lastStudied = record;
+                }
+            } catch(e) {}
+        };
+
+        window.resumeLastStudiedLesson = function(subjectId, categoryId, chapterIndex = 0) {
+            if (typeof window.soundClick === 'function') window.soundClick();
+            window.currentSubjectId = subjectId;
+            window.selectedCategoryId = categoryId;
+            window.currentChapterIndex = parseInt(chapterIndex, 10) || 0;
+            window.changeState('MODULE_VIEW');
+        };
+
+        window.currentChapterUnlocked = false;
+
+        window.handleNextChapterClick = function() {
+            const course = window.coursesDatabase[currentSubjectId] || initialCoursesDatabase[currentSubjectId];
+            const category = course.categories.find(c => c.id === selectedCategoryId);
+            const prevProgress = studentsProgress[currentUser]?.[category.id]?.chaptersRead || 0;
+            const isAlreadyRead = prevProgress > currentChapterIndex;
+
+            if (!window.currentChapterUnlocked && !isAlreadyRead) {
+                if (typeof window.soundWrong === 'function') window.soundWrong();
+                window.customAlert('🎯 <b>Desafio Prático Obrigatório!</b><br>Para garantir seu aprendizado e liberar o avanço para a próxima aula, selecione uma resposta no <b>Desafio de Fixação</b> logo acima!');
+                const box = document.getElementById('minigame-options-box');
+                if (box) {
+                    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    box.classList.add('animate-pulse');
+                    setTimeout(() => box.classList.remove('animate-pulse'), 1500);
+                }
+                return;
+            }
+
+            window.nextChapter();
+        };
+
+
         window.renderPortalHub = function() {
             // Calcular métricas gerais do aluno
             let totalAulasGlobal = 0;
@@ -3991,6 +4049,32 @@
             let resumeCatTitle = null;
             let resumePercent = 0;
 
+            // 1. Prioridade Máxima: Última aula estudada gravada em tempo real
+            const lastStudiedRaw = localStorage.getItem('codelogic_last_studied_lesson');
+            let resumeChapterIndex = 0;
+            let resumeChapterTitle = '';
+
+            if (lastStudiedRaw) {
+                try {
+                    const rec = JSON.parse(lastStudiedRaw);
+                    const course = window.coursesDatabase[rec.subjectId] || initialCoursesDatabase[rec.subjectId];
+                    const cat = (course?.categories || []).find(c => c.id === rec.categoryId);
+                    if (cat) {
+                        const totalChaps = (cat.chapters || []).length;
+                        const prog = studentsProgress[currentUser]?.[cat.id];
+                        const readCount = prog?.chaptersRead || 0;
+                        resumeTrackId = rec.subjectId;
+                        resumeTrackName = rec.trackName || course.name;
+                        resumeCatId = rec.categoryId;
+                        resumeCatTitle = cat.name || cat.title || rec.categoryName;
+                        resumeChapterIndex = rec.chapterIndex || 0;
+                        resumeChapterTitle = rec.chapterTitle || (cat.chapters?.[resumeChapterIndex]?.title || 'Aula Atual');
+                        resumePercent = totalChaps > 0 ? Math.round((readCount / totalChaps) * 100) : 0;
+                    }
+                } catch(e) {}
+            }
+
+            // 2. Fallback: Se não houver registro específico, busca o primeiro módulo com progresso
             window.PORTAL_TRACKS.forEach(trk => {
                 const course = window.coursesDatabase[trk.id] || initialCoursesDatabase[trk.id];
                 (course?.categories || []).forEach(cat => {
@@ -4000,18 +4084,17 @@
                     const readCount = prog?.chaptersRead || 0;
                     totalConcluidasGlobal += readCount;
 
-                    // Detectar o módulo para retomar
                     if (!resumeCatId && readCount > 0 && readCount < chapsCount) {
                         resumeTrackId = trk.id;
                         resumeTrackName = trk.name;
                         resumeCatId = cat.id;
-                        resumeCatTitle = cat.name || cat.title || "Módulo de Estudos";
+                        resumeCatTitle = cat.name || cat.title || 'Módulo de Estudos';
+                        resumeChapterIndex = readCount;
                         resumePercent = Math.round((readCount / chapsCount) * 100);
                     }
                 });
             });
 
-            // Se nenhuma estiver incompleta com progresso, pega o primeiro módulo se houver qualquer aula feita
             if (!resumeCatId && totalConcluidasGlobal > 0) {
                 for (const trk of window.PORTAL_TRACKS) {
                     const course = window.coursesDatabase[trk.id] || initialCoursesDatabase[trk.id];
@@ -4023,9 +4106,10 @@
                         resumeTrackId = trk.id;
                         resumeTrackName = trk.name;
                         resumeCatId = foundCat.id;
-                        resumeCatTitle = foundCat.name || foundCat.title || "Módulo de Estudos";
+                        resumeCatTitle = foundCat.name || foundCat.title || 'Módulo de Estudos';
                         const prog = studentsProgress[currentUser]?.[foundCat.id];
                         const count = prog?.chaptersRead || 0;
+                        resumeChapterIndex = count;
                         resumePercent = (foundCat.chapters?.length) ? Math.round((count / foundCat.chapters.length) * 100) : 0;
                         break;
                     }
@@ -4083,19 +4167,23 @@
             let resumeCardHTML = '';
             if (resumeCatId) {
                 resumeCardHTML = `
-                    <div class="bg-gradient-to-r from-sky-950/80 via-slate-900 to-slate-900 border-2 border-sky-500/40 rounded-3xl p-5 sm:p-6 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <!-- CARD INTELIGENTE: CONTINUAR DE ONDE PAROU (DESTAQUE NO TOPO) -->
+                    <div class="bg-gradient-to-r from-sky-950 via-slate-900 to-slate-900 border-2 border-sky-500/50 rounded-3xl p-5 sm:p-6 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-fade-in">
                         <div class="flex items-center gap-4">
-                            <div class="text-3xl p-3 bg-sky-500/20 text-sky-400 rounded-2xl border border-sky-500/30">
+                            <div class="text-3xl p-3 bg-sky-500/20 text-sky-400 rounded-2xl border border-sky-500/30 shrink-0">
                                 📌
                             </div>
                             <div>
-                                <span class="text-[10px] font-black uppercase text-sky-400 font-code tracking-wider block">CONTINUAR SEUS ESTUDOS</span>
-                                <h3 class="text-base sm:text-lg font-black text-white font-code">${resumeCatTitle}</h3>
-                                <p class="text-xs text-slate-400 font-sans">${resumeTrackName} • ${resumePercent}% concluído neste módulo</p>
+                                <span class="text-[10px] font-black uppercase text-sky-400 font-code tracking-wider block flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span>
+                                    CONTINUAR DE ONDE PAROU
+                                </span>
+                                <h3 class="text-base sm:text-lg font-black text-white font-code mt-0.5">${resumeCatTitle}</h3>
+                                <p class="text-xs text-slate-300 font-sans">${resumeTrackName} • ${resumePercent}% concluído neste módulo</p>
                             </div>
                         </div>
 
-                        <button onclick="window.selectSubject('${resumeTrackId}')" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black px-6 py-3 rounded-2xl text-xs font-code transition flex items-center gap-2 shadow-lg shadow-sky-500/20 cursor-pointer w-full sm:w-auto justify-center">
+                        <button onclick="window.resumeLastStudiedLesson('${resumeTrackId}', '${resumeCatId}', ${resumeChapterIndex || 0})" class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-slate-950 font-black px-7 py-3.5 rounded-2xl text-xs font-code transition flex items-center gap-2 shadow-xl shadow-sky-500/20 cursor-pointer w-full sm:w-auto justify-center transform hover:scale-105">
                             <span>Retomar Aula</span> 🚀
                         </button>
                     </div>
@@ -4104,6 +4192,8 @@
 
             mainContent.innerHTML = `
                 <div class="fade-in w-full max-w-6xl space-y-10 py-2">
+
+                    ${resumeCardHTML}
 
 
 
@@ -4233,8 +4323,7 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                         </div>
                     </div>
 
-                    <!-- CARD INTELIGENTE: CONTINUAR DE ONDE PAROU (SE HOUVER PROGRESSO) -->
-                    ${resumeCardHTML}
+                    <!-- Card inteligente movido para o topo -->
 
                     <!-- SEÇÃO: 4 PILARES & DIFERENCIAIS -->
                     <div>
@@ -6058,6 +6147,16 @@ window.runSandboxCode = function() {
             const category = course.categories.find(c => c.id === selectedCategoryId) || course.categories[0];
             const chapter = category.chapters[currentChapterIndex] || category.chapters[0];
             const isLast = currentChapterIndex === category.chapters.length - 1;
+            
+            // Grava como última aula estudada em tempo real
+            if (typeof window.recordLastStudied === 'function') {
+                window.recordLastStudied(currentSubjectId, selectedCategoryId, currentChapterIndex);
+            }
+
+            // Verifica se a aula já foi lida anteriormente
+            const prevProgress = studentsProgress[currentUser]?.[category.id]?.chaptersRead || 0;
+            const isAlreadyRead = prevProgress > currentChapterIndex;
+            window.currentChapterUnlocked = isAlreadyRead;
             const mg = chapter.miniGame || { question: 'Qual é o conceito fundamental desta aula?', options: ['A', 'B', 'C', 'D'], correct: 0, explanation: '' };
 
             // Embaralhamento dinâmico das opções do minigame da aula
@@ -6188,8 +6287,8 @@ window.runSandboxCode = function() {
                                     `).join('')}
                                 </div>
 
-                                <button onclick="window.nextChapter()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black py-2.5 px-5 rounded-xl shadow-lg transition flex items-center gap-2 text-xs font-code cursor-pointer">
-                                    <span>${isLast ? 'Ir para o Quiz Dev! 🎮' : 'Próxima Aula →'}</span>
+                                <button id="btn-next-chapter" onclick="window.handleNextChapterClick()" class="${isAlreadyRead ? 'bg-sky-500 hover:bg-sky-400 text-slate-950 shadow-sky-500/20' : 'bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50'} font-black py-2.5 px-5 rounded-xl shadow-lg transition flex items-center gap-2 text-xs font-code cursor-pointer">
+                                    <span id="btn-next-chapter-text">${isAlreadyRead ? (isLast ? 'Ir para o Quiz Dev! 🎮' : 'Próxima Aula →') : (isLast ? '🔒 Conclua o Desafio para o Quiz' : '🔒 Responda o Desafio para Avançar')}</span>
                                 </button>
                             </div>
                         </div>
@@ -6261,7 +6360,20 @@ window.runSandboxCode = function() {
 
             if (fb) {
                 fb.classList.remove('hidden');
-                if (selectedIndex === correctIndex) {
+                window.currentChapterUnlocked = true;
+            const nextBtn = document.getElementById('btn-next-chapter');
+            const nextBtnText = document.getElementById('btn-next-chapter-text');
+            if (nextBtn) {
+                nextBtn.className = "bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 px-5 rounded-xl shadow-lg transition flex items-center gap-2 text-xs font-code cursor-pointer";
+            }
+            if (nextBtnText) {
+                const curCourse = window.coursesDatabase[currentSubjectId] || initialCoursesDatabase[currentSubjectId];
+                const curCat = curCourse?.categories?.find(c => c.id === selectedCategoryId);
+                const lastFlag = currentChapterIndex === ((curCat?.chapters?.length || 1) - 1);
+                nextBtnText.innerHTML = lastFlag ? 'Ir para o Quiz Dev! 🎮' : 'Próxima Aula Desbloqueada! →';
+            }
+
+            if (selectedIndex === correctIndex) {
                     window.soundCorrect();
                     window.triggerConfetti();
                     fb.className = "text-xs font-black p-3.5 rounded-xl bg-emerald-950/80 text-emerald-300 border border-emerald-500/60 mt-3 shadow-md flex items-start gap-2.5";
