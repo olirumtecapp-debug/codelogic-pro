@@ -1,14 +1,28 @@
 {
-  "name": "CodeLogic Pro • Plataforma de Programação",
+  "name": "CodeLogic PRO • Plataforma de Programação",
   "short_name": "CodeLogic",
-  "start_url": "./index.html",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/2721/2721620.png",
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
       "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./apple-touch-icon.png",
+      "sizes": "180x180",
       "type": "image/png"
     }
   ]
