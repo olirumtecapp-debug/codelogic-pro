@@ -42,6 +42,10 @@
 
             <!-- Botões de Ação do Header (Espaçamento Perfeito no Smartphone) -->
             <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <!-- Botão Discreto de Compartilhamento Viral -->
+                <button onclick="window.shareCodeLogic('header')" title="Compartilhar CodeLogic PRO" class="bg-slate-800 hover:bg-slate-700 text-sky-400 hover:text-sky-300 p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl border border-slate-700/80 font-bold text-xs transition flex items-center gap-1 cursor-pointer shadow-sm">
+                    <span>📤</span><span class="hidden md:inline text-[11px]">Compartilhar</span>
+                </button>
                 <!-- 1. Atalho Direto para Trilhas (Nunca Cortado no Smartphone!) -->
                 <button onclick="window.scrollToTracks()" title="Explorar as Trilhas de Cursos" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2 sm:px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1 cursor-pointer">
                     <span>💻</span> <span class="hidden sm:inline">Trilhas</span>
@@ -111,6 +115,9 @@
 
                 <!-- Botões e Links Rápidos -->
                 <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="window.shareCodeLogic('footer')" class="bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 hover:text-white px-3 py-1.5 rounded-xl border border-sky-500/30 font-bold text-xs transition flex items-center gap-1 cursor-pointer shadow-sm" title="Compartilhar CodeLogic PRO">
+                        <span>📤</span> Compartilhar Plataforma
+                    </button>
                     <button onclick="window.openFeedbackModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-xl border border-slate-700 font-bold text-xs transition flex items-center gap-1 cursor-pointer shadow-sm" title="Enviar dúvida ou feedback ao instrutor">
                         <span>💬</span> Fale com o Instrutor
                     </button>
@@ -6577,6 +6584,12 @@ window.runSandboxCode = function() {
                             Continuar Jornada →
                         </button>
                     </div>
+                    ${scorePercent >= 70 ? `
+                    <div class="mt-3 pt-3 border-t border-slate-800">
+                        <button onclick="window.shareCodeLogic('quiz_victory', '${medal}', ${scorePercent})" class="w-full py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black rounded-xl text-xs font-code transition flex items-center justify-center gap-1.5 shadow-md cursor-pointer">
+                            <span>📤</span> Compartilhar Minha Conquista
+                        </button>
+                    </div>` : ''}
                 </div>
             `;
         };
@@ -7626,6 +7639,115 @@ Explicação: [Explicação curta e didática do porquê a alternativa está cer
         // Fechar modal ao clicar fora ou apertar Escape
         modalContainer.addEventListener('click', e => { if (e.target === modalContainer) window.hideModal(); });
         document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modalContainer.classList.contains('hidden')) window.hideModal(); });
+
+        
+        // --- SISTEMA DE COMPARTILHAMENTO VIRAL DISCRETO ---
+        window.shareCodeLogic = function(source, extraMedal, extraScore) {
+            if (window.soundClick) window.soundClick();
+            
+            const shareUrl = 'https://codelogic.creativeam.com.br';
+            let title = 'CodeLogic PRO - Plataforma de Programação';
+            let message = '🚀 Estou aprendendo programação do zero ao profissional no CodeLogic PRO! Aulas práticas, desafios interativos e certificados. Comece gratuitamente você também:';
+
+            if (source === 'quiz_victory' && extraScore) {
+                title = '🏆 Conquista no CodeLogic PRO!';
+                message = '🎉 Acabei de concluir a avaliação de programação com nota ' + extraScore + '% no CodeLogic PRO! Teste seus conhecimentos e aprenda a programar de graça:';
+            }
+
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: message,
+                    url: shareUrl
+                }).catch(function(err) {
+                    if (err.name !== 'AbortError') {
+                        window.openCodeLogicShareModal(message, shareUrl);
+                    }
+                });
+                return;
+            }
+
+            window.openCodeLogicShareModal(message, shareUrl);
+        };
+
+        window.openCodeLogicShareModal = function(customMsg, targetUrl) {
+            const shareUrl = targetUrl || 'https://codelogic.creativeam.com.br';
+            const textMsg = customMsg || '🚀 Estou aprendendo programação do zero ao profissional no CodeLogic PRO! Aulas práticas, desafios interativos e certificados. Comece gratuitamente você também:';
+            const encodedUrl = encodeURIComponent(shareUrl);
+            const encodedFullText = encodeURIComponent(textMsg + ' ' + shareUrl);
+
+            const modalHtml = `
+                <div class="text-center font-code space-y-4">
+                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-2xl mb-1 shadow-inner">
+                        📤
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white">Compartilhar CodeLogic PRO</h3>
+                        <p class="text-xs text-slate-400 mt-1">Convide amigos, colegas e grupos para aprender programação de forma gratuita e prática!</p>
+                    </div>
+
+                    <!-- Pré-visualização da Mensagem -->
+                    <div class="p-3 bg-slate-950/80 border border-slate-800 rounded-xl text-left text-xs text-slate-300">
+                        <div class="text-[11px] font-bold text-sky-400 mb-1 flex items-center gap-1 font-mono">
+                            <span>💬 Mensagem Padrão</span>
+                        </div>
+                        <div class="text-slate-300 font-sans text-xs leading-relaxed">
+                            "${textMsg} <span class="text-sky-400 underline break-all">${shareUrl}</span>"
+                        </div>
+                    </div>
+
+                    <!-- Botões de Compartilhamento Social -->
+                    <div class="grid grid-cols-2 gap-2 text-xs font-bold font-sans pt-1">
+                        <a href="https://api.whatsapp.com/send?text=${encodedFullText}" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition shadow cursor-pointer">
+                            <span class="text-sm">💬</span> WhatsApp
+                        </a>
+                        <a href="https://t.me/share/url?url=${encodedUrl}&text=${encodeURIComponent(textMsg)}" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 py-2.5 px-3 bg-sky-600 hover:bg-sky-500 text-white rounded-xl transition shadow cursor-pointer">
+                            <span class="text-sm">✈️</span> Telegram
+                        </a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 py-2.5 px-3 bg-blue-700 hover:bg-blue-600 text-white rounded-xl transition shadow cursor-pointer">
+                            <span class="text-sm">💼</span> LinkedIn
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(textMsg)}&url=${encodedUrl}" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 py-2.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl transition cursor-pointer">
+                            <span class="text-sm">𝕏</span> Twitter / X
+                        </a>
+                    </div>
+
+                    <!-- Ações: Copiar Link e Fechar -->
+                    <div class="pt-2 flex flex-col gap-2">
+                        <button onclick="window.copyCodeLogicShareText('${textMsg.replace(/'/g, "\\'")}', '${shareUrl}')" id="btn-copy-codelogic-share" class="w-full py-2.5 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-slate-950 font-black text-xs rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-md">
+                            <span>📋</span> Copiar Link & Mensagem Completa
+                        </button>
+                        <button onclick="window.hideModal()" class="w-full py-2 text-slate-400 hover:text-slate-200 text-xs font-bold transition cursor-pointer">
+                            Fechar Janela
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            window.showModal(modalHtml, 'max-w-md');
+        };
+
+        window.copyCodeLogicShareText = function(text, url) {
+            const fullText = (text ? text + ' ' : '') + (url || 'https://codelogic.creativeam.com.br');
+            navigator.clipboard.writeText(fullText).then(function() {
+                const btn = document.getElementById('btn-copy-codelogic-share');
+                if (btn) {
+                    const originalHtml = btn.innerHTML;
+                    btn.innerHTML = '<span>✅</span> Mensagem Copiada com Sucesso!';
+                    btn.classList.add('from-emerald-400', 'to-emerald-500');
+                    setTimeout(function() {
+                        if (btn) {
+                            btn.innerHTML = originalHtml;
+                            btn.classList.remove('from-emerald-400', 'to-emerald-500');
+                        }
+                    }, 2500);
+                }
+            }).catch(function() {
+                if (window.customAlert) {
+                    window.customAlert('Link copiado: ' + fullText);
+                }
+            });
+        };
 
         // Inicialização da Aplicação
         loadLocalData();
