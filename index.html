@@ -2774,7 +2774,7 @@
                         id: 'admplus',
                         name: 'Coordenação Dev Master',
                         email: 'admplus@codelogic.pro',
-                        password: 'admplus',
+                        password: '',
                         role: 'Coordenador Geral',
                         turmas: 'Todas as Turmas',
                         avatar: '👨‍🏫',
@@ -7018,6 +7018,31 @@ window.runSandboxCode = function() {
                         </button>
                     </div>
 
+                    <div class="mt-5 pt-4 border-t border-slate-800">
+                        <button type="button" onclick="window.toggleAdminSenhaForm()" class="w-full text-xs font-bold text-sky-400 hover:text-sky-300 underline font-code">
+                            Criar ou alterar a senha do instrutor
+                        </button>
+                        <form id="admin-senha-form" onsubmit="window.handleAdminSenhaChange(event)" class="hidden space-y-3 mt-3">
+                            <p id="admin-senha-status" class="text-[11px] text-slate-400 text-center"></p>
+                            <div>
+                                <label class="block text-slate-300 font-bold text-[10px] uppercase mb-1 font-code">Senha atual</label>
+                                <input type="password" id="admin-senha-atual" autocomplete="off" class="w-full px-4 py-2.5 rounded-xl border border-slate-700 focus:border-sky-500 focus:outline-none bg-slate-950 text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 font-bold text-[10px] uppercase mb-1 font-code">Nova senha</label>
+                                <input type="password" id="admin-senha-nova" autocomplete="new-password" placeholder="Minimo 6 caracteres" class="w-full px-4 py-2.5 rounded-xl border border-slate-700 focus:border-sky-500 focus:outline-none bg-slate-950 text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 font-bold text-[10px] uppercase mb-1 font-code">Repita a nova senha</label>
+                                <input type="password" id="admin-senha-confirma" autocomplete="new-password" class="w-full px-4 py-2.5 rounded-xl border border-slate-700 focus:border-sky-500 focus:outline-none bg-slate-950 text-white text-sm">
+                            </div>
+                            <button type="submit" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-black py-2.5 rounded-xl text-xs font-code transition">
+                                Salvar nova senha
+                            </button>
+                            <p id="admin-senha-msg" class="text-xs text-center"></p>
+                        </form>
+                    </div>
+
                     <div class="mt-6 pt-4 border-t border-slate-800 text-center">
                         <button onclick="window.soundClick(); window.changeState('PORTAL_HUB')" class="text-slate-400 hover:text-white font-bold text-xs font-code">
                             ← Voltar ao Terminal dos Alunos
@@ -7027,17 +7052,90 @@ window.runSandboxCode = function() {
             `;
         };
 
-        window.handleAdminLogin = function() {
+        window.handleAdminLogin = async function() {
             const user = (document.getElementById('admin-user')?.value || '').trim();
             const pass = (document.getElementById('admin-pass')?.value || '').trim();
+            let liberado = false;
 
-            if ((user === 'admplus' || user === 'admin') && (pass === 'admplus' || pass === 'ESCOLA2026' || pass === '16Bl33@p')) {
+            try {
+                const res = await fetch('/api/admin/auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'login', user: user, password: pass })
+                });
+                const data = await res.json();
+                liberado = !!data.ok;
+            } catch (err) {
+                console.warn('[Admin] API de login indisponivel.', err);
+                liberado = false;
+            }
+
+            if (liberado) {
                 currentTeacher = teachersDatabase['admplus'];
                 window.soundCorrect();
                 window.changeState('ADMIN_EDITOR');
             } else {
                 window.soundWrong();
-                window.customAlert("Credenciais incorretas! Dica: utilize <b>admplus</b> / <b>admplus</b>.");
+                window.customAlert("Credenciais incorretas! Use a senha de administrador definida no painel.");
+            }
+        };
+
+        window.toggleAdminSenhaForm = function() {
+            const form = document.getElementById('admin-senha-form');
+            const status = document.getElementById('admin-senha-status');
+            if (!form) return;
+            form.classList.toggle('hidden');
+            if (!form.classList.contains('hidden')) {
+                window.atualizarStatusSenhaAdmin();
+            } else if (status) {
+                status.innerText = '';
+            }
+        };
+
+        window.atualizarStatusSenhaAdmin = async function() {
+            const status = document.getElementById('admin-senha-status');
+            if (!status) return;
+            status.innerText = 'Verificando...';
+            try {
+                const res = await fetch('/api/admin/auth');
+                const data = await res.json();
+                status.innerText = data.hasCustomPassword
+                    ? 'Voce ja criou uma senha propria. Informe a senha atual para trocar.'
+                    : 'Voce ainda usa a senha padrao. Informe-a abaixo e escolha a sua nova senha.';
+            } catch (err) {
+                status.innerText = 'Nao foi possivel consultar o servidor agora.';
+            }
+        };
+
+        window.handleAdminSenhaChange = async function(e) {
+            e.preventDefault();
+            const atual = document.getElementById('admin-senha-atual').value;
+            const nova = document.getElementById('admin-senha-nova').value;
+            const confirma = document.getElementById('admin-senha-confirma').value;
+            const msg = document.getElementById('admin-senha-msg');
+            const pintar = (texto, cor) => { if (msg) { msg.innerText = texto; msg.className = 'text-xs text-center ' + cor; } };
+
+            if (nova !== confirma) { pintar('As duas senhas novas nao sao iguais.', 'text-rose-400'); return; }
+            if (nova.length < 6) { pintar('A nova senha precisa ter pelo menos 6 caracteres.', 'text-rose-400'); return; }
+
+            pintar('Salvando...', 'text-slate-400');
+            try {
+                const res = await fetch('/api/admin/auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'set-password', currentPassword: atual, newPassword: nova })
+                });
+                const data = await res.json();
+                if (data.ok) {
+                    pintar('Senha alterada com sucesso! Use a nova senha no proximo acesso.', 'text-emerald-400');
+                    document.getElementById('admin-senha-atual').value = '';
+                    document.getElementById('admin-senha-nova').value = '';
+                    document.getElementById('admin-senha-confirma').value = '';
+                } else {
+                    pintar(data.error || 'Nao foi possivel alterar a senha.', 'text-rose-400');
+                }
+            } catch (err) {
+                pintar('Erro de conexao ao salvar a senha.', 'text-rose-400');
             }
         };
 
