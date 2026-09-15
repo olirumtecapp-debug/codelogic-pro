@@ -5694,6 +5694,14 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
             const messages = typeof window.getStoredFeedbacks === 'function' ? window.getStoredFeedbacks() : [];
             
             let listHTML = '';
+            const fbFiltro = window.adminFbFilter || 'ativas';
+            const visiveis = messages.filter(m => {
+                if (fbFiltro === 'todas') return true;
+                if (fbFiltro === 'arquivadas') return m.status === 'arquivado';
+                if (fbFiltro === 'aguardando') return !m.adminReply && m.status !== 'arquivado';
+                if (fbFiltro === 'respondidas') return !!m.adminReply && m.status !== 'arquivado';
+                return m.status !== 'arquivado';
+            });
             if (messages.length === 0) {
                 listHTML = `
                     <div class="text-center py-12 text-slate-400">
@@ -5703,7 +5711,7 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                     </div>
                 `;
             } else {
-                listHTML = messages.map(m => {
+                listHTML = visiveis.map(m => {
                     const isReplied = !!m.adminReply;
                     return `
                         <div class="bg-slate-900 border ${isReplied ? 'border-emerald-500/30' : 'border-amber-500/40'} rounded-2xl p-4 transition">
@@ -5716,9 +5724,7 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                                     <span class="text-[11px] text-sky-400 font-code block mt-0.5">Trilha: ${m.trackId || 'Geral'}</span>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isReplied ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}">
-                                        ${isReplied ? '🟢 Respondido' : '🟡 Aguardando Resposta'}
-                                    </span>
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${m.status === 'arquivado' ? 'bg-slate-500/10 text-slate-400 border border-slate-500/30' : (isReplied ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border border-amber-500/30')}">${m.status === 'arquivado' ? 'Arquivada' : (isReplied ? 'Respondido' : 'Aguardando Resposta')}</span>
                                     <span class="text-[10px] text-slate-500">${m.date || ''}</span>
                                 </div>
                             </div>
@@ -5741,6 +5747,13 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                                 <button onclick="window.replyStudentMessage('${m.id}')" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-3 py-1.5 rounded-xl text-xs font-code transition flex items-center gap-1.5 cursor-pointer">
                                     ${isReplied ? '✏️ Editar Resposta' : '💬 Responder Aluno'}
                                 </button>
+
+                            <button onclick="window.setFeedbackStatus('${m.id}', '${m.status === 'arquivado' ? 'pending' : 'arquivado'}')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-3 py-1.5 rounded-xl text-[11px] font-code transition">
+                                ${m.status === 'arquivado' ? 'Desarquivar' : 'Arquivar'}
+                            </button>
+                            <button onclick="window.deleteFeedbackItem('${m.id}')" class="bg-rose-950/40 hover:bg-rose-900/50 text-rose-300 border border-rose-500/30 font-bold px-3 py-1.5 rounded-xl text-[11px] font-code transition">
+                                Excluir
+                            </button>
                             </div>
                         </div>
                     `;
@@ -5760,7 +5773,12 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                         <button onclick="window.closeModal()" class="text-slate-400 hover:text-white p-2 rounded-xl text-lg hover:bg-slate-800">✕</button>
                     </div>
 
-                    <div class="flex-grow overflow-y-auto custom-scrollbar my-4 space-y-3 pr-1">
+                    <div class="flex flex-wrap gap-1.5 mb-3">
+                ${[['ativas', 'Ativas'], ['aguardando', 'Aguardando'], ['respondidas', 'Respondidas'], ['arquivadas', 'Arquivadas'], ['todas', 'Todas']].map(par => `
+                    <button onclick="window.setAdminFbFilter('${par[0]}')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold border transition ${(window.adminFbFilter || 'ativas') === par[0] ? 'bg-sky-500 text-slate-950 border-sky-500' : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'}">${par[1]}</button>
+                `).join('')}
+            </div>
+            <div class="flex-grow overflow-y-auto custom-scrollbar my-4 space-y-3 pr-1">
                         ${listHTML}
                     </div>
 
@@ -5793,6 +5811,29 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
             window.saveStoredFeedbacks(messages);
             window.renderAdminEditor();
             alert('Resposta salva com sucesso e notificação enviada para a Caixa Postal do aluno!');
+            window.openAdminInboxModal();
+        };
+
+        window.setFeedbackStatus = function(msgId, status) {
+            const messages = window.getStoredFeedbacks();
+            const msg = messages.find(m => m.id === msgId);
+            if (!msg) return;
+            msg.status = status;
+            if (typeof window.soundClick === 'function') window.soundClick();
+            window.saveStoredFeedbacks(messages);
+            window.openAdminInboxModal();
+        };
+
+        window.deleteFeedbackItem = function(msgId) {
+            if (!confirm('Excluir esta mensagem definitivamente?')) return;
+            const messages = window.getStoredFeedbacks().filter(m => m.id !== msgId);
+            if (typeof window.soundClick === 'function') window.soundClick();
+            window.saveStoredFeedbacks(messages);
+            window.openAdminInboxModal();
+        };
+
+        window.setAdminFbFilter = function(f) {
+            window.adminFbFilter = f;
             window.openAdminInboxModal();
         };
 
