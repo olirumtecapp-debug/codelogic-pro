@@ -5604,7 +5604,16 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
             window.customAlert('📬 <b>Mensagem Enviada com Sucesso!</b><br>O instrutor recebeu a sua solicitação. Assim que respondida, você receberá um alerta na sua <b>Caixa Postal</b>!');
         };
 
-        window.openStudentInbox = function() {
+                window.arquivarMensagemAlunoCodeLogic = function (id) {
+            const lista = window.getStoredFeedbacks();
+            const alvo = lista.find(x => x.id === id);
+            if (!alvo) return;
+            alvo.status = alvo.status === 'arquivado' ? 'novo' : 'arquivado';
+            window.saveStoredFeedbacks(lista);
+            window.openStudentInbox();
+        };
+
+window.openStudentInbox = function() {
             if (typeof window.soundClick === 'function') window.soundClick();
             const messages = window.getStoredFeedbacks();
 
@@ -5652,7 +5661,11 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
                                 </p>
                             </div>
                         ` : ''}
+                    
+                    <div class="flex justify-end pt-1">
+                        <button onclick="window.arquivarMensagemAlunoCodeLogic('${m.id}')" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">${m.status === 'arquivado' ? 'Desarquivar' : 'Arquivar'}</button>
                     </div>
+</div>
                 `;
             }).join('');
 
