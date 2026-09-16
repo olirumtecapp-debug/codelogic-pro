@@ -5742,7 +5742,17 @@ console.log("Olá, mundo! Sou " + meuNome + " e estou aprendendo no CodeLogic PR
             window.customAlert('📬 <b>Mensagem Enviada com Sucesso!</b><br>O instrutor recebeu a sua solicitação. Assim que respondida, você receberá um alerta na sua <b>Caixa Postal</b>!');
         };
 
-                window.arquivarMensagemAlunoCodeLogic = function (id) {
+                window.codeLogicExcluirMensagem = function (id) {
+            if (!confirm('Excluir esta conversa da sua caixa?\n\nEla sai da sua lista; a coordenacao mantem o registro.')) return;
+            const lista = window.getStoredFeedbacks();
+            const alvo = lista.find(x => x.id === id);
+            if (!alvo) return;
+            alvo.ocultadaParaAluno = true;
+            window.saveStoredFeedbacks(lista);
+            window.openStudentInbox();
+        };
+
+        window.arquivarMensagemAlunoCodeLogic = function (id) {
             const lista = window.getStoredFeedbacks();
             const alvo = lista.find(x => x.id === id);
             if (!alvo) return;
@@ -5773,7 +5783,7 @@ window.openStudentInbox = function() {
                     Você ainda não enviou mensagens para a equipe pedagógica.<br>
                     Clique em "Nova Mensagem" abaixo para tirar dúvidas!
                 </div>
-            ` : messages.map(m => {
+            ` : (function(){ const mensagensVisiveisAluno = messages.filter(m => !m.ocultadaParaAluno); return mensagensVisiveisAluno.map(m => {
                 const isReplied = !!m.adminReply;
                 return `
                     <div class="bg-slate-950 p-3.5 rounded-2xl border ${isReplied ? 'border-sky-500/40' : 'border-slate-800'} space-y-2">
@@ -5802,10 +5812,11 @@ window.openStudentInbox = function() {
                     
                     <div class="flex justify-end pt-1">
                         <button onclick="window.arquivarMensagemAlunoCodeLogic('${m.id}')" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">${m.status === 'arquivado' ? 'Desarquivar' : 'Arquivar'}</button>
+                            <button onclick="window.codeLogicExcluirMensagem('${m.id}')" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-rose-950/40 hover:bg-rose-900/50 text-rose-300 border border-rose-500/30 ml-1">Excluir</button>
                     </div>
 </div>
                 `;
-            }).join('');
+            }).join(''); })()
 
             const modalContent = `
                 <div class="space-y-4 text-left">
