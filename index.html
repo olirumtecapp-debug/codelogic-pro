@@ -3209,6 +3209,14 @@
                             <button type="button" onclick="window.codeLogicRecuperarAcesso()" class="text-[11px] font-code font-bold text-sky-400 hover:text-sky-300 underline mt-1">
                                 Esqueci a senha / recuperar acesso
                             </button>
+
+                            <button type="button" onclick="window.codeLogicReceberCodigo()" class="text-[11px] font-code font-bold text-sky-400 hover:text-sky-300 underline mt-1">
+                                Nao tenho o codigo - receber por e-mail
+                            </button>
+
+                            <button type="button" onclick="window.codeLogicFalarComSuporte()" class="text-[11px] font-code font-bold text-slate-400 hover:text-slate-200 underline mt-1">
+                                Nao consigo entrar - falar com a coordenacao
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -3362,6 +3370,61 @@
             for (let i = 0; i < 3; i++) c += numeros[Math.floor(Math.random() * numeros.length)];
             return c;
         }
+
+        window.codeLogicReceberCodigo = async function () {
+            const email = (prompt('Vamos enviar um codigo novo para o seu e-mail.\n\nDigite o e-mail da sua conta:') || '').trim().toLowerCase();
+            if (!email || !email.includes('@')) { window.customAlert('Informe um e-mail valido.'); return; }
+            try {
+                const res = await fetch('/api/student/auth-help', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'enviar-codigo', email: email })
+                });
+                const data = await res.json();
+                if (data && data.ok) {
+                    window.customAlert('Pronto!<br><br>' + data.message + '<br><br>Agora use a opcao "Esqueci a senha / recuperar acesso" com o codigo que chegou.');
+                } else if (data && data.naoConfigurado) {
+                    window.customAlert('O envio por e-mail ainda nao esta ligado.<br><br>Escreva para contato@creativeam.com.br');
+                } else {
+                    window.customAlert((data && data.error) || 'Nao foi possivel enviar agora.');
+                }
+            } catch (e) {
+                window.customAlert('Erro de conexao ao pedir o codigo.');
+            }
+        };
+
+        window.codeLogicFalarComSuporte = async function () {
+            const nome = (prompt('Vamos avisar a coordenacao.\n\nSeu nome:') || '').trim();
+            if (!nome) return;
+            const emailAluno = (prompt('Um e-mail que voce acessa (a coordenacao responde por ele):') || '').trim().toLowerCase();
+            if (!emailAluno || !emailAluno.includes('@')) { window.customAlert('Informe um e-mail valido.'); return; }
+            const recado = (prompt('Conte o que aconteceu:') || '').trim();
+            if (!recado) return;
+            const campoEmail = document.getElementById('login-student-email');
+            try {
+                const res = await fetch('/api/student/auth-help', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'ajuda',
+                        email: campoEmail ? campoEmail.value.trim().toLowerCase() : '',
+                        nome: nome,
+                        emailAluno: emailAluno,
+                        recado: recado
+                    })
+                });
+                const data = await res.json();
+                if (data && data.ok) {
+                    window.customAlert('Pedido enviado!<br><br>A coordenacao responde para: ' + emailAluno);
+                } else if (data && data.naoConfigurado) {
+                    window.customAlert('Canal indisponivel agora.<br><br>Escreva para contato@creativeam.com.br');
+                } else {
+                    window.customAlert((data && data.error) || 'Nao foi possivel enviar.');
+                }
+            } catch (e) {
+                window.customAlert('Erro de conexao ao enviar.');
+            }
+        };
 
         window.codeLogicRecuperarAcesso = async function () {
             const email = (prompt('Recuperacao de acesso\n\n1) E-mail da conta:') || '').trim().toLowerCase();
