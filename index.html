@@ -3206,6 +3206,9 @@
                             <button onclick="window.handleStudentLogin()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-6 py-2.5 rounded-xl text-xs font-code transition shadow cursor-pointer">
                                 Entrar & Sincronizar 🔄
                             </button>
+                            <button type="button" onclick="window.codeLogicRecuperarAcesso()" class="text-[11px] font-code font-bold text-sky-400 hover:text-sky-300 underline mt-1">
+                                Esqueci a senha / recuperar acesso
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -3305,6 +3308,7 @@
                 profession = customProfession;
             }
 
+            if (typeof window.codeLogicAvisarEmailDiferente === 'function' && window.codeLogicAvisarEmailDiferente(email)) { return; }
             const students = window.getRegisteredStudents();
             let student = students.find(s => s.email === email);
 
@@ -3346,6 +3350,77 @@
 
             window.hideModal();
             window.customAlert('🎉 <b>Conta Criada com Sucesso!</b><br>Bem-vindo ao CodeLogic PRO, <b>' + name + '</b>!<br>Seu progresso agora fica 100% salvo e sincronizado na nuvem.');
+        };
+
+
+        // ===== Recuperacao de acesso (codigo de recuperacao) =====
+        function clGerarCodigo() {
+            const letras = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+            const numeros = '23456789';
+            let c = '';
+            for (let i = 0; i < 3; i++) c += letras[Math.floor(Math.random() * letras.length)];
+            for (let i = 0; i < 3; i++) c += numeros[Math.floor(Math.random() * numeros.length)];
+            return c;
+        }
+
+        window.codeLogicRecuperarAcesso = async function () {
+            const email = (prompt('Recuperacao de acesso\n\n1) E-mail da conta:') || '').trim().toLowerCase();
+            if (!email || !email.includes('@')) return;
+
+            let student = (window.getRegisteredStudents() || []).find(s => s.email === email) || null;
+            if (!student && typeof window.loadStudentFromFirestore === 'function') {
+                student = await window.loadStudentFromFirestore(email);
+            }
+            if (!student) { window.customAlert('Nao encontrei conta com este e-mail. Confira o endereco.'); return; }
+
+            const temCodigo = (prompt('Voce tem o CODIGO DE RECUPERACAO?\n\n1 = sim, tenho o codigo (vou trocar a senha)\n2 = nao tenho (vou gerar um novo codigo, usando a senha)') || '').trim();
+
+            if (temCodigo === '2') {
+                const senha = (prompt('Informe a sua senha atual para gerar um novo codigo:') || '').trim();
+                if (!senha) return;
+                if (student.pass && student.pass !== senha) { window.customAlert('Senha incorreta.'); return; }
+                student.recoveryCode = clGerarCodigo();
+                if (typeof window.syncStudentToFirestore === 'function') window.syncStudentToFirestore(student);
+                const todos = window.getRegisteredStudents() || [];
+                const idx = todos.findIndex(s => s.email === email);
+                if (idx >= 0) { todos[idx] = student; window.saveRegisteredStudents(todos); }
+                alert('SEU CODIGO DE RECUPERACAO: ' + student.recoveryCode + '\n\nGuarde este codigo. Com ele voce troca a senha se esquecer, em qualquer aparelho.');
+                return;
+            }
+
+            if (temCodigo === '1') {
+                const codigo = (prompt('Digite o seu CODIGO DE RECUPERACAO (ex: ABC123):') || '').trim().toUpperCase();
+                if (!codigo) return;
+                if (!student.recoveryCode || student.recoveryCode.toUpperCase() !== codigo) {
+                    window.customAlert('Codigo de recuperacao incorreto.');
+                    return;
+                }
+                const nova = (prompt('Codigo confere! Digite a NOVA senha (minimo 4 caracteres):') || '').trim();
+                if (!nova || nova.length < 4) { window.customAlert('Senha muito curta.'); return; }
+                student.pass = nova;
+                if (typeof window.syncStudentToFirestore === 'function') window.syncStudentToFirestore(student);
+                const todos = window.getRegisteredStudents() || [];
+                const idx = todos.findIndex(s => s.email === email);
+                if (idx >= 0) { todos[idx] = student; window.saveRegisteredStudents(todos); }
+                const campo = document.getElementById('login-student-email');
+                const campoSenha = document.getElementById('login-student-pass');
+                if (campo) campo.value = email;
+                if (campoSenha) campoSenha.value = nova;
+                window.customAlert('Senha alterada! Ja preenchi os campos: clique em Entrar para acessar.');
+                return;
+            }
+
+            window.customAlert('Opcao invalida.');
+        };
+
+        // Aviso quando o e-mail digitado for diferente do que tem progresso neste aparelho
+        window.codeLogicAvisarEmailDiferente = function (novoEmail) {
+            try {
+                const atual = (window.getCurrentStudent && window.getCurrentStudent()) ? String(window.getCurrentStudent().email || '') : '';
+                const novo = String(novoEmail || '').trim().toLowerCase();
+                if (!atual || !novo || atual.toLowerCase() === novo) return false;
+                return confirm('Neste aparelho ja existe progresso com o e-mail ' + atual + '.\n\nOK = continuar com o e-mail que ja tem progresso\nCancelar = usar ' + novo) === true;
+            } catch (e) { return false; }
         };
 
         window.handleStudentLogin = async function() {
