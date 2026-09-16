@@ -3372,7 +3372,7 @@
         }
 
         window.codeLogicReceberCodigo = async function () {
-            const email = (prompt('Vamos enviar um codigo novo para o seu e-mail.\n\nDigite o e-mail da sua conta:') || '').trim().toLowerCase();
+            const campoLogin = document.getElementById('login-student-email'); const guardado = campoLogin ? String(campoLogin.value || '').trim() : ''; let email = ''; if (guardado) { const outro = prompt('Vamos enviar o codigo para o e-mail da sua matricula:\n\n' + guardado + '\n\nOK = enviar para este\nOu digite outro e-mail:', guardado); email = (outro || '').trim().toLowerCase(); } else { email = (prompt('Vamos enviar um codigo novo para o seu e-mail.\n\nDigite o e-mail da sua conta:') || '').trim().toLowerCase(); }
             if (!email || !email.includes('@')) { window.customAlert('Informe um e-mail valido.'); return; }
             try {
                 const res = await fetch('/api/student/auth-help', {
