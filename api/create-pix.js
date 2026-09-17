@@ -1,8 +1,9 @@
 // api/create-pix.js - Gerador Dinâmico de Cobranças PIX Asaas para CodeLogic PRO
 import https from 'https';
 
-const RAW_KEY_B64 = 'JGFhY3RfcHJvZF8wMDBNemt3T0RBMk1XWTJPR00zTVdSbE1EVTJOV00zTXpKbE56Wm1OR1poWkdZNk9qRTNaakpsWm1FMUxXSXhZMk10TkRVNFlTMDVaRGhpTFRKalpUVTVaVFF3TkdKaFl6bzZKR0ZoWTJoZlpHTTRPV05sTlRVdE9XUTFOUzAwWkRjMUxXSTBPR010TUdGaE1ESXdOalppTVRWaQ==';
-const ASAAS_KEY = process.env.ASAAS_API_KEY || Buffer.from(RAW_KEY_B64, 'base64').toString('utf8');
+// A chave do Asaas vive em variavel de ambiente na Vercel (ASAAS_API_KEY).
+// NUNCA grave a chave neste arquivo: o repositorio e publico e a chave gera cobrancas reais.
+const ASAAS_KEY = process.env.ASAAS_API_KEY || '';
 
 function asaasRequest(path, method = 'GET', postData = null) {
   return new Promise((resolve, reject) => {
@@ -54,6 +55,10 @@ export default async function handler(req, res) {
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed. Use POST.' });
+  }
+
+  if (!ASAAS_KEY) {
+    return res.status(500).json({ error: 'Chave do Asaas nao configurada no servidor. Defina a variavel de ambiente ASAAS_API_KEY na Vercel.' });
   }
 
   try {
