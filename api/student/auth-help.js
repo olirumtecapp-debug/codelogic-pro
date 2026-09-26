@@ -79,7 +79,7 @@ export default async function handler(req, res) {
         const email = String(body.email || '').trim().toLowerCase();
 
         if (!emailConfigurado()) {
-            return res.status(200).json({ ok: false, naoConfigurado: true, error: 'O envio de e-mail ainda não está ligado. Escreva para contato@creativeam.com.br.' });
+            return res.status(200).json({ ok: false, naoConfigurado: true, error: 'O envio de e-mail ainda não está ligado. Escreva para contatocreativeam@gmail.com.' });
         }
 
         // ---- pedido de ajuda (chega por e-mail para a coordenacao) ----
@@ -89,7 +89,7 @@ export default async function handler(req, res) {
             const recado = String(body.recado || '').trim();
             if (!recado) return res.status(400).json({ ok: false, error: 'Escreva o que aconteceu.' });
 
-            const destino = process.env.EMAIL_RESPOSTA || 'contato@creativeam.com.br';
+            const destino = process.env.EMAIL_RESPOSTA || 'contatocreativeam@gmail.com';
             const texto = [
                 'Pedido de ajuda para entrar no CodeLogic PRO',
                 '',
@@ -102,7 +102,7 @@ export default async function handler(req, res) {
             ].join('\n');
 
             const envio = await enviarEmail({ para: destino, assunto: 'CodeLogic - ajuda para entrar (' + nome + ')', texto: texto });
-            if (!envio.ok) return res.status(200).json({ ok: false, error: 'Não foi possível enviar agora. Escreva para contato@creativeam.com.br.' });
+            if (!envio.ok) return res.status(200).json({ ok: false, error: 'Não foi possível enviar agora. Escreva para contatocreativeam@gmail.com.' });
 
             return res.status(200).json({ ok: true, message: 'Pedido enviado! A coordenação responde para o e-mail que você deixou.' });
         }

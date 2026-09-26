@@ -1,0 +1,10 @@
+{
+  "name": "codelogic-pro",
+  "version": "1.0.0",
+  "description": "CodeLogic PRO",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "nodemailer": "^6.9.15"
+  }
+}
