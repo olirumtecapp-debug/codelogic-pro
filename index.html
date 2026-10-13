@@ -2996,8 +2996,8 @@
                 stats.lastUpdated = new Date().toISOString();
                 window.saveMetricsStats(stats);
 
-                // Se houver Firestore conectado, atualiza na nuvem
-                if (db && typeof setDoc === 'function' && typeof doc === 'function') {
+                // Se houver Firestore conectado, atualiza na nuvem apenas para eventos reais de conclusão (evita gravar a cada visita de página)
+                if (eventType !== 'PAGE_VISIT' && db && typeof setDoc === 'function' && typeof doc === 'function') {
                     setDoc(doc(db, 'metrics', 'summary'), stats, { merge: true }).catch(() => {});
                 }
             } catch(e) {}
